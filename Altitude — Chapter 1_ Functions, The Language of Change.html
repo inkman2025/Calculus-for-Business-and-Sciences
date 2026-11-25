@@ -1,0 +1,1724 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Chapter 1: Functions: The Language of Change — Altitude</title><link rel="icon" href="data:,"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400;1,8..60,600&display=swap"><style>/*
+VOICE  steady, encouraging field guide for a climb: precise language, plain warmth
+IDEA   an expedition guidebook: each chapter is a route, each example a climb from Base Camp to Summit
+PICTURE the chapter's own function drawn as a mountain ridge, with climbers you can move
+COLOUR the book's palette: navy ground bands, base green, mid blue, summit gold, expedition red
+TYPE   Source Sans 3 for structure and instruments, Source Serif 4 for the author's prose
+LAYOUT one reading column (70ch) with instruments breaking wider; sticky route bar with altitude meter
+*/
+
+:root{color-scheme:light dark;
+--bg:light-dark(#ffffff,#0e1822);--paper:light-dark(#f5f7f9,#142331);--ink:light-dark(#15212d,#e7edf3);--soft:light-dark(#4a5a69,#a9b8c6);
+--rule:light-dark(#dde3e8,#2a3b4b);--navy:light-dark(#1B3A5C,#9cc3ea);--navyband:#1B3A5C;--navydeep:#12283f;
+--base:light-dark(#1E6B3C,#73d29b);--mid:light-dark(#1A5276,#7cbbe6);--summit:light-dark(#7D6608,#e5c654);--red:light-dark(#7B241C,#f0958b);
+--baset:light-dark(#eaf6ef,#13291d);--midt:light-dark(#eaf3fa,#132637);--summitt:light-dark(#fbf7e1,#2a2610);--redt:light-dark(#fbecea,#2d1716);
+--gold:#e0b93a;--sans:"Source Sans 3",system-ui,sans-serif;--serif:"Source Serif 4",Georgia,serif}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+html{scroll-padding-top:72px}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.62 var(--serif);overflow-x:clip}
+a{color:var(--mid)}
+button,input,select,textarea{font:inherit}
+:focus-visible{outline:3px solid var(--summit);outline-offset:2px}
+
+/* route bar */
+.route{position:sticky;top:0;z-index:20;background:var(--navyband);color:#fff;font-family:var(--sans)}
+.route .in{max-width:1240px;margin:auto;display:flex;align-items:center;gap:14px;padding:8px max(4vw,14px);min-height:52px}
+.route .wm{font-weight:700;letter-spacing:.06em;color:var(--gold);text-decoration:none;font-size:15px}
+.route .ct{flex:1;font-size:15px;color:#d6e2ee;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.route a.nv{color:#fff;font-size:15px;text-decoration:none;padding:10px 6px}
+.meter{display:flex;align-items:center;gap:8px;font-size:13px;color:#cfdbe7}
+.meter svg{width:34px;height:26px;flex:none}
+@media(max-width:620px){.route .ct{display:none}.meter span{display:none}}
+
+/* hero */
+.hero{background:var(--navyband);color:#fff;position:relative;overflow:hidden}
+.hero .in{max-width:1240px;margin:auto;padding:clamp(26px,4vw,52px) max(5vw,16px) 0;display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(18px,3vw,44px);align-items:end}
+.hero .kick{font:600 15px var(--sans);color:var(--gold);letter-spacing:.04em}
+.hero h1{font:700 clamp(34px,4.6vw,52px)/1.05 var(--sans);margin:.25em 0 .4em;text-wrap:balance}
+.hero .lede{font-size:17px;color:#d8e3ee;margin:0 0 clamp(20px,3vw,40px);max-width:46ch}
+.hero .pic{position:relative;height:clamp(250px,32vw,380px)}
+.hero .pic svg{position:absolute;inset:0;width:100%;height:100%;touch-action:none}
+.hero .hint{position:absolute;right:8px;top:6px;font:13px var(--sans);color:#b9cadb}
+@media(max-width:760px){.hero .in{grid-template-columns:1fr}.hero .lede{margin-bottom:8px}}
+
+/* reading column */
+main{padding:0 max(5vw,16px) 64px}
+.col{max-width:740px;margin:auto}
+.col>p,.col .bq p{max-width:70ch}
+.wide{max-width:1040px;margin-inline:auto}
+h2.sh{font:700 clamp(26px,3vw,32px)/1.15 var(--sans);color:var(--navy);margin:2.4em 0 .6em;text-wrap:balance}
+h2.sh .no{color:var(--summit);margin-right:.25em}
+h3.ssh{font:700 21px/1.25 var(--sans);color:var(--navy);margin:1.8em 0 .4em}
+.dm{display:block;overflow-x:auto;overflow-y:hidden;margin:.7em 0;padding:2px 0}
+mjx-container[display=true]{margin:0!important}
+p{margin:.7em 0}
+
+/* business question */
+.bq{background:var(--paper);border-left:5px solid var(--summit);padding:18px 22px;margin:32px 0 26px;border-radius:0 8px 8px 0}
+.bqk{font:700 16px var(--sans);color:var(--summit)}
+
+/* boxes */
+.box{border:1px solid var(--rule);border-radius:10px;padding:4px 20px 12px;margin:22px 0;background:var(--bg)}
+.box .bh{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 12px;margin:12px 0 2px}
+.box .bh h3{font:700 19px/1.25 var(--sans);margin:0;color:var(--ink)}
+.bk{font:700 13px var(--sans);letter-spacing:.02em;border-radius:99px;padding:2px 10px;color:#fff;background:var(--navyband)}
+.box.def{border-top:5px solid var(--navy)}
+.box.key{border-top:5px solid var(--mid)}.box.key .bk{background:var(--mid);color:var(--bg)}
+.box.concept{background:var(--paper)}.box.concept .bk{background:var(--soft);color:var(--bg)}
+.box.note{background:var(--paper);border:0;border-left:4px solid var(--mid);border-radius:0 8px 8px 0}
+.box.ref{border-top:5px solid var(--summit)}
+.box.ref.mid{border-top-color:var(--mid)}.box.ref.mid h3{color:var(--mid)}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:8px 0}.pair>.box{margin:0}
+@media(max-width:700px){.pair{grid-template-columns:1fr}}
+:root .box.def .bk{background:var(--navy);color:var(--bg)}
+
+/* tables */
+.scroll{overflow-x:auto}
+table.t{border-collapse:collapse;margin:10px 0;font:15px/1.4 var(--sans);width:auto;min-width:min(100%,420px)}
+table.t th{background:var(--navyband);color:#fff;text-align:left;padding:8px 10px;font-weight:600}
+table.t td{padding:7px 10px;border-bottom:1px solid var(--rule);vertical-align:top}
+table.t tbody tr:nth-child(even) td{background:var(--paper)}
+
+/* examples & altitude climb */
+.example{margin:34px 0;border:1px solid var(--rule);border-radius:12px;overflow:hidden;background:var(--bg)}
+.exhead{font:700 19px/1.3 var(--sans);padding:14px 20px;background:var(--paper);border-bottom:1px solid var(--rule)}
+.exn{color:var(--navy)}.ext{font-weight:600;font-style:italic;font-family:var(--serif)}
+.exst{padding:4px 20px 6px}
+.nav-s{margin:10px 20px 4px;padding:12px 14px;border:1px dashed var(--mid);border-radius:10px;background:var(--midt);font-family:var(--sans)}
+.nav-s h4{margin:0 0 6px;font:700 15px var(--sans);color:var(--mid)}
+.nav-s .q{margin:8px 0 4px;font-size:15px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{min-height:40px;padding:6px 14px;border-radius:99px;border:1.5px solid var(--rule);background:var(--bg);color:var(--ink);cursor:pointer;font:600 15px var(--sans)}
+.chip:hover{border-color:var(--mid)}
+.chip.ok{border-color:var(--base);background:var(--baset);color:var(--base)}
+.chip.no{border-color:var(--red);background:var(--redt);color:var(--red)}
+.fb{font-size:14px;margin-top:6px;color:var(--soft)}
+.climb{display:flex;align-items:stretch;gap:0;margin:14px 20px 0;border-radius:10px;overflow:hidden;border:1px solid var(--rule)}
+.climb button{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;min-height:52px;border:0;background:var(--bg);cursor:pointer;font:700 15px var(--sans);color:var(--soft);border-right:1px solid var(--rule);position:relative}
+.climb button:last-child{border-right:0}
+.climb button svg{width:26px;height:20px;flex:none}
+.climb button[aria-selected=true][data-l=base]{background:var(--baset);color:var(--base);box-shadow:inset 0 -4px var(--base)}
+.climb button[aria-selected=true][data-l=mid]{background:var(--midt);color:var(--mid);box-shadow:inset 0 -4px var(--mid)}
+.climb button[aria-selected=true][data-l=summit]{background:var(--summitt);color:var(--summit);box-shadow:inset 0 -4px var(--summit)}
+.climb button .done{width:8px;height:8px;border-radius:50%;background:currentColor;opacity:0}
+.climb button.seen .done{opacity:.8}
+@media(max-width:520px){.climb button{flex-direction:column;gap:2px;font-size:13px;min-height:58px}}
+.lvl{padding:6px 20px 14px;border-left:5px solid transparent}
+.lvl[data-lvl=base]{border-color:var(--base)}.lvl[data-lvl=mid]{border-color:var(--mid)}.lvl[data-lvl=summit]{border-color:var(--summit)}
+.example .lvl{margin:0 20px 18px;border-radius:0 0 10px 10px;background:var(--bg)}
+.example.js .lvl:not(.on){display:none}
+.lvh{font:700 15px var(--sans);margin-top:10px}
+.lvl[data-lvl=base] .lvh{color:var(--base)}.lvl[data-lvl=mid] .lvh{color:var(--mid)}.lvl[data-lvl=summit] .lvh{color:var(--summit)}
+.snav{display:none}
+.next{margin-top:14px;min-height:44px;padding:8px 16px;border-radius:8px;border:1.5px solid currentColor;background:transparent;cursor:pointer;font:700 15px var(--sans)}
+.lvl[data-lvl=base] .next{color:var(--base)}.lvl[data-lvl=mid] .next{color:var(--mid)}
+
+/* schema */
+.schema{background:var(--navyband);color:#eef3f8;border-radius:14px;padding:6px 20px 18px;margin:26px 0}
+.schema .bh h3{color:#fff;font:700 20px var(--sans);margin:0}
+.schema .bh{display:flex;flex-wrap:wrap;gap:4px 12px;align-items:baseline;margin:14px 0 8px}
+.schema .bk{background:var(--gold);color:#1B3A5C}
+.ssteps{list-style:none;padding:0;margin:0;display:grid;gap:10px}
+.sstep{background:#ffffff12;border-radius:10px;padding:12px 14px;font-family:var(--sans);font-size:15.5px}
+.sq{display:flex;gap:12px}.sn{flex:none;width:28px;height:28px;border-radius:50%;background:var(--gold);color:#1B3A5C;display:grid;place-items:center;font-weight:700}
+.sbtn{display:flex;gap:8px;margin:10px 0 0 40px;flex-wrap:wrap}
+.sbtn button{min-height:40px;padding:6px 14px;border-radius:8px;border:1.5px solid #ffffff55;background:transparent;color:#fff;cursor:pointer;font:700 14px var(--sans)}
+.sbtn button[aria-pressed=true]{background:#fff;color:#1B3A5C}
+.sa{display:none;margin:10px 0 0 40px;color:#dce6ef}.sa.on{display:block}
+.schema mjx-container{color:#fff}
+
+/* errors */
+.errors{border:1px solid var(--rule);border-top:5px solid var(--red);border-radius:12px;padding:4px 20px 14px;margin:26px 0}
+.errors .bk{background:var(--red);color:var(--bg)}
+.errors .bh{display:flex;flex-wrap:wrap;gap:4px 12px;align-items:baseline;margin:12px 0}.errors .bh h3{margin:0;font:700 19px var(--sans)}
+.errs{padding:0;list-style:none;margin:0;display:grid;gap:8px;counter-reset:e}
+.err{border-radius:10px;background:var(--redt);counter-increment:e}
+.eh{display:flex;gap:10px;width:100%;text-align:left;padding:12px 14px;border:0;background:transparent;color:var(--ink);cursor:pointer;font:600 16px/1.35 var(--sans);min-height:48px}
+.eh::before{content:counter(e);flex:none;width:24px;height:24px;border-radius:50%;background:var(--red);color:var(--bg);display:grid;place-items:center;font-size:13px}
+.eh::after{content:"+";margin-left:auto;color:var(--red);font-size:20px;line-height:1}
+.eh[aria-expanded=true]::after{content:"–"}
+.eb{padding:0 14px 10px 48px}.errors.js .err .eb{display:none}.errors.js .err.open .eb{display:block}
+.eb p{margin:.2em 0}
+
+/* instruments */
+.ins{margin:26px 0;padding:0}
+.ins.wide{margin-inline:calc(50% - min(520px,50vw - 16px));}
+.panel{border:1px solid var(--rule);border-radius:14px;background:var(--bg);overflow:hidden;font-family:var(--sans)}
+.panel .ph{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:baseline;padding:12px 16px 6px}
+.panel .ph b{font:700 16px var(--sans);color:var(--navy)}
+.panel .ph .tag{font:700 12px var(--sans);padding:2px 9px;border-radius:99px;background:var(--navyband);color:#fff}
+.plot{position:relative;height:clamp(250px,40vw,360px);touch-action:pan-y}
+.plot.sm{height:clamp(180px,26vw,230px)}
+.plot>svg{position:absolute;inset:0;width:100%;height:100%}
+.ctl{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;padding:10px 16px 14px;border-top:1px solid var(--rule);background:var(--paper)}
+.ctl label{display:flex;align-items:center;gap:10px;font-size:15px;flex:1 1 220px}
+.ctl input[type=range]{flex:1;accent-color:var(--mid);height:32px}
+.seg{display:inline-flex;border:1.5px solid var(--rule);border-radius:9px;overflow:hidden;flex-wrap:wrap}
+.seg button{min-height:40px;padding:6px 12px;border:0;background:var(--bg);color:var(--ink);cursor:pointer;font:600 14px var(--sans);border-right:1px solid var(--rule)}
+.seg button:last-child{border-right:0}
+.seg button[aria-pressed=true]{background:var(--navyband);color:#fff}
+.read{display:flex;flex-wrap:wrap;gap:6px 22px;padding:10px 16px;font-size:15px;border-top:1px solid var(--rule)}
+.read div{white-space:nowrap}.read b{font-weight:700}
+.read .big{font-size:20px}
+.k-base{color:var(--base)}.k-mid{color:var(--mid)}.k-summit{color:var(--summit)}.k-red{color:var(--red)}.k-navy{color:var(--navy)}
+figcaption.ed{font:15px/1.45 var(--sans);color:var(--soft);padding:8px 2px 0}
+figcaption.ed::before{content:"Explore  ";font-weight:700;color:var(--summit)}
+.btn{min-height:44px;padding:8px 16px;border-radius:9px;border:1.5px solid var(--mid);background:var(--bg);color:var(--mid);cursor:pointer;font:700 15px var(--sans)}
+.btn.solid{background:var(--mid);color:var(--bg)}
+
+/* data lab */
+.lab .grid{overflow-x:auto;padding:8px 16px 4px}
+.lab table{border-collapse:collapse;font:15px var(--sans)}
+.lab th,.lab td{padding:6px 9px;text-align:right;white-space:nowrap;border-bottom:1px solid var(--rule)}
+.lab th{text-align:left;color:var(--soft);font-weight:600}
+.lab td input{width:5.2em;text-align:right;font:16px var(--sans);border:1px solid var(--rule);border-radius:6px;padding:4px 6px;background:var(--bg);color:var(--ink)}
+.lab td.d{cursor:pointer}.lab td.d:hover{background:var(--midt)}.lab td.sel{background:var(--summitt);outline:2px solid var(--summit)}
+.lab tr.r-dy th{color:var(--mid)}.lab tr.r-ra th{color:var(--summit)}.lab tr.r-av th{color:var(--mid)}.lab tr.r-sd th{color:var(--base)}.lab tr.r-d2 th{color:var(--red)}
+.bars{display:flex;align-items:flex-end;gap:6px;height:90px;padding:6px 16px 0}
+.bars div{flex:1;background:var(--mid);border-radius:4px 4px 0 0;position:relative;min-height:2px}
+.bars div.neg{background:var(--red)}
+.bars span{position:absolute;top:-18px;left:0;right:0;text-align:center;font-size:12px;color:var(--soft)}
+.paste{padding:0 16px 14px}.paste textarea{width:100%;min-height:80px;font:15px/1.4 var(--sans);border:1px solid var(--rule);border-radius:8px;padding:8px;background:var(--bg);color:var(--ink)}
+details.more{border-top:1px solid var(--rule)}details.more summary{padding:12px 16px;cursor:pointer;font:600 15px var(--sans);color:var(--mid)}
+
+/* problems */
+.tier{margin:22px 0;border-radius:12px;padding:2px 18px 10px;border:1px solid var(--rule)}
+.tier[data-tier=base]{border-top:5px solid var(--base)}.tier[data-tier=mid]{border-top:5px solid var(--mid)}.tier[data-tier=summit]{border-top:5px solid var(--summit)}
+.tierh{font:700 19px var(--sans);margin:14px 0 4px}
+.tier[data-tier=base] .tierh{color:var(--base)}.tier[data-tier=mid] .tierh{color:var(--mid)}.tier[data-tier=summit] .tierh{color:var(--summit)}
+.probs{list-style:none;padding:0;margin:0}
+.prob{display:grid;grid-template-columns:34px minmax(0,1fr);gap:8px;padding:12px 0;border-bottom:1px solid var(--rule)}
+.prob:last-child{border-bottom:0}
+.pn{font:700 18px var(--sans);color:var(--navy)}
+.parts{list-style:none;padding:0;margin:6px 0}
+.parts>li{display:grid;grid-template-columns:30px minmax(0,1fr);gap:4px;margin:6px 0}
+.pl{font:600 15px var(--sans);color:var(--soft);padding-top:2px}
+.chk{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;margin:6px 0 2px;font:15px var(--sans)}
+.chk label{display:flex;gap:6px;align-items:center}
+.chk input{width:7.5em;font:16px var(--sans);padding:6px 8px;border:1.5px solid var(--rule);border-radius:7px;background:var(--bg);color:var(--ink)}
+.chk input.ok{border-color:var(--base);background:var(--baset)}.chk input.no{border-color:var(--red);background:var(--redt)}
+.chk .u{color:var(--soft)}
+.chk button{min-height:40px;padding:6px 14px;border-radius:8px;border:1.5px solid var(--mid);background:transparent;color:var(--mid);cursor:pointer;font:700 14px var(--sans)}
+.chk .msg{color:var(--soft);font-size:14px}
+.pid{font:12px var(--sans);color:var(--soft);margin-top:4px}
+
+/* end of chapter */
+.foot{background:var(--navyband);color:#cfdbe7;font:15px/1.5 var(--sans)}
+.foot .in{max-width:1240px;margin:auto;padding:32px max(5vw,16px);display:flex;flex-wrap:wrap;gap:16px 40px;justify-content:space-between}
+.foot a{color:#fff}
+.toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:var(--navyband);color:#fff;padding:10px 18px;border-radius:99px;font:600 15px var(--sans);opacity:0;transition:opacity .3s;pointer-events:none;z-index:30}
+.toast.on{opacity:1}
+svg text{font-family:var(--sans)}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+@media print{.route,.climb,.nav-s,.ctl,.chk,.toast{display:none!important}.example.js .lvl{display:block!important}.errors.js .err .eb{display:block!important}.sa{display:block!important}.hero{background:none;color:var(--ink)}}
+.hero .bqh{color:#d8e3ee;font-size:16px;line-height:1.55;max-width:54ch;margin-bottom:clamp(22px,3vw,40px)}
+.hero .bqh .bqk{color:var(--gold);font:700 15px var(--sans)}.hero .bqh p{margin:.45em 0}
+@media(max-width:760px){.hero .txt{display:contents}.hero .in{display:flex;flex-direction:column;align-items:stretch}.hero .kick{order:1}.hero h1{order:2;margin-bottom:.2em}.hero .pic{order:3}.hero .bqh{order:4;margin-top:14px}}
+.toc{border-bottom:1px solid var(--rule);background:var(--bg)}
+.toc .scroll{display:flex;gap:2px;max-width:1240px;margin:auto;padding:4px max(4vw,12px)}
+.toc a{flex:none;padding:10px 12px;font:600 15px var(--sans);color:var(--navy);text-decoration:none;border-radius:8px}.toc a:hover{background:var(--paper)}
+@media(min-width:900px){.toc{position:sticky;top:52px;z-index:15}html{scroll-padding-top:120px}}
+.cover{background:var(--navyband);color:#fff}
+.cover .in{max-width:1240px;margin:auto;padding:clamp(40px,7vw,96px) max(5vw,16px);display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:40px;align-items:center}
+.cover .kick{font:600 15px var(--sans);color:#b9cadb}
+.wm-big{font:700 clamp(56px,10vw,118px)/0.95 var(--sans);color:var(--gold);letter-spacing:.04em;margin:.15em 0}
+.sub{font:italic 400 clamp(20px,2.4vw,28px) var(--serif);color:#dbe6f1;margin:0}.by{font:600 17px var(--sans);color:#b9cadb;margin-top:28px}
+.alts{display:grid;gap:12px}.am{border-left:5px solid;padding:12px 16px;background:#ffffff10;font:15px var(--sans);color:#e8eef5;border-radius:0 8px 8px 0}.am b{display:block;margin-bottom:2px}
+.am.b{border-color:#3fa86a}.am.b b{color:#7fd8a3}.am.m{border-color:#3f8cc4}.am.m b{color:#8cc6ef}.am.s{border-color:#e0b93a}.am.s b{color:#e0b93a}
+@media(max-width:760px){.cover .in{grid-template-columns:1fr}}
+.chaps{display:grid;gap:12px}.chap{display:flex;gap:16px;align-items:center;padding:16px 18px;border:1px solid var(--rule);border-radius:12px;text-decoration:none;color:var(--ink);font-family:var(--sans)}
+.chap:hover{border-color:var(--mid)}.cn{font:700 40px var(--sans);color:var(--summit);width:48px;text-align:center;flex:none}.chap b{font-size:19px}.chap .pt{color:var(--soft);font-size:14px}
+.example.js .lvh{display:none}
+@media(max-width:600px){.exst{padding:2px 12px 6px}.nav-s{margin:10px 10px 4px}.climb{margin:12px 10px 0}.example .lvl{margin:0 10px 14px;padding:6px 10px 12px}.exhead{padding:12px 14px}.box{padding:4px 14px 10px}.tier{padding:2px 12px 8px}.errors,.schema{padding-inline:14px}}
+.mach{padding:16px;overflow-x:auto}
+.flow{display:flex;align-items:center;gap:10px;min-width:max-content;font:600 16px var(--sans)}
+.flow span{color:var(--soft);font-size:20px}
+.flow .nd{padding:10px 14px;border:1.5px solid var(--rule);border-radius:10px;background:var(--paper);min-width:64px;text-align:center}
+.flow .nd.big{border-color:var(--summit);background:var(--summitt);font-size:18px}
+.flow .mb{padding:10px 16px;border-radius:12px;color:#fff;text-align:center;display:flex;flex-direction:column}
+.flow .mb small{font-weight:400;font-size:12px;opacity:.85}
+.flow .mb.in{background:var(--mid)}.flow .mb.out{background:var(--summit)}
+:root[data-theme=dark] .flow .mb,.flow .mb{color:var(--bg)}
+mjx-container.mwide{display:block;max-width:100%;overflow-x:auto;overflow-y:hidden;padding:2px 0}
+.rooms{display:grid;grid-template-columns:repeat(20,minmax(0,1fr));gap:3px;padding:12px 16px;border-top:1px solid var(--rule)}
+.rooms i{display:block;aspect-ratio:1.6;border-radius:2px;background:var(--rule)}.rooms i.on{background:var(--summit)}
+</style><script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']],macros:{profit:'\\pi',evalat:['\\Bigl[#1\\Bigr]_{#2}',2],dd:['\\dfrac{d#1}{d#2}',2],ddx:['\\dfrac{d#1}{dx}',1],abs:['\\left|#1\\right|',1]}},svg:{fontCache:'global'},options:{enableMenu:false}};</script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-svg.min.js"></script></head><body><header class="route"><div class="in"><a class="wm" href="https://claude.ai/artifact/H3r1qGdSpmteu2SdGr8H3Q">ALTITUDE</a><span class="ct">Chapter 1 · Functions: The Language of Change</span><a class="nv" href="https://claude.ai/artifact/H3r1qGdSpmteu2SdGr8H3Q">Contents</a><a class="nv" href="https://claude.ai/artifact/G9SZn9Vq3Rgkw7HSCFkTbA" aria-label="Next: Chapter 2">→</a><div class="meter" role="img"></div></div></header><section class="hero"><div class="in"><div class="txt"><div class="kick">Chapter 1 · Part I · Foundations</div><h1>Functions: The Language of Change</h1>
+<div class="bqh"><div class="bqk">The Business Question</div><p>A coffee shop owner wants to know: if she raises the price of a latte by
+$1, what happens to her daily revenue? If a manufacturer increases production by
+100 units, how much does total cost increase? If a city's population grows at 3%
+per year, what will it be in ten years?</p>
+<p>Every one of these questions is a question about a <em>function</em> — a rule that
+connects an input quantity to an output quantity. Before we can measure how things
+change (calculus), we must be able to describe what things <em>are</em> (functions).
+This chapter builds that language precisely and completely.</p></div></div>
+<div class="pic"><svg role="img" aria-label="The chapter’s function drawn as a mountain ridge. Drag the climbers."></svg><span class="hint">drag the climber</span></div></div></section>
+<nav class="toc"><div class="scroll"><a href="#s1-1">1.1 What Is a Function?</a><a href="#s1-2">1.2 Domain and Range</a><a href="#s1-3">1.3 Linear Functions</a><a href="#s1-4">1.4 Increasing and Decreasing Functions</a><a href="#s1-5">1.5 Business Functions: Demand, Cost, Revenue, Profit</a><a href="#s1-6">1.6 Exponential Functions</a><a href="#s1-7">1.7 The Natural Base \(e\) and Continuous Growth</a><a href="#s1-8">1.8 The Natural Logarithm</a><a href="#s1-9">1.9 Exponential Growth and Decay: Applications</a><a href="#s1-10">1.10 The Decision Schema for Chapter 1</a><a href="#chapter-1-summary">Chapter 1 Summary</a><a href="#practice-problems">Practice Problems</a></div></nav>
+<main><div class="col">
+<p>Everything in this course rests on a single foundational concept: the function. A
+function is not a formula. It is not a graph. It is not a table. It is something more
+fundamental than any of these representations: it is a <em>relationship</em> between
+quantities, a rule that assigns to each input exactly one output. The formula, the
+graph, the table — these are ways of <em>seeing</em> a function. The function itself is
+the relationship.</p>
+<p>This distinction matters. When a business analyst says “revenue depends on the number
+of units sold,” they are describing a function. When a pharmacist says “drug
+concentration depends on time since administration,” they are describing a function.
+When you say “if I know \(x\), I can determine \(y\),” you are describing a function.
+The language of calculus is the language of how functions change, and it begins here.</p>
+<h2 class="sh" id="s1-1"><span class="no">1.1</span> What Is a Function?</h2>
+<div class="box def"><div class="bh"><span class="bk">Definition</span><h3>Function</h3></div><p>A <strong>function</strong> \(f\) is a rule that assigns to each input value \(x\) in a set
+called the <strong>domain</strong> exactly <em>one</em> output value, written \(f(x)\), in a
+set called the <strong>range</strong>.</p>
+<p>We write \(y = f(x)\) and read this as “\(y\) equals \(f\) of \(x\).”</p>
+<ul><li> \(x\) is the <strong>independent variable</strong> (the input)
+  </li><li> \(y\) is the <strong>dependent variable</strong> (the output)
+  </li><li> \(f\) is the <strong>name</strong> of the function (the rule itself)
+</li></ul>
+<p><strong>The one-output requirement is not negotiable.</strong> A rule that assigns two
+different outputs to the same input is not a function.</p></div>
+<div class="box note"><p><strong>Why “exactly one” output?</strong> 
+In business, if you tell someone a product's price and they can't determine the
+resulting revenue without additional information, revenue is not a function of price
+alone. Functions are relationships where the output is <em>determined</em> by the
+input — no ambiguity, no choice.</p></div>
+<h3 class="ssh">Four Ways to Represent a Function</h3>
+<p>A function can be described in four equivalent ways. Each reveals something different
+about the relationship.</p>
+
+<div class="scroll"><table class="t "><thead><tr><th><strong>  Representation</strong></th><th><strong>  What it looks like</strong></th><th><strong>  Best for</strong></th></tr></thead><tbody><tr><td><strong>Verbal</strong></td><td>“Revenue equals price times quantity sold.”</td><td>Understanding meaning and context</td></tr><tr><td><strong>Numerical</strong> (table)</td><td>A table of input-output pairs</td><td>Estimating values; computing rates of change</td></tr><tr><td><strong>Graphical</strong></td><td>A curve or set of points on coordinate axes</td><td>Seeing behavior: increasing, decreasing, peaks</td></tr><tr><td><strong>Algebraic</strong> (formula)</td><td>\(R(q) = 50q - 0.5q^2\)</td><td>Exact computation; calculus</td></tr></tbody></table></div>
+<p><strong>All four representations describe the same function.</strong> The formula is often the
+most precise, but the graph and table are often the most revealing. We will move
+fluently among all four throughout this course.</p>
+<figure class="ins" data-ins="fourways"><div class="ins-body"></div><figcaption class="ed">Slide q. The same function shows up as a sentence, a table row, a point on the graph and a formula, all at once.</figcaption></figure>
+<h3 class="ssh">The Vertical Line Test</h3>
+<p>When a function is represented as a graph, there is a simple visual test for whether
+it truly is a function:</p>
+<div class="box key"><div class="bh"><span class="bk">Key Result</span><h3>The Vertical Line Test</h3></div><p>A graph represents a function if and only if <strong>every vertical line</strong> intersects
+the graph <strong>at most once</strong>.</p>
+<p><em>Reason:</em> A vertical line at \(x = a\) represents the question “what is the
+output when the input is \(a\)?” If the vertical line hits the graph twice, then there
+are two outputs for the same input — violating the definition of a function.</p></div>
+<figure class="ins" data-ins="f1"><div class="ins-body"></div><figcaption class="ed">Pick a graph and move the vertical line. A function never lets a vertical line meet it twice.</figcaption></figure>
+<h2 class="sh" id="s1-2"><span class="no">1.2</span> Domain and Range</h2>
+<div class="box def"><div class="bh"><span class="bk">Definition</span><h3>Domain and Range</h3></div><p>The <strong>domain</strong> of a function is the set of all <em>allowable input values</em> \(x\).</p>
+<p>The <strong>range</strong> of a function is the set of all <em>possible output values</em>
+\(f(x)\) that result from inputs in the domain.</p></div>
+<p>In pure mathematics, the domain is usually all real numbers for which the formula is
+defined. In business and economics, the domain is <em>constrained by context</em> — and
+that constraint often matters more than the algebra.</p>
+<div class="exhead" data-ex="1.1"><span class="exn">Example 1.1</span> <span class="ext">Identifying Domain from Context</span></div>
+<p>A company produces and sells \(q\) units of a product. The revenue function is
+\(R(q) = 80q - 2q^2\).</p>
+<figure class="ins" data-ins="domain"><div class="ins-body"></div><figcaption class="ed">Slide q across the whole number line. Revenue only makes economic sense where it is non-negative: the practical domain [0, 40].</figcaption></figure>
+<div class="lvl" data-lvl="base"><div class="lvh">Base Camp</div><p class="snav">Schema Navigation</p>
+<strong>Step 1 — What is the input and output?</strong>
+The input is \(q\) (units produced and sold). The output is \(R\) (revenue in dollars).
+<p><strong>Step 2 — What values of \(q\) make sense?</strong>
+We ask: can the company produce a negative number of units? No. Can it produce a
+fraction of a unit? In many settings, no — but for our purposes we allow it.</p>
+<p><strong>Step 3 — State the domain.</strong>
+The domain is \(q \geq 0\), or in interval notation: \([0, \infty)\).</p>
+<p><strong>Honest annotation:</strong>
+A Base Camp student correctly identifies that \(q\) cannot be negative. The range
+requires more work (finding the maximum), so we stop here and note what we know:
+revenue starts at \(R(0) = 0\) and increases initially as more units are sold.</p></div>
+<div class="lvl" data-lvl="mid"><div class="lvh">Mid-Mountain</div><p class="snav">Schema Navigation</p>
+<strong>Step 1 — Input, output, units.</strong>
+\(q\) = units produced (input); \(R(q)\) = revenue in dollars (output).
+<p><strong>Step 2 — Domain from context.</strong>
+\(q \geq 0\) (can't produce negative units). Also: \(R(q) \geq 0\) requires
+\(80q - 2q^2 \geq 0 \Rightarrow 2q(40-q) \geq 0 \Rightarrow q \in [0, 40]\).
+Beyond \(q = 40\), revenue becomes negative (price would have to be negative), which
+makes no economic sense. So the <em>practical domain</em> is \([0, 40]\).</p>
+<p><strong>Step 3 — Range.</strong>
+On \([0,40]\), the maximum revenue occurs at \(q = 20\) (vertex of the parabola):
+\(R(20) = 80(20) - 2(400) = 1600 - 800 = \$800\). The range is \([0, 800]\).</p>
+<p><strong>Interpretation:</strong> This firm can generate between $0 and $800 in revenue
+depending on how many units it produces, with maximum revenue achieved at 20 units.</p></div>
+<div class="lvl" data-lvl="summit"><div class="lvh">Summit</div><p class="snav">Schema Navigation</p>
+<strong>Step 1 – Full identification.</strong>
+\(q\) = quantity (units); \(R(q) = 80q - 2q^2\) = revenue ($). This is a downward
+parabola — a quadratic function with negative leading coefficient.
+<p><strong>Step 2 — Domain analysis.</strong>
+Mathematical domain: all real \(q\) where \(R\) is defined — all of \(\mathbb{R}\).
+Economic domain: \(q \geq 0\) (non-negative production). Practical domain: \(q \in [0,40]\)
+since \(R(q) &lt; 0\) for \(q &gt; 40\), which has no economic meaning.</p>
+<p><strong>Step 3 — Range and behavior.</strong>
+\(R(q) = -2(q^2 - 40q) = -2(q-20)^2 + 800\).
+Maximum revenue: \(\$800\) at \(q = 20\). Range on \([0,40]\): \([0, 800]\).</p>
+<p><strong>Step 4 — Connection to the demand function.</strong>
+Revenue = price \(\times\) quantity, so \(R(q) = p(q)\cdot q\). This means
+\(p(q) = R(q)/q = 80 - 2q\), which is the implied linear demand function.
+At \(q = 0\): price is $80 (market price with no output). At \(q = 40\): price
+is $0 (demand has been fully exhausted).</p>
+<p><strong>Insight:</strong> The domain constraint \(q \in [0,40]\) is not an algebraic accident
+— it is an economic reality. Revenue functions always have natural upper bounds
+from market demand.</p></div>
+<h2 class="sh" id="s1-3"><span class="no">1.3</span> Linear Functions</h2>
+<div class="box def"><div class="bh"><span class="bk">Definition</span><h3>Linear Function</h3></div><p>A <strong>linear function</strong> has the form
+<span class="dm">\[f(x) = mx + b\]</span>
+where \(m\) is the <strong>slope</strong> and \(b\) is the <strong>\(y\)-intercept</strong>.</p>
+<p>The slope \(m\) represents the <strong>constant rate of change</strong>: for every one-unit
+increase in \(x\), the output \(f(x)\) changes by exactly \(m\) units.</p></div>
+<p>The slope is the most important number in a linear function. Its sign tells you
+everything about direction:</p>
+<figure class="ins" data-ins="f2"><div class="ins-body"></div><figcaption class="ed">Change the slope and intercept, or choose one of the book’s three lines. Each one-unit step in x changes y by exactly m.</figcaption></figure>
+<h3 class="ssh">Slope: The Rate of Change</h3>
+<p>For a linear function \(f(x) = mx + b\), the slope is:
+<span class="dm">\[m = \frac{\Delta y}{\Delta x}
+    = \frac{f(x_2) - f(x_1)}{x_2 - x_1}
+    \quad\text{for any two points }(x_1, f(x_1))\text{ and }(x_2, f(x_2))\]</span></p>
+<p>The <strong>units</strong> of slope are always:  
+\(\dfrac{\text{[units of output]}}{\text{[units of input]}}\)</p>
+<div class="exhead" data-ex="1.2"><span class="exn">Example 1.2</span> <span class="ext">Interpreting Slope in a Business Context</span></div>
+<p>A company's total cost function is \(C(q) = 25q + 400\), where \(q\) is units
+produced and \(C\) is cost in dollars.</p>
+<div class="lvl" data-lvl="base"><div class="lvh">Base Camp</div><p class="snav">Schema Navigation</p>
+<strong>Step 1 — Identify the function type.</strong>
+\(C(q) = 25q + 400\) is linear: it has the form \(mx + b\) with \(m = 25\) and \(b = 400\).
+<p><strong>Step 2 — Identify the slope and intercept.</strong>
+Slope: \(m = 25\). \(y\)-intercept: \(b = 400\).</p>
+<p><strong>Step 3 — State what each means.</strong>
+The slope \(m = 25\) means cost increases by $25 for each additional unit produced.
+The intercept \(b = 400\) means even at \(q = 0\) (no production), cost is $400.</p>
+<p><strong>Annotation:</strong> I recognize the structure and can identify the numbers.
+The slope tells me about variable cost per unit; the intercept is the fixed cost.</p></div>
+<div class="lvl" data-lvl="mid"><div class="lvh">Mid-Mountain</div><p class="snav">Schema Navigation</p>
+<strong>Step 1 — Identify and classify.</strong>
+\(C(q) = 25q + 400\): linear, with slope \(= 25\) $/unit and intercept \(= 400\) $.
+<p><strong>Step 2 — Economic interpretation of each component.</strong></p>
+<ul><li> <strong>Slope = 25 $/unit</strong>: This is the <em>variable cost per unit</em>
+        (also called the marginal cost for a linear cost function). Each additional
+        unit adds $25 to total cost, regardless of how many units have been produced.
+  </li><li> <strong>Intercept = $400</strong>: This is the <em>fixed cost</em> — the cost
+        incurred even when \(q = 0\). It includes rent, equipment, and other costs
+        that do not depend on production volume.
+</li></ul>
+<p><strong>Step 3 — Compute specific values.</strong>
+\(C(0) = \$400\)   (fixed cost alone)<br>
+\(C(10) = 25(10)+400 = \$650\)   (cost of producing 10 units)<br>
+\(C(50) = 25(50)+400 = \$1{,}650\)   (cost of producing 50 units)</p>
+<p><strong>Step 4 — Interpret the slope as a rate.</strong>
+Going from \(q=10\) to \(q=50\): \(\Delta C = 1650 - 650 = \$1{,}000\) over
+\(\Delta q = 40\) units. Rate \(= \$1000/40 = \$25\)/unit. ✓</p></div>
+<div class="lvl" data-lvl="summit"><div class="lvh">Summit</div><p class="snav">Schema Navigation</p>
+<strong>Step 1 — Full classification and structure.</strong>
+\(C(q) = 25q + 400\). Linear function; slope \(= 25\) $/unit; intercept \(= 400\) $.
+This is a <em>total cost function</em> with structure: Total Cost = Variable Cost +
+Fixed Cost, i.e., \(C(q) = VC(q) + FC = 25q + 400\).
+<p><strong>Step 2 — Average cost analysis.</strong>
+Average cost per unit: \(AC(q) = C(q)/q = 25 + 400/q\).
+As \(q\) increases, \(AC(q)\) decreases (the fixed cost is spread over more units)
+and approaches $25 asymptotically. This is <em>economies of scale</em> from fixed
+cost dilution.</p>
+<p><strong>Step 3 — Revenue and profit connection.</strong>
+Suppose the product sells for \(p = \$60\) per unit. Then:
+\(R(q) = 60q\) and \(\pi(q) = R(q) - C(q) = 60q - 25q - 400 = 35q - 400\).</p>
+<p>Break-even: \(\pi(q^*) = 0 \Rightarrow 35q^* = 400 \Rightarrow
+q^* \approx 11.4\) units. The firm needs to produce and sell at least 12 units to
+be profitable.</p>
+<p><strong>Step 4 — Graphical insight.</strong>
+The profit function is also linear with slope \(35\) $/unit and intercept \(-400\).
+The slope of \(\pi\) equals the slope of \(R\) minus the slope of \(C\):
+\(60 - 25 = 35\). This makes sense: each unit sold adds $60 in revenue and costs
+$25, netting $35 in profit.</p></div>
+<h2 class="sh" id="s1-4"><span class="no">1.4</span> Increasing and Decreasing Functions</h2>
+<p>One of the most important things we can say about a function is whether it is
+<em>going up</em> or <em>going down</em> over a given interval. This language must
+be precise.</p>
+<div class="box def"><div class="bh"><span class="bk">Definition</span><h3>Increasing and Decreasing on an Open Interval</h3></div><p>A function \(f\) is <strong>increasing on an open interval</strong> \((a, b)\) if:
+<span class="dm">\[x_1 &lt; x_2 \;\text{ in } (a,b) \;\Longrightarrow\; f(x_1) &lt; f(x_2)\]</span></p>
+<p>A function \(f\) is <strong>decreasing on an open interval</strong> \((a, b)\) if:
+<span class="dm">\[x_1 &lt; x_2 \;\text{ in } (a,b) \;\Longrightarrow\; f(x_1) &gt; f(x_2)\]</span></p></div>
+<div class="box note"><p><strong>Why open intervals?</strong>  We say \((a,b)\), not \([a,b]\), because at the
+endpoints themselves the function may be changing direction. Saying a function is
+increasing on \((a,b)\) means it is going up <em>strictly between</em> \(a\) and \(b\)
+— we make no claim about what happens at \(a\) or \(b\) exactly. This becomes
+critical when we study derivatives in Chapter 5.</p></div>
+<figure class="ins" data-ins="f3"><div class="ins-body"></div><figcaption class="ed">Drag the two points. Whenever both lie in an interval where f is increasing, f(x₁) &lt; f(x₂), exactly as the definition says.</figcaption></figure>
+<p>This function is:</p>
+<ul><li> <strong>Increasing</strong> on \((0, 1)\) and \((4, 6)\)
+  </li><li> <strong>Decreasing</strong> on \((1, 4)\)
+</li></ul>
+<h2 class="sh" id="s1-5"><span class="no">1.5</span> Business Functions: Demand, Cost, Revenue, Profit</h2>
+<p>Four functions are the foundation of every economic analysis in this book. You will
+see them in every chapter. Know them cold.</p>
+<div class="box concept"><div class="bh"><span class="bk">Concept</span><h3>The Four Core Business Functions</h3></div><p>Let \(q\) = quantity produced and sold (units), \(p\) = price per unit ($).</p>
+<div class="scroll"><table class="t "><thead><tr><th><strong>  Function</strong></th><th><strong>  Notation</strong></th><th><strong>  Meaning</strong></th></tr></thead><tbody><tr><td><strong>Demand</strong></td><td>\(p = D(q)\)</td><td>Price at which consumers demand \(q\) units.
+  Typically decreasing: higher quantity \(\Rightarrow\) lower price.</td></tr><tr><td><strong>Cost</strong></td><td>\(C(q)\)</td><td>Total cost to produce \(q\) units. Usually \(C(q) = FC + VC(q)\)
+  where \(FC\) = fixed cost, \(VC\) = variable cost.</td></tr><tr><td><strong>Revenue</strong></td><td>\(R(q) = p\cdot q = D(q)\cdot q\)</td><td>Total revenue from selling \(q\) units at price \(p = D(q)\).</td></tr><tr><td><strong>Profit</strong></td><td>\(\pi(q) = R(q) - C(q)\)</td><td>Net gain. Positive \(\Rightarrow\) firm makes money.
+  Negative \(\Rightarrow\) firm loses money.</td></tr></tbody></table></div>
+<p><strong>Break-even quantity:</strong> the value of \(q\) where \(\pi(q) = 0\),
+i.e., where \(R(q) = C(q)\).</p></div>
+<div class="exhead" data-ex="1.3"><span class="exn">Example 1.3</span> <span class="ext">Building the Core Business Functions</span></div>
+<p>A small manufacturer faces a linear demand function \(p = D(q) = 100 - 2q\) (price
+in $/unit, quantity in units). Fixed costs are $300; variable cost is $10 per unit.
+Build all four core business functions and find the break-even quantities.</p>
+<div class="lvl" data-lvl="base"><div class="lvh">Base Camp</div><p class="snav">Schema Navigation</p>
+<p><strong>Step 1 — Identify what's given.</strong>
+Demand: \(p = 100 - 2q\).   Fixed cost: $300.   Variable cost: $10/unit.</p>
+<p><strong>Step 2 — Build Cost.</strong>
+\(C(q) = \text{fixed} + \text{variable} = 300 + 10q\)</p>
+<p><strong>Step 3 — Build Revenue.</strong>
+\(R(q) = p\cdot q = (100 - 2q)\cdot q = 100q - 2q^2\)</p>
+<p><strong>Step 4 — I recognize I need Profit next, but let me first check my work.</strong>
+At \(q=0\): \(R(0) = 0\) ✓ (no sales, no revenue).
+At \(q=0\): \(C(0) = 300\) ✓ (fixed costs remain).</p>
+<p><strong>Honest annotation:</strong> I built \(C\) and \(R\) correctly. Profit requires
+subtracting, and finding break-even requires solving an equation — those are the
+next steps.</p></div>
+<div class="lvl" data-lvl="mid"><div class="lvh">Mid-Mountain</div><p class="snav">Schema Navigation</p>
+<p><strong>Step 1 — Identify and label all given information.</strong>
+\(D(q) = 100-2q\) ($/unit); \(FC = \$300\); \(VC = \$10\)/unit.</p>
+<p><strong>Step 2 — Build all four functions.</strong>
+<span class="dm">\[\begin{aligned}
+  C(q) &amp;= 300 + 10q \quad\text{(\$ total cost)} \\
+  R(q) &amp;= D(q)\cdot q = (100-2q)q = 100q - 2q^2 \quad\text{(\$ revenue)} \\
+  \pi(q) &amp;= R(q) - C(q) = 100q - 2q^2 - 300 - 10q
+              = -2q^2 + 90q - 300
+\end{aligned}\]</span></p>
+<p><strong>Step 3 — Find break-even quantities.</strong>
+Set \(\pi(q) = 0\):
+<span class="dm">\[-2q^2 + 90q - 300 = 0
+  \;\Rightarrow\; 2q^2 - 90q + 300 = 0
+  \;\Rightarrow\; q^2 - 45q + 150 = 0\]</span>
+Using the quadratic formula:
+<span class="dm">\[q = \frac{45 \pm \sqrt{2025 - 600}}{2}
+    = \frac{45 \pm \sqrt{1425}}{2}
+    \approx \frac{45 \pm 37.75}{2}\]</span>
+So \(q \approx 41.4\) or \(q \approx 3.6\).</p>
+<p><strong>Step 4 — Interpret.</strong>
+The firm breaks even at approximately \(q = 3.6\) units (entering profitability) and
+\(q = 41.4\) units (exiting profitability). Between these quantities, the firm is
+profitable. The practical production range is \(q \in [4, 41]\) (whole units).</p></div>
+<div class="lvl" data-lvl="summit"><div class="lvh">Summit</div><p class="snav">Schema Navigation</p>
+<p><strong>Step 1 — Full setup.</strong>
+\(D(q)=100-2q\); \(C(q)=300+10q\); \(R(q)=100q-2q^2\);
+\(\pi(q)=-2q^2+90q-300\).</p>
+<p><strong>Step 2 — Break-even and profit-maximizing quantities.</strong>
+Break-even: \(q \approx 3.6\) and \(q \approx 41.4\) (from Mid-Mountain).</p>
+<p>Profit is a downward parabola. Its maximum occurs at the vertex:
+\(q^* = -\frac{b}{2a} = -\frac{90}{2(-2)} = \frac{90}{4} = 22.5\) units.
+Maximum profit: \(\pi(22.5) = -2(22.5)^2 + 90(22.5) - 300 = -1012.5 + 2025 - 300 = \$712.50\).</p>
+<p><strong>Step 3 — Analysis of increasing/decreasing behavior.</strong>
+\(\pi(q) = -2q^2+90q-300\) is a downward parabola:</p>
+<ul><li> Increasing on \((0,\,22.5)\): each additional unit adds to profit
+  </li><li> Decreasing on \((22.5,\,\infty)\): each additional unit reduces profit
+  </li><li> Maximum profit of $712.50 at \(q = 22.5\) units
+</li></ul>
+<p><strong>Step 4 — Graphical synthesis.</strong></p>
+<figure class="ins" data-ins="f4"><div class="ins-body"></div><figcaption class="ed">Change demand or costs. Break-even points, maximum profit and the shape of every curve respond together.</figcaption></figure>
+<p><strong>Business insight:</strong> The profit-maximizing quantity (22.5 units) is not at
+the midpoint of the break-even interval, and it is not where revenue is maximized.
+Revenue peaks at \(q = 25\) (where \(R'(q)=0\)), but the additional units from 22.5
+to 25 cost more to produce than they generate in marginal revenue. We will prove
+this rigorously using derivatives in Chapter 9.</p></div>
+<h2 class="sh" id="s1-6"><span class="no">1.6</span> Exponential Functions</h2>
+<p>Linear functions change by <em>adding</em> a fixed amount each period. But many
+real-world quantities — populations, investments, drug concentrations,
+radioactive isotopes — change by <em>multiplying</em> by a fixed factor each
+period. A bank balance that grows by 6% per year is not adding $6 each year;
+it is multiplying by \(1.06\) each year. This is exponential behavior, and it
+requires a fundamentally different function family.</p>
+<div class="box def"><div class="bh"><span class="bk">Definition</span><h3>Exponential Function</h3></div><p>An <strong>exponential function</strong> has the form
+<span class="dm">\[f(x) = a^x, \quad a &gt; 0, \; a \neq 1\]</span>
+where \(a\) is the <strong>base</strong> and \(x\) is the exponent (the input variable).</p>
+<div class="scroll"><table class="t "><tbody><tr><td>\(a &gt; 1\):</td><td><strong>exponential growth</strong> — \(f\) increases as \(x\) increases</td></tr><tr><td>\(0 &lt; a &lt; 1\):</td><td><strong>exponential decay</strong> — \(f\) decreases as \(x\) increases</td></tr></tbody></table></div>
+<p>More generally, with an initial value \(Q_0\) and growth factor \(a\) per period:
+<span class="dm">\[Q(t) = Q_0 \cdot a^t\]</span>
+The output \(Q\) is multiplied by \(a\) for each one-unit increase in \(t\).</p></div>
+<h3 class="ssh">The Key Difference: Linear vs. Exponential</h3>
+
+<div class="scroll"><table class="t "><thead><tr><th><strong>  Property</strong></th><th><strong>  Linear \(f(x)=mx+b\)</strong></th><th><strong>  Exponential \(f(x)=Q_0 a^x\)</strong></th></tr></thead><tbody><tr><td>Change per period</td><td>Adds \(m\) (constant amount)</td><td>Multiplies by \(a\) (constant ratio)</td></tr><tr><td>Identifies from data</td><td>Constant <em>differences</em></td><td>Constant <em>ratios</em></td></tr><tr><td>Graph</td><td>Straight line</td><td>Curved (J-curve or decay)</td></tr><tr><td>Long-run behavior</td><td>Grows/falls without bound</td><td>Explosive growth or approaches 0</td></tr></tbody></table></div>
+<figure class="ins" data-ins="f5"><div class="ins-body"></div><figcaption class="ed">Extend the time axis. The exponential starts slower, then overtakes the line and never looks back.</figcaption></figure>
+<p>Both functions start at the same value. The linear function grows steadily.
+The exponential function eventually dominates overwhelmingly — a pattern
+that appears in compounding interest, viral growth, and unchecked population
+expansion.</p>
+<h2 class="sh" id="s1-7"><span class="no">1.7</span> The Natural Base \(e\) and Continuous Growth</h2>
+<p>Any exponential function \(Q_0 a^t\) can be written in terms of a single special
+base: the number \(e \approx 2.71828\).</p>
+<div class="box def"><div class="bh"><span class="bk">Definition</span><h3>The Natural Base \(e\) and Continuous Growth Rate</h3></div><p>The number \(e \approx 2.71828\ldots\) is defined as:
+<span class="dm">\[e = \lim_{n\to\infty}\left(1+\frac{1}{n}\right)^n\]</span>
+It is the base that arises naturally from continuous compounding. Any exponential
+\(Q_0 a^t\) can be rewritten as:
+<span class="dm">\[Q(t) = Q_0\,e^{kt}, \qquad \text{where } k = \ln a\]</span>
+The constant \(k\) is called the <strong>continuous growth rate</strong>:</p>
+<ul><li> \(k &gt; 0\): continuous exponential <strong>growth</strong>
+  </li><li> \(k &lt; 0\): continuous exponential <strong>decay</strong>
+</li></ul></div>
+<div class="box note"><p><strong>Why \(e\) matters in finance:</strong>
+If a bank compounds interest \(n\) times per year at annual rate \(r\), the balance
+after one year is \(P(1+r/n)^n\). As \(n\to\infty\) (compounding every instant),
+this becomes \(P\,e^r\) — continuous compounding. This is why \(e\) is the
+natural base for all financial mathematics.</p></div>
+<h3 class="ssh">Compound Interest Formulas</h3>
+<div class="box key"><div class="bh"><span class="bk">Key Result</span><h3>Compound Interest</h3></div>
+<div class="scroll"><table class="t "><tbody><tr><td><strong>Compounded \(n\) times/year:</strong></td><td>\(A = P\!\left(1+\dfrac{r}{n}\right)^{nt}\)</td></tr><tr><td><strong>Compounded continuously:</strong></td><td>\(A = P\,e^{rt}\)</td></tr></tbody></table></div>
+<p>where \(P\) = principal, \(r\) = annual interest rate (decimal), \(t\) = years,
+\(A\) = amount after \(t\) years.</p></div>
+<div class="exhead" data-ex="1.4"><span class="exn">Example 1.4</span> <span class="ext">Comparing Compounding Frequencies</span></div>
+<p>$5,000 is invested at 8% annual interest for 10 years. Compare annual,
+quarterly, monthly, and continuous compounding.</p>
+<figure class="ins" data-ins="compound"><div class="ins-body"></div><figcaption class="ed">Raise n. The balance climbs, but each step gains less, closing in on the continuous value Pe^(rt).</figcaption></figure>
+<div class="lvl" data-lvl="base"><div class="lvh">Base Camp</div><p class="snav">Schema Navigation</p>
+<p><strong>Step 1 — Identify formula and values.</strong>
+\(P=5000\), \(r=0.08\), \(t=10\).</p>
+<p><strong>Annual compounding</strong> (\(n=1\)):
+\(A = 5000(1.08)^{10} = 5000(2.1589) = \mathbf{\$10{,}794.62}\)</p>
+<p><strong>Continuous compounding:</strong>
+\(A = 5000\,e^{0.08\times 10} = 5000\,e^{0.8} = 5000(2.2255) = \mathbf{\$11{,}127.70}\)</p>
+<p><strong>Annotation:</strong> Continuous compounding earns $333 more than annual over
+10 years. More frequent compounding always earns more.</p></div>
+<div class="lvl" data-lvl="mid"><div class="lvh">Mid-Mountain</div><p class="snav">Schema Navigation</p>
+<div class="scroll"><table class="t "><tbody><tr><td><strong>Compounding</strong></td><td>\(n\)</td><td><strong>Balance after 10 yr</strong></td></tr><tr><td>Annual</td><td>1</td><td>$10,794.62</td></tr><tr><td>Quarterly</td><td>4</td><td>$11,040.20</td></tr><tr><td>Monthly</td><td>12</td><td>$11,098.20</td></tr><tr><td>Continuous</td><td>\(\infty\)</td><td>$11,127.70</td></tr></tbody></table></div>
+<p><strong>Diminishing returns:</strong> Annual\(\to\)quarterly gains $246; quarterly\(\to\)monthly
+gains $58; monthly\(\to\)continuous gains only $30. The benefit of more frequent
+compounding diminishes rapidly.</p>
+<p><strong>Effective annual rate (continuous):</strong>
+\(e^{0.08}-1 \approx 8.33\%\). The nominal 8% continuously compounded is
+equivalent to 8.33% compounded annually.</p></div>
+<div class="lvl" data-lvl="summit"><div class="lvh">Summit</div><p class="snav">Schema Navigation</p>
+<p><strong>Doubling time via the Rule of 72.</strong></p>
+<p>At what time does the investment double?
+\(P\,e^{rt}=2P \Rightarrow e^{rt}=2 \Rightarrow t=\ln 2/r\).
+At \(r=8\%\): \(t=\ln 2/0.08=0.6931/0.08=8.66\) years.</p>
+<p><strong>Rule of 72:</strong> Doubling time \(\approx 72/r\%\). At 8%: \(72/8=9\) years.
+The exact answer (8.66 yr) shows it slightly overestimates.</p>
+<p><span class="dm">\[\begin{array}{c|c|c}
+    r &amp; \text{Exact doubling time} &amp; \text{Rule of 72} \\\hline
+    4\% &amp; 17.3 \text{ yr} &amp; 18 \text{ yr} \\
+    6\% &amp; 11.6 \text{ yr} &amp; 12 \text{ yr} \\
+    8\% &amp; 8.7 \text{ yr} &amp; 9 \text{ yr} \\
+    12\% &amp; 5.8 \text{ yr} &amp; 6 \text{ yr}
+  \end{array}\]</span></p>
+<p><strong>Investment insight:</strong> At 8% continuously compounded, $5,000 doubles
+every 8.66 years — becoming $10,000, $20,000, $40,000 at years 8.66,
+17.3, and 26. This is the compounding effect that makes long-horizon investing
+so powerful.</p></div>
+<h2 class="sh" id="s1-8"><span class="no">1.8</span> The Natural Logarithm</h2>
+<div class="box def"><div class="bh"><span class="bk">Definition</span><h3>The Natural Logarithm \(\ln x\)</h3></div><p>The <strong>natural logarithm</strong> \(\ln x\) is the inverse of \(e^x\):
+<span class="dm">\[\ln(e^x) = x \quad \text{for all } x
+  \qquad\qquad
+  e^{\ln x} = x \quad \text{for all } x &gt; 0\]</span>
+\(\ln x\) asks: “to what power must \(e\) be raised to produce \(x\)?”</p>
+<p><strong>Key values:</strong> \(\ln 1 = 0\);  \(\ln e = 1\); 
+\(\ln x\) is undefined for \(x \leq 0\).</p>
+<p><strong>Logarithm rules:</strong>
+<span class="dm">\[\ln(AB) = \ln A + \ln B \qquad
+  \ln\!\left(\frac{A}{B}\right) = \ln A - \ln B \qquad
+  \ln(A^p) = p\ln A\]</span></p></div>
+<div class="box key"><div class="bh"><span class="bk">Key Result</span><h3>Solving Exponential Equations with \(\ln\)</h3></div><p>To solve \(e^{kt} = b\) for \(t\):
+<span class="dm">\[e^{kt} = b
+  \;\xrightarrow{\;\ln\text{ both sides}\;}\;
+  kt = \ln b
+  \;\xrightarrow{\;\div k\;}\;
+  t = \frac{\ln b}{k}\]</span>
+This is the essential algebraic step for any threshold or timing problem involving
+exponential functions.</p></div>
+<figure class="ins" data-ins="f6"><div class="ins-body"></div><figcaption class="ed">Move the point on eˣ. Its mirror image across y = x is a point on ln x, with the coordinates swapped.</figcaption></figure>
+<p>The graphs of \(e^x\) and \(\ln x\) are mirror images across the line \(y=x\) —
+the visual signature of inverse functions.</p>
+<h2 class="sh" id="s1-9"><span class="no">1.9</span> Exponential Growth and Decay: Applications</h2>
+<div class="box concept"><div class="bh"><span class="bk">Concept</span><h3>The Exponential Model \(Q(t) = Q_0\,e^{kt}\)</h3></div>
+<div class="scroll"><table class="t "><tbody><tr><td><strong>Finding \(k\) from two data points:</strong></td><td>\(k = \dfrac{\ln(Q_2/Q_1)}{t_2 - t_1}\)</td></tr><tr><td><strong>Doubling time</strong> (\(k&gt;0\)):</td><td>\(t_d = \dfrac{\ln 2}{k} \approx \dfrac{0.693}{k}\)</td></tr><tr><td><strong>Half-life</strong> (\(k&lt;0\)):</td><td>\(t_{1/2} = \dfrac{\ln 2}{|k|} \approx \dfrac{0.693}{|k|}\)</td></tr><tr><td><strong>When does \(Q\) reach target \(T\)?</strong></td><td>\(Q_0\,e^{kt}=T \;\Rightarrow\; t = \dfrac{\ln(T/Q_0)}{k}\)</td></tr></tbody></table></div></div>
+<div class="exhead" data-ex="1.5"><span class="exn">Example 1.5</span> <span class="ext">Population Growth</span></div>
+<p>A city's population was 85,000 in 2010 and 102,000 in 2020. Assume
+continuous exponential growth. Predict the 2030 population and find when the
+population will reach 150,000.</p>
+<figure class="ins" data-ins="pop"><div class="ins-body"></div><figcaption class="ed">Slide the year. Both models agree in 2010 and 2020, then drift apart: the gap is the cost of choosing the wrong model.</figcaption></figure>
+<div class="lvl" data-lvl="base"><div class="lvh">Base Camp</div><p class="snav">Schema Navigation</p>
+<p><strong>Step 1 — Set up the model.</strong> \(P(t) = 85{,}000\,e^{kt}\),
+\(t\) = years since 2010.</p>
+<p><strong>Step 2 — Find \(k\).</strong>
+\(P(10)=102{,}000\):
+<span class="dm">\[85{,}000\,e^{10k}=102{,}000
+  \;\Rightarrow\; e^{10k}=1.2
+  \;\Rightarrow\; k=\frac{\ln 1.2}{10}=\frac{0.1823}{10}\approx 0.01823\]</span></p>
+<p><strong>Step 3 — Predict 2030</strong> (\(t=20\)):
+\(P(20)=85{,}000\,e^{0.3646}\approx 85{,}000(1.440)\approx\mathbf{122{,}400}\) people.</p></div>
+<div class="lvl" data-lvl="mid"><div class="lvh">Mid-Mountain</div><p class="snav">Schema Navigation</p>
+<p>\(P(t)=85{,}000\,e^{0.01823t}\) (continuous growth rate \(\approx 1.82\%\)/yr).</p>
+<p><strong>When does \(P\) reach 150,000?</strong>
+<span class="dm">\[85{,}000\,e^{0.01823t}=150{,}000
+  \;\Rightarrow\; t=\frac{\ln(150{,}000/85{,}000)}{0.01823}
+  =\frac{\ln 1.7647}{0.01823}
+  \approx\frac{0.5680}{0.01823}\approx 31.2\text{ yr}\]</span>
+The population reaches 150,000 around <strong>2041</strong>.</p>
+<p><strong>Doubling time:</strong>
+\(t_d = \ln 2/0.01823 \approx 38.0\) years. Population doubles by \(\approx\)2048.</p></div>
+<div class="lvl" data-lvl="summit"><div class="lvh">Summit</div><p class="snav">Schema Navigation</p>
+<p><strong>Linear vs. exponential model — identifying from data.</strong></p>
+<p>Check successive ratios: \(102{,}000/85{,}000=1.200\).
+If each decade multiplies population by \(\approx 1.200\), this is exponential.
+A linear model would instead show constant <em>differences</em> (\(+17{,}000\)/decade).</p>
+<p><strong>Long-run comparison:</strong>
+<span class="dm">\[\begin{array}{c|c|c}
+    \text{Year} &amp; \text{Exponential} &amp; \text{Linear} \\\hline
+    2010 &amp; 85{,}000 &amp; 85{,}000 \\
+    2020 &amp; 102{,}000 &amp; 102{,}000 \\
+    2030 &amp; 122{,}400 &amp; 119{,}000 \\
+    2040 &amp; 146{,}900 &amp; 136{,}000 \\
+    2060 &amp; 211{,}400 &amp; 170{,}000
+  \end{array}\]</span></p>
+<p>By 2060, the two models differ by over 40,000 people. Infrastructure planning
+based on the wrong model produces catastrophic under- or over-building.
+The choice of model — linear vs. exponential — is not a mathematical
+technicality. It is a policy decision with real consequences.</p></div>
+<div class="exhead" data-ex="1.6"><span class="exn">Example 1.6</span> <span class="ext">Drug Elimination: Half-Life</span></div>
+<p>A medication has a half-life of 6 hours. A patient receives 400 mg at \(t=0\).
+Find the model, the continuous decay rate, and when the concentration drops
+below 25 mg.</p>
+<figure class="ins" data-ins="dose"><div class="ins-body"></div><figcaption class="ed">Change the half-life and switch on repeated dosing. Every half-life the amount halves; repeated doses settle into a steady saw-tooth.</figcaption></figure>
+<div class="lvl" data-lvl="base"><div class="lvh">Base Camp</div><p class="snav">Schema Navigation</p>
+<p><strong>Step 1 — Find \(k\) from the half-life.</strong>
+\(t_{1/2}=6\) hr: \(\ln 2/|k|=6 \Rightarrow |k|=\ln 2/6\approx 0.1155\).
+Since decay, \(k=-0.1155\).</p>
+<p><strong>Step 2 — Write the model.</strong>
+\(Q(t)=400\,e^{-0.1155t}\) mg.</p>
+<p><strong>Verify:</strong> \(Q(6)=400\,e^{-0.693}=400(0.5)=200\) mg. ✓</p></div>
+<div class="lvl" data-lvl="mid"><div class="lvh">Mid-Mountain</div><p class="snav">Schema Navigation</p>
+<p>\(Q(t)=400\,e^{-0.1155t}\).</p>
+<p><strong>When does \(Q\) reach 25 mg?</strong>
+<span class="dm">\[400\,e^{-0.1155t}=25
+  \;\Rightarrow\; e^{-0.1155t}=0.0625
+  \;\Rightarrow\; t=\frac{\ln(0.0625)}{-0.1155}=\frac{-2.773}{-0.1155}\approx 24\text{ hr}\]</span></p>
+<p>This is exactly 4 half-lives: \((1/2)^4=1/16\) of 400 mg \(= 25\) mg. ✓</p>
+<p><span class="dm">\[\begin{array}{c|c|c}
+    t \text{ (hr)} &amp; \text{Half-lives} &amp; Q(t) \text{ (mg)} \\\hline
+    0 &amp; 0 &amp; 400 \\ 6 &amp; 1 &amp; 200 \\ 12 &amp; 2 &amp; 100 \\
+    18 &amp; 3 &amp; 50 \\ 24 &amp; 4 &amp; 25
+  \end{array}\]</span></p></div>
+<div class="lvl" data-lvl="summit"><div class="lvh">Summit</div><p class="snav">Schema Navigation</p>
+<p><strong>Steady-state under repeated dosing.</strong></p>
+<p>Suppose the patient receives 400 mg every 24 hours. After each dose, the previous
+dose has decayed to \((1/2)^4=1/16\) of its original amount (25 mg, as computed).
+The trough \(Q^*\) (concentration just before each dose) satisfies:
+<span class="dm">\[Q^* + 400 = Q^* \cdot e^{0.1155\times 24}
+  \;\Rightarrow\; \frac{Q^*+400}{Q^*}=e^{2.772}=16
+  \;\Rightarrow\; Q^*+400=16Q^*
+  \;\Rightarrow\; Q^*=\frac{400}{15}\approx 26.7\text{ mg}\]</span></p>
+<p>The steady-state trough is 26.7 mg. The peak (immediately after each dose) is
+\(26.7+400=426.7\) mg. The dosing interval was calibrated to the half-life —
+confirming that half-life is the key parameter for designing dosing schedules.</p></div>
+<h2 class="sh" id="s1-10"><span class="no">1.10</span> The Decision Schema for Chapter 1</h2>
+<p>Every problem-solving session in this course begins with the Decision Schema. It is
+not a checklist to rush through — it is the discipline of mathematical thinking made
+visible. Here is the schema for Chapter 1:</p>
+<section class="schema"><div class="bh"><span class="bk">Decision Schema</span><h3>Functions, Exponential &amp; Logarithmic Functions</h3></div><ol class="ssteps"><li class="sstep"><div class="sq"><span class="sn">1</span><span>Does the problem describe a relationship between two quantities?</span></div>
+<div class="sbtn"><button type="button" aria-pressed="false" data-k="y">YES</button><button type="button" aria-pressed="false" data-k="n">NO / NEXT</button></div>
+<div class="sa" data-k="y"><b>YES →</b> Identify input \(x\) and output \(y\). State what each represents and its units.</div><div class="sa" data-k="n"><b>NO / NEXT →</b> Re-read. Every function problem has something going in and something coming
+      out. Find them first.</div></li><li class="sstep"><div class="sq"><span class="sn">2</span><span>Is there exactly one output for every input? (Vertical Line Test)</span></div>
+<div class="sbtn"><button type="button" aria-pressed="false" data-k="y">YES</button><button type="button" aria-pressed="false" data-k="n">NO / NEXT</button></div>
+<div class="sa" data-k="y"><b>YES →</b> This IS a function. Proceed to Step 3.</div><div class="sa" data-k="n"><b>NO / NEXT →</b> Not a function as stated. Describe why.</div></li><li class="sstep"><div class="sq"><span class="sn">3</span><span>What TYPE of function is this?</span></div>
+<div class="sbtn"><button type="button" aria-pressed="false" data-k="y">YES</button><button type="button" aria-pressed="false" data-k="n">NO / NEXT</button></div>
+<div class="sa" data-k="y"><b>YES →</b> LINEAR: identify slope \(m\) and intercept \(b\); interpret economically.
+      EXPONENTIAL: identify base \(a\) (or rate \(k\)) and initial value \(Q_0\).
+      LOG: \(\ln x\) is the inverse of \(e^x\).</div><div class="sa" data-k="n"><b>NO / NEXT →</b> If the type is unclear: check differences (linear) or ratios (exponential).</div></li><li class="sstep"><div class="sq"><span class="sn">4</span><span>What is the realistic DOMAIN?</span></div>
+<div class="sbtn"><button type="button" aria-pressed="false" data-k="y">YES</button><button type="button" aria-pressed="false" data-k="n">NO / NEXT</button></div>
+<div class="sa" data-k="y"><b>YES →</b> State domain in interval notation. Check: can input be negative? Zero?
+      For \(\ln x\): domain is \(x&gt;0\) only.</div><div class="sa" data-k="n"><b>NO / NEXT →</b> Economic domains are often more restrictive than mathematical ones.</div></li><li class="sstep"><div class="sq"><span class="sn">5</span><span>For exponential problems: am I solving for a <strong>time</strong> or predicting a
+      <strong>quantity</strong>?</span></div>
+<div class="sbtn"><button type="button" aria-pressed="false" data-k="y">YES</button><button type="button" aria-pressed="false" data-k="n">NO / NEXT</button></div>
+<div class="sa" data-k="y"><b>YES →</b> QUANTITY: evaluate \(Q_0 e^{kt}\) at the given \(t\).
+      TIME: set \(Q_0 e^{kt}=\text{target}\), divide by \(Q_0\), take \(\ln\), divide by \(k\).</div><div class="sa" data-k="n"><b>NO / NEXT →</b> Always check the sign of \(k\): positive = growth, negative = decay.</div></li></ol></section>
+<section class="errors"><div class="bh"><span class="bk">Common Errors</span><h3>Mistakes that appear on every exam</h3></div><ol class="errs"><li class="err"><button type="button" class="eh" aria-expanded="false">Confusing the function with its formula.</button><div class="eb"><p>\(f\) is the relationship; \(f(x) = 3x+2\) is one way to express it. When the
+        domain is restricted, the formula alone does not define the function.</p></div></li><li class="err"><button type="button" class="eh" aria-expanded="false">Ignoring economic domain constraints.</button><div class="eb"><p>Writing “domain: all real numbers” for a production quantity is wrong.
+        Negative production is impossible. For \(\ln x\): the domain is \(x&gt;0\) only.</p></div></li><li class="err"><button type="button" class="eh" aria-expanded="false">Treating revenue as price times any quantity.</button><div class="eb"><p>Revenue
+        \(R(q) = D(q)\cdot q\) uses the demand function — not a fixed price.</p></div></li><li class="err"><button type="button" class="eh" aria-expanded="false">Forgetting fixed costs in the cost function.</button><div class="eb"><p>\(C(q) = FC + VC\cdot q\) for a linear cost, not just \(VC\cdot q\).</p></div></li><li class="err"><button type="button" class="eh" aria-expanded="false">Confusing the growth factor \(a\) with the continuous rate \(k\).</button><div class="eb"><p>If annual growth is 15%, then \(a=1.15\) but \(k=\ln(1.15)\approx 0.140\),
+        not \(0.15\).</p></div></li><li class="err"><button type="button" class="eh" aria-expanded="false">Solving \(e^{kt}=b\) by dividing by \(e\).</button><div class="eb"><p>Take \(\ln\) of both sides: \(kt=\ln b\). You cannot “cancel” \(e\) by dividing.</p></div></li><li class="err"><button type="button" class="eh" aria-expanded="false">Using \(n/r\) instead of \(\ln 2/k\) for doubling time.</button><div class="eb"><p>Doubling time is \(t_d=\ln 2/k\). At \(k=0.08\): \(t_d\approx 8.66\) yr,
+        not \(1/0.08=12.5\) yr.</p></div></li></ol></section>
+<h2 class="sh" id="chapter-1-summary">Chapter 1 Summary</h2>
+<div class="box concept"><div class="bh"><span class="bk">Concept</span><h3>Key Concepts — Chapter 1</h3></div><div class="scroll"><table class="t "><thead><tr><th><strong>  Concept</strong></th><th><strong>  Statement</strong></th></tr></thead><tbody><tr><td>Function</td><td>A rule assigning exactly one output to each input</td></tr><tr><td>Domain</td><td>All allowable inputs; constrained by context; \(\ln x\) requires \(x&gt;0\)</td></tr><tr><td>Vertical Line Test</td><td>A graph is a function \(\Leftrightarrow\) every vertical line hits it at most once</td></tr><tr><td>Linear function</td><td>\(f(x) = mx+b\); slope \(m\) = constant rate of change</td></tr><tr><td>Increasing on \((a,b)\)</td><td>\(x_1 &lt; x_2 \Rightarrow f(x_1) &lt; f(x_2)\); going up</td></tr><tr><td>Decreasing on \((a,b)\)</td><td>\(x_1 &lt; x_2 \Rightarrow f(x_1) &gt; f(x_2)\); going down</td></tr><tr><td>Revenue</td><td>\(R(q) = D(q)\cdot q\); demand price times quantity</td></tr><tr><td>Profit</td><td>\(\pi(q) = R(q) - C(q)\); break-even where \(\pi = 0\)</td></tr><tr><td>Exponential function</td><td>\(f(x)=a^x\) or \(Q(t)=Q_0 e^{kt}\); multiplies by a fixed factor each period</td></tr><tr><td>Natural base</td><td>\(e\approx 2.718\); base for continuous compounding and natural growth</td></tr><tr><td>Continuous compounding</td><td>\(A=Pe^{rt}\); continuous growth at rate \(r\)</td></tr><tr><td>Natural logarithm</td><td>\(\ln x\) = inverse of \(e^x\); \(\ln(e^x)=x\) and \(e^{\ln x}=x\)</td></tr><tr><td>Solving \(e^{kt}=b\)</td><td>Take \(\ln\) both sides: \(t=\ln(b)/k\)</td></tr><tr><td>Doubling time / Half-life</td><td>\(t_d=\ln 2/k\); \(t_{1/2}=\ln 2/|k|\)</td></tr><tr><td>Linear vs. exponential</td><td>Linear: constant differences. Exponential: constant ratios.</td></tr></tbody></table></div>
+<p><strong>Schema Pattern for Chapter 1:</strong>
+Identify input and output \(\to\) verify function property \(\to\) classify type
+(linear or exponential) \(\to\) state economic domain \(\to\) compute or analyze
+(evaluate, solve for time with \(\ln\), or analyze direction).</p></div>
+<h2 class="sh" id="practice-problems">Practice Problems</h2>
+<section class="tier" data-tier="base"><h3 class="tierh">Base Camp</h3><ol class="probs"><li class="prob" id="ALT-01-P1" value="1"><div class="pn">1</div><div class="pb"><p>For each relationship below, navigate the Decision Schema: identify the
+input and output, determine whether it is a function, and state why.</p>
+<ol class="parts"><li data-id="ALT-01-P1a"><span class="pl">(a)</span> <div class="pt"> A table showing the daily high temperature in a city for each day of the year.
+  </div></li><li data-id="ALT-01-P1b"><span class="pl">(b)</span> <div class="pt"> A table showing the names of all students enrolled in a given course
+        (input: course; output: student name).
+  </div></li><li data-id="ALT-01-P1c"><span class="pl">(c)</span> <div class="pt"> The equation \(y = 3x - 7\).
+  </div></li><li data-id="ALT-01-P1d"><span class="pl">(d)</span> <div class="pt"> The equation \(x^2 + y^2 = 25\).
+  </div></li><li data-id="ALT-01-P1e"><span class="pl">(e)</span> <div class="pt"> A vending machine: input is the button pressed, output is the item dispensed.
+</div></li></ol></div></li>
+<li class="prob" id="ALT-01-P2" value="2"><div class="pn">2</div><div class="pb"><p>A parking garage charges $5 for the first hour and $2 for each
+additional hour, up to a maximum of $15 for any stay over 6 hours.</p>
+<ol class="parts"><li data-id="ALT-01-P2a"><span class="pl">(a)</span> <div class="pt"> Navigate the schema: what is the input? What is the output?
+  </div></li><li data-id="ALT-01-P2b"><span class="pl">(b)</span> <div class="pt"> Is this a function? Explain.
+  </div></li><li data-id="ALT-01-P2c"><span class="pl">(c)</span> <div class="pt"> Write the cost function \(C(h)\) as a piecewise function, where \(h\) is hours parked.
+  </div></li><li data-id="ALT-01-P2d"><span class="pl">(d)</span> <div class="pt"> What is the realistic domain of \(C\)?
+  </div></li><li data-id="ALT-01-P2e"><span class="pl">(e)</span> <div class="pt"> Find \(C(1)\), \(C(3)\), \(C(6)\), and \(C(10)\).
+</div></li></ol></div></li>
+<li class="prob" id="ALT-01-P3" value="3"><div class="pn">3</div><div class="pb"><p>Classify each dataset as linear or exponential. Justify using differences
+or ratios.</p>
+<ol class="parts"><li data-id="ALT-01-P3a"><span class="pl">(a)</span> <div class="pt"><div class="scroll"><table class="t "><tbody><tr><td>\(t\)</td><td>0</td><td>1</td><td>2</td><td>3</td></tr><tr><td>\(Q\)</td><td>100</td><td>115</td><td>130</td><td>145</td></tr></tbody></table></div></div></li><li data-id="ALT-01-P3b"><span class="pl">(b)</span> <div class="pt"><div class="scroll"><table class="t "><tbody><tr><td>\(t\)</td><td>0</td><td>1</td><td>2</td><td>3</td></tr><tr><td>\(Q\)</td><td>100</td><td>115</td><td>132.25</td><td>152.09</td></tr></tbody></table></div></div></li><li data-id="ALT-01-P3c"><span class="pl">(c)</span> <div class="pt"><div class="scroll"><table class="t "><tbody><tr><td>\(t\)</td><td>0</td><td>2</td><td>4</td><td>6</td></tr><tr><td>\(Q\)</td><td>200</td><td>162</td><td>131.2</td><td>106.3</td></tr></tbody></table></div></div></li></ol></div></li>
+<li class="prob" id="ALT-01-P4" value="4"><div class="pn">4</div><div class="pb"><p>$3,000 is invested at 5% annual interest.</p>
+<ol class="parts"><li data-id="ALT-01-P4a"><span class="pl">(a)</span> <div class="pt"> Find the balance after 8 years with annual compounding.
+  </div></li><li data-id="ALT-01-P4b"><span class="pl">(b)</span> <div class="pt"> Find the balance after 8 years with continuous compounding.
+  </div></li><li data-id="ALT-01-P4c"><span class="pl">(c)</span> <div class="pt"> Which earns more? By how much?
+  </div></li><li data-id="ALT-01-P4d"><span class="pl">(d)</span> <div class="pt"> Using the Rule of 72, estimate the doubling time at 5%.
+</div></li></ol></div></li></ol></section>
+
+<section class="tier" data-tier="mid"><h3 class="tierh">Mid-Mountain</h3><ol class="probs"><li class="prob" id="ALT-01-P5" value="5"><div class="pn">5</div><div class="pb"><p>A company's total cost function is \(C(q) = 0.5q^2 + 20q + 500\), where
+\(q\) is units produced and \(C\) is in dollars.</p>
+<ol class="parts"><li data-id="ALT-01-P5a"><span class="pl">(a)</span> <div class="pt"> Navigate the schema: input, output, function type.
+  </div></li><li data-id="ALT-01-P5b"><span class="pl">(b)</span> <div class="pt"> Identify the fixed cost and explain why a quadratic has no single
+        “variable cost per unit.”
+  </div></li><li data-id="ALT-01-P5c"><span class="pl">(c)</span> <div class="pt"> Find \(C(0)\), \(C(10)\), \(C(20)\).
+  </div></li><li data-id="ALT-01-P5d"><span class="pl">(d)</span> <div class="pt"> Find the average cost per unit \(AC(q) = C(q)/q\) at \(q = 10\) and \(q = 20\).
+  </div></li><li data-id="ALT-01-P5e"><span class="pl">(e)</span> <div class="pt"> Is \(AC(q)\) increasing or decreasing from \(q=10\) to \(q=20\)? What does
+        this tell the production manager?
+</div></li></ol></div></li>
+<li class="prob" id="ALT-01-P6" value="6"><div class="pn">6</div><div class="pb"><p>A firm faces demand \(D(q) = 80 - 3q\) (dollars per unit) and cost
+\(C(q) = 15q + 200\) (dollars).</p>
+<ol class="parts"><li data-id="ALT-01-P6a"><span class="pl">(a)</span> <div class="pt"> Build \(R(q)\) and \(\pi(q)\).
+  </div></li><li data-id="ALT-01-P6b"><span class="pl">(b)</span> <div class="pt"> State the economic domain of \(\pi\).
+  </div></li><li data-id="ALT-01-P6c"><span class="pl">(c)</span> <div class="pt"> Find the break-even quantities.
+  </div></li><li data-id="ALT-01-P6d"><span class="pl">(d)</span> <div class="pt"> On what interval of \(q\) is the firm profitable?
+  </div></li><li data-id="ALT-01-P6e"><span class="pl">(e)</span> <div class="pt"> Find the profit at \(q = 5\), \(q = 10\), and \(q = 15\).
+</div></li></ol></div></li>
+<li class="prob" id="ALT-01-P7" value="7"><div class="pn">7</div><div class="pb"><p>A city's population grows continuously. It was 60,000 in 2005 and
+78,000 in 2015.</p>
+<ol class="parts"><li data-id="ALT-01-P7a"><span class="pl">(a)</span> <div class="pt"> Write the model \(P(t) = P_0 e^{kt}\) with \(t\) = years since 2005.
+        Find \(k\). Show the full \(\ln\) step.
+  </div></li><li data-id="ALT-01-P7b"><span class="pl">(b)</span> <div class="pt"> Interpret \(k\) in plain language.
+  </div></li><li data-id="ALT-01-P7c"><span class="pl">(c)</span> <div class="pt"> Predict the population in 2025.
+  </div></li><li data-id="ALT-01-P7d"><span class="pl">(d)</span> <div class="pt"> When will the population reach 120,000?
+  </div></li><li data-id="ALT-01-P7e"><span class="pl">(e)</span> <div class="pt"> Find the doubling time.
+</div></li></ol></div></li>
+<li class="prob" id="ALT-01-P8" value="8"><div class="pn">8</div><div class="pb"><p>A medication has a half-life of 4 hours. A patient is given 600 mg.</p>
+<ol class="parts"><li data-id="ALT-01-P8a"><span class="pl">(a)</span> <div class="pt"> Find the continuous decay rate \(k\). Write \(Q(t) = 600\,e^{kt}\).
+  </div></li><li data-id="ALT-01-P8b"><span class="pl">(b)</span> <div class="pt"> Find \(Q(4)\), \(Q(8)\), \(Q(12)\). Do these match the half-life pattern?
+  </div></li><li data-id="ALT-01-P8c"><span class="pl">(c)</span> <div class="pt"> The drug is effective above 75 mg. When does it fall below this threshold?
+  </div></li><li data-id="ALT-01-P8d"><span class="pl">(d)</span> <div class="pt"> Sketch \(Q(t)\) for \(t \in [0, 20]\). Label the half-life, initial dose, and
+        75 mg threshold.
+</div></li></ol></div></li></ol></section>
+
+<section class="tier" data-tier="summit"><h3 class="tierh">Summit</h3><ol class="probs"><li class="prob" id="ALT-01-P9" value="9"><div class="pn">9</div><div class="pb"><p>A technology company models its weekly user growth with the following data:
+<span class="dm">\[\begin{array}{c|cccccc}
+    t \text{ (weeks)} &amp; 0 &amp; 2 &amp; 4 &amp; 6 &amp; 8 &amp; 10 \\\hline
+    U(t) \text{ (users, thousands)} &amp; 5 &amp; 8.2 &amp; 13.4 &amp; 21.9 &amp; 35.9 &amp; 58.7
+  \end{array}\]</span></p>
+<ol class="parts"><li data-id="ALT-01-P9a"><span class="pl">(a)</span> <div class="pt"> Navigate the full schema. Check ratios to determine whether the data is
+        linear or exponential.
+  </div></li><li data-id="ALT-01-P9b"><span class="pl">(b)</span> <div class="pt"> Fit an exponential model \(U(t)=U_0 e^{kt}\). Find \(k\) using the \(t=0\)
+        and \(t=10\) data points.
+  </div></li><li data-id="ALT-01-P9c"><span class="pl">(c)</span> <div class="pt"> Predict \(U(12)\). How confident are you in this prediction?
+  </div></li><li data-id="ALT-01-P9d"><span class="pl">(d)</span> <div class="pt"> Find when \(U(t)=100\) thousand users.
+  </div></li><li data-id="ALT-01-P9e"><span class="pl">(e)</span> <div class="pt"> If revenue is \(R(t) = 12\cdot U(t)\) ($K/week), write \(R(t)\) and find
+        when weekly revenue reaches $1M.
+</div></li></ol></div></li>
+<li class="prob" id="ALT-01-P10" value="10"><div class="pn">10</div><div class="pb"><p>A market analyst proposes the demand model
+\(D(q) = 500\,e^{-0.03q}\) dollars per unit, \(q \geq 0\).</p>
+<ol class="parts"><li data-id="ALT-01-P10a"><span class="pl">(a)</span> <div class="pt"> Navigate the schema: what type of function is \(D\)? Is it increasing or
+        decreasing? What is the domain?
+  </div></li><li data-id="ALT-01-P10b"><span class="pl">(b)</span> <div class="pt"> Build \(R(q) = D(q)\cdot q\) and evaluate at \(q = 0\), \(q = 10\), \(q = 33\),
+        and \(q = 70\).
+  </div></li><li data-id="ALT-01-P10c"><span class="pl">(c)</span> <div class="pt"> On what interval does revenue appear to be increasing? Decreasing?
+  </div></li><li data-id="ALT-01-P10d"><span class="pl">(d)</span> <div class="pt"> The cost function is \(C(q) = 50q + 1000\). Build \(\pi(q)\).
+        Is profit positive at \(q = 33\)? At \(q = 70\)?
+  </div></li><li data-id="ALT-01-P10e"><span class="pl">(e)</span> <div class="pt"> An investor compares two identical businesses: Business A grows revenue at
+        4% per year continuously; Business B grows at 6%. Both start at $500,000.
+        How much more is Business B worth after 15 years? Express using \(e\).
+</div></li></ol></div></li></ol></section></div></main><footer class="foot"><div class="in"><div><b style="color:#e0b93a">ALTITUDE</b><br>Calculus for Business and Science<br>Interactive edition</div><div>© 2026 Ikhalfani Solan. All rights reserved.<br>Published by Solan Books · solanbooks.com</div></div></footer>
+<script>/* Altitude interactive edition — core: plotting, page behaviour, checks.  (c) Solan Books */
+window.ALT=(()=>{
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const store={get(k,d){try{const v=localStorage.getItem('alt:'+k);return v?JSON.parse(v):d}catch(e){return d}},
+  set(k,v){try{localStorage.setItem('alt:'+k,JSON.stringify(v))}catch(e){}}};
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const fmt=(v,d=2)=>{if(v===Infinity)return'∞';if(v===-Infinity)return'−∞';if(!isFinite(v))return'undefined';if(Math.abs(v)<0.5*10**(-d))v=0;
+  let s=v.toFixed(d);if(Math.abs(v)>=1000&&d<=2)s=Number(s).toLocaleString('en-US',{minimumFractionDigits:d,maximumFractionDigits:d});return s.replace('-','−')};
+const fmtS=(v,sig=4)=>{if(!isFinite(v))return fmt(v);if(v===0)return'0';const d=Math.max(0,sig-1-Math.floor(Math.log10(Math.abs(v))));return fmt(v,Math.min(d,6))};
+const num=k=>String(+k.toFixed(6)).replace('-','−');
+
+/* ---------- plotting ---------- */
+function frame(s,xr,yr,pad={l:44,r:14,t:14,b:30}){const W=s.clientWidth,H=s.clientHeight,small=W<520;
+  if(small)pad={l:34,r:10,t:12,b:26};
+  const iw=W-pad.l-pad.r,ih=H-pad.t-pad.b,ux=iw/(xr[1]-xr[0]),uy=ih/(yr[1]-yr[0]);
+  return{W,H,xr,yr,pad,small,X:x=>pad.l+(x-xr[0])*ux,Y:y=>pad.t+ih-(y-yr[0])*uy,ix:p=>xr[0]+(p-pad.l)/ux,iy:p=>yr[0]+(pad.t+ih-p)/uy}}
+function T(x,y,t,o={}){return`<text x="${(+x).toFixed(1)}" y="${(+y).toFixed(1)}" font-size="${o.size||13}" text-anchor="${o.anchor||'start'}" font-weight="${o.weight||400}" fill="${o.fill||'var(--soft)'}"${o.paint?' paint-order="stroke" stroke="var(--bg)" stroke-width="4"':''}>${t}</text>`}
+function axes(F,xs,ys,o={}){const{W,H,X,Y,xr,yr,pad}=F;let g='';const x0=X(xr[0]),x1=X(xr[1]),y0=Y(yr[0]),y1=Y(yr[1]);
+  const lx=Math.max(num(xr[0]).length,num(xr[1]).length,3)*7+10,kx=Math.max(1,Math.ceil(lx/Math.abs(X(xs)-X(0)))),ky=Math.max(1,Math.ceil(22/Math.abs(Y(0)-Y(ys))));
+  let i=0;for(let k=Math.ceil(xr[0]/xs-1e-9)*xs;k<=xr[1]+1e-9;k+=xs,i++){const n=Math.round(k/xs);
+    g+=`<line x1="${X(k)}" y1="${y1}" x2="${X(k)}" y2="${y0}" stroke="var(--rule)" stroke-width="0.7"/>`;
+    if(n%kx===0)g+=T(X(k),y0+18,o.xt?o.xt(k):num(k),{anchor:'middle',size:12})}
+  for(let k=Math.ceil(yr[0]/ys-1e-9)*ys;k<=yr[1]+1e-9;k+=ys){const n=Math.round(k/ys);
+    g+=`<line x1="${x0}" y1="${Y(k)}" x2="${x1}" y2="${Y(k)}" stroke="var(--rule)" stroke-width="0.7"/>`;
+    if(n%ky===0)g+=T(x0-6,Y(k)+4,o.yt?o.yt(k):num(k),{anchor:'end',size:12})}
+  const ax=(xr[0]<=0&&xr[1]>=0)?X(0):x0,ay=(yr[0]<=0&&yr[1]>=0)?Y(0):y0;
+  g+=`<line x1="${x0}" y1="${ay}" x2="${x1}" y2="${ay}" stroke="var(--soft)" stroke-width="1.3"/><line x1="${ax}" y1="${y0}" x2="${ax}" y2="${y1}" stroke="var(--soft)" stroke-width="1.3"/>`;
+  if(o.xl)g+=T(x1,y0-6,o.xl,{anchor:'end',size:13,weight:600,paint:1});
+  if(o.yl)g+=T(x0+6,y1+12,o.yl,{size:13,weight:600,paint:1});
+  return g}
+function path(F,f,lo,hi,stroke,w=2.6,dash='',extra=''){
+  lo=Math.max(lo,F.xr[0]);hi=Math.min(hi,F.xr[1]);if(!(hi>lo))return'';
+  const n=Math.max(200,Math.round(F.W));let d='',pen=false,py=0;const lim=Math.abs(F.yr[1]-F.yr[0])*50;
+  for(let i=0;i<=n;i++){const x=lo+(hi-lo)*i/n,y=f(x);
+    if(!isFinite(y)||Math.abs(y)>lim){pen=false;continue}const sy=F.Y(y);
+    if(pen&&Math.abs(sy-py)>F.H*1.5)pen=false;d+=(pen?'L':'M')+F.X(x).toFixed(1)+','+sy.toFixed(1);pen=true;py=sy}
+  return d?`<path d="${d}" fill="none" stroke="${stroke}" stroke-width="${w}" stroke-linejoin="round" stroke-linecap="round"${dash?` stroke-dasharray="${dash}"`:''} ${extra}/>`:''}
+const dot=(F,x,y,c='var(--mid)',r=6.5)=>isFinite(y)?`<circle cx="${F.X(x)}" cy="${F.Y(y)}" r="${r}" fill="${c}" stroke="var(--bg)" stroke-width="2.5"/>`:'';
+const ring=(F,x,y,c='var(--ink)',r=6.5)=>isFinite(y)?`<circle cx="${F.X(x)}" cy="${F.Y(y)}" r="${r}" fill="var(--bg)" stroke="${c}" stroke-width="2.5"/>`:'';
+const seg=(F,a,b,c,d,col='var(--soft)',w=1.6,dash='5 5')=>(isFinite(b)&&isFinite(d))?`<line x1="${F.X(a)}" y1="${F.Y(b)}" x2="${F.X(c)}" y2="${F.Y(d)}" stroke="${col}" stroke-width="${w}"${dash?` stroke-dasharray="${dash}"`:''} stroke-linecap="round"/>`:'';
+let cpn=0;const clip=(F,g)=>{const id='ac'+(++cpn);const{pad,W,H}=F;return`<defs><clipPath id="${id}"><rect x="${pad.l}" y="${pad.t}" width="${W-pad.l-pad.r}" height="${H-pad.t-pad.b}"/></clipPath></defs><g clip-path="url(#${id})">${g}</g>`};
+const line=(F,x0,y0,m,col,w=2.2,dash='')=>{const[a,b]=F.xr;return seg(F,a,y0+m*(a-x0),b,y0+m*(b-x0),col,w,dash)};
+function mount(s,draw){let raf=0;const ro=new ResizeObserver(()=>{cancelAnimationFrame(raf);raf=requestAnimationFrame(()=>{if(s.clientWidth>0)draw()})});ro.observe(s);return ro}
+/* drag handles: handles()→[{id,px,py}] ; move(id,xData,yData,F) */
+function drag(svg,getF,handles,move){let act=null;
+  const pt=e=>{const r=svg.getBoundingClientRect();return[e.clientX-r.left,e.clientY-r.top]};
+  svg.addEventListener('pointerdown',e=>{const[px,py]=pt(e);let best=null,bd=34;
+    for(const h of handles()){const d=Math.hypot(h.px-px,h.py-py);if(d<bd){bd=d;best=h}}
+    if(!best&&handles().length===1&&handles()[0].any)best=handles()[0];
+    if(best){act=best.id;svg.setPointerCapture(e.pointerId);e.preventDefault();const F=getF();move(act,F.ix(px),F.iy(py),F)}});
+  svg.addEventListener('pointermove',e=>{if(act===null)return;const[px,py]=pt(e);const F=getF();move(act,F.ix(px),F.iy(py),F)});
+  const up=()=>{act=null};svg.addEventListener('pointerup',up);svg.addEventListener('pointercancel',up)}
+function segc(el,cb){el.addEventListener('click',e=>{const b=e.target.closest('button[aria-pressed]');if(!b||!el.contains(b))return;
+  if(el.dataset.multi){b.setAttribute('aria-pressed',b.getAttribute('aria-pressed')!=='true')}
+  else for(const c of el.querySelectorAll('button[aria-pressed]'))c.setAttribute('aria-pressed',c===b);cb(b)})}
+const on=b=>b&&b.getAttribute('aria-pressed')==='true';
+function panel(el,{title,tag,plots=['plot'],ctl='',read=true,after=''}){
+  el.innerHTML=`<div class="panel"><div class="ph">${tag?`<span class="tag">${tag}</span>`:''}<b>${title}</b></div>${plots.map(p=>`<div class="${p}"><svg role="img" aria-label="${esc(title)}"></svg></div>`).join('')}${read?'<div class="read" aria-live="polite"></div>':''}${ctl?`<div class="ctl">${ctl}</div>`:''}${after}</div>`;
+  const q=s=>el.querySelector(s);return{q,svgs:[...el.querySelectorAll('svg')],read:q('.read')}}
+const slider=(id,label,min,max,step,val)=>`<label>${label}<input type="range" data-k="${id}" min="${min}" max="${max}" step="${step}" value="${val}"><output data-o="${id}"></output></label>`;
+function toast(t){let d=document.querySelector('.toast');if(!d){d=document.createElement('div');d.className='toast';d.setAttribute('role','status');document.body.append(d)}
+  d.textContent=t;d.classList.add('on');clearTimeout(d._t);d._t=setTimeout(()=>d.classList.remove('on'),2200)}
+
+/* ---------- page behaviour ---------- */
+function examples(CH,SNAV){
+  const seen=store.get('seen-'+CH,{});
+  for(const h of document.querySelectorAll('.exhead')){
+    const ex=document.createElement('section');ex.className='example js';ex.id='ex'+h.dataset.ex.replace('.','-');
+    h.before(ex);const st=document.createElement('div');st.className='exst';
+    let n=h.nextElementSibling;const nodes=[];while(n&&!n.classList.contains('lvl')){nodes.push(n);n=n.nextElementSibling}
+    const lv=[];while(n&&n.classList.contains('lvl')){lv.push(n);n=n.nextElementSibling}
+    ex.append(h);st.append(...nodes);ex.append(st);
+    const key=h.dataset.ex,qs=SNAV[key];
+    if(qs&&qs.length){const nv=document.createElement('div');nv.className='nav-s';
+      nv.innerHTML=`<h4>Schema Navigation — before you read the solution</h4>`+qs.map((q,i)=>`<div class="q">${q.q}</div><div class="chips" data-i="${i}">${q.o.map((o,j)=>`<button type="button" class="chip" data-j="${j}">${o}</button>`).join('')}</div><div class="fb" data-f="${i}" aria-live="polite"></div>`).join('');
+      nv.addEventListener('click',e=>{const b=e.target.closest('.chip');if(!b)return;const i=+b.parentNode.dataset.i,j=+b.dataset.j,q=qs[i];
+        for(const c of b.parentNode.children)c.classList.remove('ok','no');b.classList.add(j===q.a?'ok':'no');
+        nv.querySelector(`[data-f="${i}"]`).textContent=j===q.a?'✓ '+q.y:q.n});
+      ex.append(nv)}
+    const names={base:'Base Camp',mid:'Mid-Mountain',summit:'Summit'},order=lv.map(l=>l.dataset.lvl);
+    const peak=k=>{const hh={base:13,mid:8,summit:3}[k];return`<svg viewBox="0 0 26 20" aria-hidden="true"><path d="M1 19 L9 7 L13 12 L17 5 L25 19Z" fill="currentColor" opacity=".25"/><path d="M1 19 L9 7 L13 12 L17 5 L25 19" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><circle cx="${k==='base'?6:k==='mid'?10:17}" cy="${hh+2}" r="2.6" fill="currentColor"/></svg>`};
+    if(lv.length>1){const cb=document.createElement('div');cb.className='climb';cb.setAttribute('role','tablist');
+      cb.innerHTML=order.map(k=>`<button type="button" role="tab" data-l="${k}" aria-selected="false">${peak(k)}${names[k]}<span class="done"></span></button>`).join('');ex.append(cb);
+      const sk=seen[key]||{};const show=k=>{for(const l of lv)l.classList.toggle('on',l.dataset.lvl===k);
+        for(const b of cb.children){b.setAttribute('aria-selected',b.dataset.l===k);if(b.dataset.l===k){b.classList.add('seen')}}
+        sk[k]=1;seen[key]=sk;store.set('seen-'+CH,seen);meter()};
+      for(const b of cb.children)if(sk[b.dataset.l])b.classList.add('seen');
+      cb.addEventListener('click',e=>{const b=e.target.closest('button');if(b)show(b.dataset.l)});
+      lv.forEach((l,i)=>{if(i<lv.length-1){const nb=document.createElement('button');nb.type='button';nb.className='next';nb.textContent=`Climb to ${names[order[i+1]]} →`;
+        nb.onclick=()=>{show(order[i+1]);cb.scrollIntoView({block:'nearest',behavior:reduce?'auto':'smooth'})};l.append(nb)}});
+      ex.append(...lv);show(order[0]);for(const b of cb.children)b.classList.toggle('seen',!!sk[b.dataset.l]||b.dataset.l===order[0])}
+    else{ex.append(...lv);lv.forEach(l=>l.classList.add('on'))}
+  }}
+function schemas(){for(const s of document.querySelectorAll('.sstep')){s.addEventListener('click',e=>{const b=e.target.closest('button[data-k]');if(!b)return;
+  for(const x of s.querySelectorAll('button[data-k]'))x.setAttribute('aria-pressed',x===b);
+  for(const a of s.querySelectorAll('.sa'))a.classList.toggle('on',a.dataset.k===b.dataset.k)})}}
+function errors(){for(const e of document.querySelectorAll('.errors')){e.classList.add('js');e.addEventListener('click',ev=>{const b=ev.target.closest('.eh');if(!b)return;
+  const li=b.parentNode,o=!li.classList.contains('open');li.classList.toggle('open',o);b.setAttribute('aria-expanded',o)})}}
+const parseNum=s=>{s=String(s).trim().replace(/[−–]/g,'-').replace(/[$,%\s]/g,'').replace(/^\+/,'');if(!s)return NaN;
+  const m=s.match(/^(-?[\d.]+)\/(-?[\d.]+)$/);if(m)return m[1]/m[2];return Number(s)};
+function checks(ANS){for(const[id,list]of Object.entries(ANS)){const li=document.querySelector(`[data-id="${id}"] .pt`)||document.querySelector(`#${id} .pb`);if(!li)continue;
+  const box=document.createElement('div');box.className='chk';
+  box.innerHTML=list.map((a,i)=>`<label>${a.l?esc(a.l)+' ':''}<input inputmode="decimal" autocomplete="off" aria-label="${esc(a.l||'answer')} for ${id}" data-i="${i}"><span class="u">${esc(a.u||'')}</span></label>`).join('')+`<button type="button">Check</button><span class="msg" aria-live="polite"></span>`;
+  li.append(box);let tries=0;const msg=box.querySelector('.msg');
+  const go=()=>{let all=true,any=false;box.querySelectorAll('input').forEach(inp=>{const a=list[+inp.dataset.i],v=parseNum(inp.value);if(inp.value.trim())any=true;
+      const tol=a.t??Math.max(Math.abs(a.v)*0.01,0.005),ok=isFinite(v)&&Math.abs(v-a.v)<=tol;inp.classList.toggle('ok',ok);inp.classList.toggle('no',!ok&&inp.value.trim()!=='');if(!ok)all=false});
+    if(!any){msg.textContent='Enter a number first.';return}tries++;
+    if(all){msg.textContent='✓ Correct. Now write the interpretive sentence with units.';const d=store.get('solved',{});d[id]=1;store.set('solved',d);meter()}
+    else msg.innerHTML=tries>=2?`Not yet. Answer: ${list.map(a=>(a.l?esc(a.l)+' ':'')+esc(a.s??fmtS(a.v))+' '+esc(a.u||'')).join('; ')}`:'Not yet — check the order of subtraction, the sign, and the units.'};
+  box.querySelector('button').onclick=go;box.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();go()}})}}
+let meterEl=null,CHK='';
+function meter(){if(!meterEl)return;const seen=store.get('seen-'+CHK,{});let n=0,tot=0;
+  document.querySelectorAll('.example').forEach(ex=>{const k=ex.querySelector('.exhead').dataset.ex;const m=ex.querySelectorAll('.climb button').length||1;tot+=m;n+=Object.keys(seen[k]||{}).length});
+  const sol=store.get('solved',{}),ids=[...document.querySelectorAll('.chk')].length;const ns=[...document.querySelectorAll('.chk')].filter(c=>sol[c.closest('[data-id],.prob').dataset.id||c.closest('.prob').id]).length;
+  const f=(n+ns)/Math.max(1,tot+ids);const y=22-f*18;
+  meterEl.innerHTML=`<svg viewBox="0 0 34 26" aria-hidden="true"><path d="M1 25 L12 8 L17 14 L23 4 L33 25Z" fill="#ffffff22" stroke="#ffffff88" stroke-width="1.2" stroke-linejoin="round"/><clipPath id="mc"><path d="M1 25 L12 8 L17 14 L23 4 L33 25Z"/></clipPath><rect x="0" y="${y}" width="34" height="26" fill="#e0b93a" clip-path="url(#mc)"/></svg><span>${n}/${tot} climbs · ${ns}/${ids} solved</span>`;
+  meterEl.setAttribute('aria-label',`Progress: ${n} of ${tot} example levels read, ${ns} of ${ids} problems solved`)}
+function page(CH,{SNAV={},ANS={},INS={}}){CHK=CH;meterEl=document.querySelector('.meter');
+  examples(CH,SNAV);schemas();errors();checks(ANS);
+  for(const f of document.querySelectorAll('figure.ins')){const k=f.dataset.ins,fn=INS[k];const b=f.querySelector('.ins-body');
+    if(fn){if(f.parentNode.classList.contains('col'))f.classList.add('wide');try{fn(b,f)}catch(e){console.error('instrument',k,e);b.textContent=''}}}
+  meter();
+  const fit=()=>{for(const m of document.querySelectorAll('mjx-container:not([display=true])')){m.classList.remove('mwide');const p=m.parentElement;if(m.getBoundingClientRect().width>p.getBoundingClientRect().width+1)m.classList.add('mwide')}};
+  const wait=()=>{if(window.MathJax&&MathJax.startup&&MathJax.startup.promise)MathJax.startup.promise.then(()=>{fit();addEventListener('resize',fit)});else setTimeout(wait,300)};wait()}
+function labButtons(LABS){for(const[id,c]of Object.entries(LABS)){const p=document.getElementById(id);if(!p)continue;const b=document.createElement('button');b.type='button';b.className='btn';b.textContent='Open this table in the Data Lab';
+  const box=document.createElement('div');box.style.marginTop='10px';p.querySelector('.pb').append(b,box);b.onclick=()=>{if(!box.firstChild)ALT.datalab(box,{title:'Data Lab: problem '+id.split('P')[1],...c});b.remove()}}}
+return{labButtons,reduce,store,esc,fmt,fmtS,num,frame,T,axes,path,dot,ring,seg,clip,line,mount,drag,segc,on,panel,slider,toast,page,parseNum};
+})();
+</script><script>/* Altitude interactive edition — instruments. Core set used across the book:
+   secant (average rate), shrink (secant → tangent), symrace (difference quotients), localline (zoom until straight),
+   tracer (f and f′ together: increasing/decreasing, concavity), datalab (tables come alive), plus chapter instruments. */
+(()=>{const A=ALT,{fmt,fmtS,frame,axes,path,dot,ring,seg,clip,line,mount,drag,segc,on,panel,slider,T}=A;
+const wire=(P,state,draw)=>{P.q('.ctl')?.addEventListener('input',e=>{const k=e.target.dataset.k;if(!k)return;state[k]=+e.target.value;draw()})};
+const out=(P,k,t)=>{const o=P.q(`[data-o="${k}"]`);if(o)o.textContent=t};
+const setv=(P,k,v)=>{const i=P.q(`input[data-k="${k}"]`);if(i)i.value=v};
+const tri=(F,x0,y0,x1,y1,c)=>seg(F,x0,y0,x1,y0,c,1.6,'4 4')+seg(F,x1,y0,x1,y1,c,1.6,'4 4');
+
+/* 1. secant: average rate of change as slope */
+A.secant=(el,c)=>{const s={a:c.a,b:c.b},lo=c.xr[0],hi=c.xr[1],st=c.step||0.1;
+  const P=panel(el,{title:c.title||'Secant line: average rate of change',tag:'Secant',
+    ctl:slider('a','a',lo,hi,st,s.a)+slider('b','b',lo,hi,st,s.b)+(c.presets?`<div class="seg">${c.presets.map((p,i)=>`<button type="button" aria-pressed="${i===0}" data-p="${i}">[${A.num(p[0])}, ${A.num(p[1])}]</button>`).join('')}</div>`:'')});
+  const sv=P.svgs[0];let F;
+  const draw=()=>{F=frame(sv,c.xr,c.yr);const{a,b}=s,fa=c.f(a),fb=c.f(b),m=(fb-fa)/(b-a);
+    let g=clip(F,path(F,c.f,lo,hi,'var(--navy)',3)+(a!==b?line(F,a,fa,m,'var(--summit)',2.4):'')+tri(F,Math.min(a,b),a<b?fa:fb,Math.max(a,b),a<b?fb:fa,'var(--mid)'))
+      +seg(F,a,c.yr[0],a,fa,'var(--rule)',1.2)+seg(F,b,c.yr[0],b,fb,'var(--rule)',1.2)+dot(F,a,fa,'var(--red)',8)+dot(F,b,fb,'var(--red)',8);
+    if(!F.small&&a!==b){const xm=(a+b)/2;g+=T(F.X(xm),F.Y(Math.min(fa,fb))+18,`Δx = ${fmt(b-a,c.dx??1)}`,{anchor:'middle',fill:'var(--mid)',weight:600,paint:1})
+      +T(F.X(Math.max(a,b))+8,F.Y((fa+fb)/2),`Δf = ${fmt(Math.abs(fb-fa),c.df??1)}`,{fill:'var(--mid)',weight:600,paint:1})}
+    sv.innerHTML=axes(F,c.xs,c.ys,{xl:c.xl,yl:c.yl})+g;out(P,'a',fmt(a,c.dx??1));out(P,'b',fmt(b,c.dx??1));
+    P.read.innerHTML=a===b?'<div>Pick two different points.</div>':`<div>f(a) = <b>${fmt(fa,c.df??2)}</b></div><div>f(b) = <b>${fmt(fb,c.df??2)}</b></div><div class="k-mid">net change Δf = <b>${fmt(fb-fa,c.df??2)}</b> ${c.uf||''}</div><div class="k-summit big">average rate = <b>${fmt(m,2)}</b> ${c.ur||''}</div>`};
+  wire(P,s,draw);mount(sv,draw);
+  drag(sv,()=>F,()=>F?[{id:'a',px:F.X(s.a),py:F.Y(c.f(s.a))},{id:'b',px:F.X(s.b),py:F.Y(c.f(s.b))}]:[],(id,x)=>{s[id]=Math.round(Math.min(hi,Math.max(lo,x))/st)*st;setv(P,id,s[id]);draw()});
+  const pr=P.q('.seg');if(pr)segc(pr,b=>{const p=c.presets[+b.dataset.p];s.a=p[0];s.b=p[1];setv(P,'a',s.a);setv(P,'b',s.b);draw()})};
+
+/* 2. shrink: b → a, the secant becomes the tangent */
+A.shrink=(el,c)=>{const s={side:1,k:0,b:c.a+1},steps=[1,0.5,0.1,0.01,0.001,0.0001],rows=new Map();
+  const P=panel(el,{title:c.title||'Let the interval shrink',tag:'Secant → tangent',
+    ctl:`<button type="button" class="btn solid" data-a="step">Move b closer to ${c.a}</button><div class="seg"><button type="button" aria-pressed="true" data-s="1">from the right</button><button type="button" aria-pressed="false" data-s="-1">from the left</button></div><button type="button" class="btn" data-a="reset">Reset</button>`+slider('b','or drag b',c.a-1.5,c.a+1.5,0.01,s.b),
+    after:'<div class="grid lab"><table><thead><tr><th>b</th><th>average rate from '+c.a+' to b</th></tr></thead><tbody></tbody></table></div>'});
+  const sv=P.svgs[0];let F;
+  const rec=()=>{if(s.b!==c.a)rows.set(s.b,(c.f(s.b)-c.f(c.a))/(s.b-c.a))};
+  const draw=()=>{const a=c.a,b=s.b,d=Math.abs(b-a),z=Math.max(0.35,Math.min(1.6,d*1.6)),fa=c.f(a);
+    const xr=[a-1.7,a+1.7],yr=c.yr;F=frame(sv,xr,yr);const m=(c.f(b)-fa)/(b-a),t=c.df(a);
+    let g=clip(F,path(F,c.f,xr[0],xr[1],'var(--navy)',3)+line(F,a,fa,t,'var(--base)',1.8,'7 6')+(b!==a?line(F,a,fa,m,'var(--summit)',2.6):''));
+    g+=dot(F,a,fa,'var(--red)',8)+dot(F,b,c.f(b),'var(--summit)',8);
+    if(!F.small)g+=T(F.X(xr[1])-8,F.Y(fa+t*(xr[1]-a))+(t>0?22:-10),`tangent, slope ${fmt(t,0)}`,{anchor:'end',fill:'var(--base)',weight:600,paint:1});
+    sv.innerHTML=axes(F,0.5,c.ys,{xl:'x',yl:'f(x)'})+g;out(P,'b',fmt(b,4));
+    P.read.innerHTML=`<div>b = <b>${A.num(b)}</b></div><div>|b − ${c.a}| = <b>${A.num(d)}</b></div><div class="k-summit big">secant slope = <b>${fmtS(m,6)}</b></div>`;
+    const tb=P.q('tbody'),arr=[...rows.entries()].sort((p,q)=>Math.abs(q[0]-a)-Math.abs(p[0]-a)).slice(-9);
+    tb.innerHTML=arr.map(([x,v])=>`<tr><td>${A.num(x)}</td><td>${fmtS(v,7)}</td></tr>`).join('')};
+  P.q('.ctl').addEventListener('click',e=>{const b=e.target.closest('[data-a]');if(!b)return;
+    if(b.dataset.a==='step'){s.k=Math.min(steps.length-1,s.k+(rows.size?1:0));s.b=+(c.a+s.side*steps[s.k]).toFixed(6);rec();}
+    else{rows.clear();s.k=0;s.b=c.a+s.side;rec()}setv(P,'b',s.b);draw()});
+  segc(P.q('.seg'),b=>{s.side=+b.dataset.s;s.k=0;s.b=c.a+s.side;rec();setv(P,'b',s.b);draw()});
+  P.q('input[data-k=b]').addEventListener('input',e=>{s.b=+e.target.value;if(Math.abs(s.b-c.a)<0.005)s.b=c.a+0.01*s.side;rec();draw()});
+  rec();mount(sv,draw);
+  drag(sv,()=>F,()=>F?[{id:'b',px:F.X(s.b),py:F.Y(c.f(s.b))}]:[],(id,x)=>{x=Math.round(x*100)/100;if(Math.abs(x-c.a)<0.01)return;s.b=Math.max(c.a-1.5,Math.min(c.a+1.5,x));rec();setv(P,'b',s.b);draw()})};
+
+/* 3. symrace: one-sided vs symmetric difference quotient */
+A.symrace=(el,c)=>{const s={lh:Math.log10(c.h0||1)};
+  const P=panel(el,{title:c.title||'One-sided or symmetric?',tag:'Difference quotients',ctl:slider('lh','h',-3,0,0.01,s.lh),
+    after:c.table?'<div class="grid lab"><table><thead><tr><th>h</th><th>one-sided</th><th>error</th><th>symmetric</th><th>error</th></tr></thead><tbody></tbody></table></div>':''});
+  const sv=P.svgs[0];let F;const ex=c.df(c.a);
+  const row=h=>{const o=(c.f(c.a+h)-c.f(c.a))/h,y=(c.f(c.a+h)-c.f(c.a-h))/(2*h);return{o,y}};
+  const draw=()=>{const h=10**s.lh,a=c.a,fa=c.f(a),{o,y}=row(h);F=frame(sv,c.xr,c.yr);
+    let g=clip(F,path(F,c.f,c.xr[0],c.xr[1],'var(--navy)',3)+line(F,a,fa,ex,'var(--base)',2.4)+line(F,a,fa,o,'var(--red)',2,'7 6')+line(F,a-h,c.f(a-h),y,'var(--summit)',2.4,'2 5'));
+    g+=dot(F,a,fa,'var(--navy)',7)+ring(F,a+h,c.f(a+h),'var(--red)',6)+ring(F,a-h,c.f(a-h),'var(--summit)',6);
+    sv.innerHTML=axes(F,c.xs,c.ys,{xl:'x',yl:'f(x)'})+g;out(P,'h',fmtS(h,3));
+    P.read.innerHTML=`<div class="k-base">tangent slope f′(${c.a}) = <b>${fmt(ex,4)}</b></div><div class="k-red">one-sided = <b>${fmt(o,4)}</b> (error ${fmt(Math.abs(o-ex),4)})</div><div class="k-summit">symmetric = <b>${fmt(y,4)}</b> (error ${fmt(Math.abs(y-ex),4)})</div>`;
+    if(c.table){P.q('tbody').innerHTML=[0.1,0.01,0.001].map(h=>{const r=row(h);return`<tr><td>${h}</td><td>${fmt(r.o,4)}</td><td>${fmt(Math.abs(r.o-ex),4)}</td><td>${fmt(r.y,4)}</td><td>${fmt(Math.abs(r.y-ex),5)}</td></tr>`}).join('')}};
+  wire(P,s,draw);mount(sv,draw)};
+
+/* 4. localline: zoom until the curve is straight */
+A.localline=(el,c)=>{const s={a:c.a,z:0};
+  const P=panel(el,{title:c.title||'Zoom in until the curve is straight',tag:'Local linearity',ctl:slider('a','point a',c.xr[0]+0.3,c.xr[1]-0.3,0.05,s.a)+slider('z','zoom',0,3,0.01,0)});
+  const sv=P.svgs[0];
+  const draw=()=>{const Z=10**s.z,a=s.a,fa=c.f(a),m=c.df(a),hx=(c.xr[1]-c.xr[0])/2/Z,hy=(c.yr[1]-c.yr[0])/2/Z;
+    const xr=[a-hx,a+hx],yr=[fa-hy,fa+hy],F=frame(sv,xr,yr);let gap=0;for(let i=0;i<=60;i++){const x=xr[0]+(xr[1]-xr[0])*i/60;gap=Math.max(gap,Math.abs(c.f(x)-(fa+m*(x-a))))}
+    sv.innerHTML=axes(F,hx/2.5,hy/2.5,{xt:k=>fmtS(k,3),yt:k=>fmtS(k,3)})+clip(F,line(F,a,fa,m,'var(--base)',2,'8 6')+path(F,c.f,xr[0],xr[1],'var(--navy)',3))+dot(F,a,fa,'var(--red)',7);
+    out(P,'a',fmt(a,2));out(P,'z','×'+fmtS(Z,3));
+    P.read.innerHTML=`<div>window ×<b>${fmtS(Z,3)}</b></div><div class="k-base">tangent slope f′(${fmt(a,2)}) = <b>${fmt(m,3)}</b></div><div>largest gap curve–tangent: <b>${fmt(100*gap/(2*hy),2)}%</b> of the window</div>`};
+  wire(P,s,draw);mount(sv,draw)};
+
+/* 5. tracer: f and f′ together */
+A.tracer=(el,c)=>{const s={x:c.x0??c.xr[0]+0.4,all:false,cc:true};
+  const P=panel(el,{title:c.title||'Trace the slope: f and f′ together',tag:'Slope tracer',plots:['plot','plot sm'],
+    ctl:slider('x','x',c.xr[0],c.xr[1],0.01,s.x)+`<button type="button" class="btn solid" data-a="play">Trace</button><div class="seg" data-multi="1"><button type="button" aria-pressed="false" data-t="all">show all of f′</button><button type="button" aria-pressed="true" data-t="cc">concavity</button></div>`});
+  const[s1,s2]=P.svgs;let F1;const zs=[],ip=[];
+  {let p=c.df(c.xr[0]),q=c.d2f(c.xr[0]),h=(c.xr[1]-c.xr[0])/2000;for(let i=1;i<=2000;i++){const x=c.xr[0]+h*i,d=c.df(x),e=c.d2f(x);if(d===0||(p!==0&&p*d<0)){if(!zs.length||x-zs.at(-1)>2*h)zs.push(d===0?x:x-h/2)}if(d!==0)p=d;if(e===0||(q!==0&&q*e<0)){if(!ip.length||x-ip.at(-1)>2*h){if(e!==0||Math.sign(c.d2f(x-h))!==Math.sign(c.d2f(x+h)))ip.push(e===0?x:x-h/2)}}if(e!==0)q=e}}
+  const draw=()=>{const x=s.x;F1=frame(s1,c.xr,c.yr);const F2=frame(s2,c.xr,c.dyr);
+    let bands='';if(s.cc){const pts=[c.xr[0],...ip,c.xr[1]];for(let i=0;i<pts.length-1;i++){const m=(pts[i]+pts[i+1])/2,up=c.d2f(m)>0;
+      bands+=`<rect x="${F1.X(pts[i])}" y="${F1.pad.t}" width="${F1.X(pts[i+1])-F1.X(pts[i])}" height="${F1.H-F1.pad.t-F1.pad.b}" fill="${up?'var(--midt)':'var(--summitt)'}"/>`;
+      if(!F1.small)bands+=T((F1.X(pts[i])+F1.X(pts[i+1]))/2,F1.pad.t+16,up?'concave up':'concave down',{anchor:'middle',size:12,fill:up?'var(--mid)':'var(--summit)',weight:600})}}
+    let curve='';const pts=[c.xr[0],...zs,c.xr[1]];for(let i=0;i<pts.length-1;i++){const m=(pts[i]+pts[i+1])/2;curve+=path(F1,c.f,pts[i],pts[i+1],c.df(m)>0?'var(--base)':'var(--red)',3.4)}
+    const fx=c.f(x),m=c.df(x),w=(c.xr[1]-c.xr[0])*0.12;
+    let g1=bands+clip(F1,curve+seg(F1,x-w,fx-m*w,x+w,fx+m*w,'var(--ink)',2.4,''));
+    for(const z of (c.crit||[]))g1+=dot(F1,z,c.f(z),'var(--ink)',5);for(const h of (c.hl||[]))g1+=seg(F1,c.xr[0],h,c.xr[1],h,'var(--soft)',1.4,'6 5');for(const z of zs)g1+=dot(F1,z,c.f(z),'var(--ink)',5);for(const z of ip)g1+=ring(F1,z,c.f(z),'var(--summit)',5);
+    g1+=dot(F1,x,fx,'var(--navy)',8);
+    s1.innerHTML=axes(F1,c.xs,c.ys,{xl:'x',yl:c.fl||'f(x)'})+g1;
+    let g2=clip(F2,path(F2,c.df,c.xr[0],c.xr[1],'var(--rule)',2)+path(F2,c.df,c.xr[0],s.all?c.xr[1]:x,'var(--mid)',3));
+    for(const z of zs)if(s.all||z<=x)g2+=dot(F2,z,0,'var(--ink)',5);for(const z of ip)if(s.all||z<=x)g2+=ring(F2,z,c.df(z),'var(--summit)',5);
+    g2+=seg(F2,x,c.dyr[0],x,c.dyr[1],'var(--soft)',1,'3 4')+dot(F2,x,m,'var(--navy)',7);
+    s2.innerHTML=axes(F2,c.xs,c.dys,{xl:'x',yl:"f′(x)"})+g2;out(P,'x',fmt(x,2));
+    const conc=c.d2f(x)>0?'concave up (f′ rising)':c.d2f(x)<0?'concave down (f′ falling)':'inflection';
+    P.read.innerHTML=`<div>x = <b>${fmt(x,2)}</b></div><div class="${m>0?'k-base':'k-red'}">f′(x) = <b>${fmt(m,2)}</b> → f ${Math.abs(m)<0.02?'has a horizontal tangent':m>0?'is increasing':'is decreasing'}</div><div class="${c.d2f(x)>0?'k-mid':'k-summit'}">${conc}</div>`};
+  wire(P,s,draw);mount(s1,draw);mount(s2,draw);
+  segc(P.q('.seg'),b=>{s[b.dataset.t]=on(b);draw()});
+  drag(s1,()=>F1,()=>F1?[{id:'x',px:F1.X(s.x),py:F1.Y(c.f(s.x)),any:1}]:[],(id,x)=>{s.x=Math.max(c.xr[0],Math.min(c.xr[1],x));setv(P,'x',s.x);draw()});
+  P.q('[data-a=play]').onclick=()=>{if(A.reduce){s.x=c.xr[1];setv(P,'x',s.x);draw();return}let t0=null;const x0=c.xr[0],d=4200;
+    const st=t=>{t0??=t;const f=Math.min(1,(t-t0)/d);s.x=x0+(c.xr[1]-x0)*f;setv(P,'x',s.x);draw();if(f<1)requestAnimationFrame(st)};requestAnimationFrame(st)}};
+
+/* 6. datalab: tables come alive */
+A.datalab=(el,c)=>{const D={x:[...c.x],y:[...c.y]};const sh=new Set(c.show||['dy']);let sel=null;
+  const R=[['dy','differences','Δy to next'],['ra','ratios','ratio next ÷ this'],['av','average rates','average rate to next'],['sd','symmetric estimates','symmetric estimate'],['d2','rate of the rate','change in average rate']].filter(r=>(c.rows||['dy','ra','av','sd','d2']).includes(r[0]));
+  const P=panel(el,{title:c.title||'Data Lab',tag:'Data Lab',
+    ctl:(c.sets?`<div class="seg" data-g="sets">${c.sets.map((t,i)=>`<button type="button" aria-pressed="${i===0}" data-set="${i}">${A.esc(t.n)}</button>`).join('')}</div>`:'')+`<div class="seg" data-multi="1">${R.map(r=>`<button type="button" aria-pressed="${sh.has(r[0])}" data-r="${r[0]}">${r[1]}</button>`).join('')}</div>`+(c.fit?`<div class="seg" data-multi="1" data-g="fit"><button type="button" aria-pressed="false" data-f="lin">linear model</button><button type="button" aria-pressed="false" data-f="exp">exponential model</button></div>`:''),
+    after:`<div class="grid"><table><tbody></tbody></table></div>${c.bars?'<div class="bars" aria-label="rate of the rate"></div>':''}<details class="more"><summary>Use your own data</summary><div class="paste"><p style="margin:.3em 0;font-size:15px">Paste two rows or two columns (input, then output), separated by spaces, commas or tabs.</p><textarea aria-label="paste data"></textarea><p><button type="button" class="btn solid" data-a="load">Load data</button> <button type="button" class="btn" data-a="reset">Back to the book’s table</button></p></div></details>`});
+  P.q('.panel').classList.add('lab');const sv=P.svgs[0];const fits={lin:false,exp:false};
+  const calc=()=>{const{x,y}=D,n=x.length,dy=[],ra=[],av=[],sd=[],d2=[];
+    for(let i=0;i<n-1;i++){dy.push(y[i+1]-y[i]);ra.push(y[i+1]/y[i]);av.push((y[i+1]-y[i])/(x[i+1]-x[i]))}
+    for(let i=0;i<n;i++)sd.push(i>0&&i<n-1?(y[i+1]-y[i-1])/(x[i+1]-x[i-1]):NaN);
+    for(let i=0;i<av.length-1;i++)d2.push(av[i+1]-av[i]);return{dy,ra,av,sd,d2}};
+  const dg=c.dg??2;
+  const table=()=>{const{x,y}=D,K=calc(),n=x.length;const td=(v,i,k,between)=>`<td class="d${sel&&sel.k===k&&sel.i===i?' sel':''}" data-k="${k}" data-i="${i}" ${between?'colspan="1"':''}>${isFinite(v)?fmt(v,k==='ra'?3:dg):''}</td>`;
+    let h=`<tr><th>${A.esc(c.xn||'x')}</th>${x.map(v=>`<td>${A.num(v)}</td>`).join('')}</tr><tr><th>${A.esc(c.yn||'y')}</th>${y.map((v,i)=>`<td><input inputmode="decimal" data-y="${i}" value="${A.num(v)}" aria-label="${A.esc(c.yn||'y')} at ${x[i]}"></td>`).join('')}</tr>`;
+    const between=(arr,k)=>`<td></td>`+arr.map((v,i)=>td(v,i,k)).join('');
+    for(const[k,,l]of R){if(!sh.has(k))continue;let cells='';
+      if(k==='sd')cells=K.sd.map((v,i)=>td(v,i,k)).join('');else if(k==='d2')cells='<td></td>'+K.d2.map((v,i)=>td(v,i,k)).join('');else cells=K[k].map((v,i)=>td(v,i,k)).join('');
+      h+=`<tr class="r-${k}"><th>${l}${k==='av'||k==='sd'?` <span style="font-weight:400">(${A.esc(c.ru||'')})</span>`:''}</th>${cells}</tr>`}
+    P.q('tbody').innerHTML=h;return K};
+  const draw=()=>{const K=table(),{x,y}=D;const ymin=Math.min(0,...y),ymax=Math.max(...y);const pad=(ymax-ymin)*0.12||1;
+    const xr=[Math.min(...x),Math.max(...x)],dx=(xr[1]-xr[0])*0.04;const F=frame(sv,[xr[0]-dx,xr[1]+dx],[c.y0??(ymin>=0?0:ymin-pad),ymax+pad]);
+    let g='';if(fits.lin){const m=(y.at(-1)-y[0])/(x.at(-1)-x[0]);g+=path(F,t=>y[0]+m*(t-x[0]),xr[0],xr[1],'var(--mid)',2,'7 6')}
+    if(fits.exp&&y[0]>0&&y.at(-1)>0){const k=Math.log(y.at(-1)/y[0])/(x.at(-1)-x[0]);g+=path(F,t=>y[0]*Math.exp(k*(t-x[0])),xr[0],xr[1],'var(--summit)',2,'3 5')}
+    g+=`<polyline points="${x.map((v,i)=>F.X(v)+','+F.Y(y[i])).join(' ')}" fill="none" stroke="var(--rule)" stroke-width="2"/>`;
+    if(sel){let i0,i1;if(sel.k==='sd'){i0=sel.i-1;i1=sel.i+1}else if(sel.k==='d2'){i0=sel.i;i1=sel.i+2}else{i0=sel.i;i1=sel.i+1}
+      if(i0>=0&&i1<x.length){const m=(y[i1]-y[i0])/(x[i1]-x[i0]);g+=clip(F,line(F,x[i0],y[i0],m,'var(--summit)',2.6))+tri(F,x[i0],y[i0],x[i1],y[i1],'var(--mid)');
+        if(sel.k==='d2'){const m1=(y[i0+1]-y[i0])/(x[i0+1]-x[i0]),m2=(y[i1]-y[i0+1])/(x[i1]-x[i0+1]);g=g.replace(/<g clip-path[^]*?<\/g>/,'')+clip(F,line(F,x[i0],y[i0],m1,'var(--mid)',2.4)+line(F,x[i0+1],y[i0+1],m2,'var(--red)',2.4))}}}
+    g+=x.map((v,i)=>dot(F,v,y[i],sel&&((sel.k==='sd'&&i===sel.i))?'var(--base)':'var(--navy)',6.5)).join('');
+    sv.innerHTML=axes(F,c.xs,c.ys,{xl:c.xn,yl:c.yn})+g;
+    let r='';if(sel){const v=K[sel.k][sel.i];const lab={dy:'Δy',ra:'ratio',av:'average rate',sd:'symmetric estimate',d2:'change in average rate'}[sel.k];
+      const xs=D.x;r=sel.k==='sd'?`<div class="k-base">at ${A.esc(c.xn||'x')} = ${A.num(xs[sel.i])}: (${A.num(D.y[sel.i+1])} − ${A.num(D.y[sel.i-1])}) / (${A.num(xs[sel.i+1])} − ${A.num(xs[sel.i-1])}) = <b>${fmt(v,dg)}</b> ${A.esc(c.ru||'')}</div>`
+        :sel.k==='d2'?`<div class="k-red">the average rate changes by <b>${fmt(v,dg)}</b> from one interval to the next</div>`
+        :`<div class="k-mid">${lab} from ${A.num(xs[sel.i])} to ${A.num(xs[sel.i+1])}: <b>${fmt(v,sel.k==='ra'?3:dg)}</b> ${sel.k==='av'?A.esc(c.ru||''):''}</div>`}
+    const eq=new Set(D.x.slice(1).map((v,i)=>+(v-D.x[i]).toFixed(9))).size===1;
+    P.read.innerHTML=(r||'<div>Tap any computed cell to see it on the graph.</div>')+(sh.has('ra')&&!eq?'<div class="k-red">Inputs are unevenly spaced, so ratios between columns are not comparable.</div>':'');
+    if(c.bars){const v=c.bars==='sd'?K.sd.filter(isFinite):K.av;const mx=Math.max(...v.map(Math.abs))||1;
+      P.q('.bars').innerHTML=v.map(t=>`<div class="${t<0?'neg':''}" style="height:${Math.max(2,88*Math.abs(t)/mx)}%"><span>${fmt(t,1)}</span></div>`).join('')}};
+  if(c.sets){D.y=[...c.sets[0].y];c.y=[...c.sets[0].y];if(c.sets[0].x)D.x=[...c.sets[0].x];}
+  P.q('.ctl').addEventListener('click',e=>{const st=e.target.closest('button[data-set]');if(st){for(const b of st.parentNode.children)b.setAttribute('aria-pressed',b===st);const t=c.sets[+st.dataset.set];D.y=[...t.y];if(t.x)D.x=[...t.x];c.y=[...t.y];if(t.x)c.x=[...t.x];sel=null;draw();return}
+    const b=e.target.closest('button[data-r],button[data-f]');if(!b)return;b.setAttribute('aria-pressed',!on(b));
+    if(b.dataset.r){on(b)?sh.add(b.dataset.r):sh.delete(b.dataset.r)}else fits[b.dataset.f]=on(b);draw()});
+  P.q('.grid').addEventListener('click',e=>{const t=e.target.closest('td.d');if(!t||!t.textContent)return;sel={k:t.dataset.k,i:+t.dataset.i};draw()});
+  P.q('.grid').addEventListener('change',e=>{const i=e.target.dataset.y;if(i==null)return;const v=A.parseNum(e.target.value);if(isFinite(v)){D.y[+i]=v;draw()}});
+  P.q('.paste').addEventListener('click',e=>{const b=e.target.closest('[data-a]');if(!b)return;
+    if(b.dataset.a==='reset'){D.x=[...c.x];D.y=[...c.y];sel=null;draw();return}
+    const t=P.q('textarea').value.trim().split(/\n+/).map(l=>l.trim().split(/[\s,;\t]+/).map(Number));let xs=[],ys=[];
+    if(t.length===2&&t[0].length>2){xs=t[0];ys=t[1]}else{xs=t.map(r=>r[0]);ys=t.map(r=>r[1])}
+    if(xs.length>=3&&xs.length===ys.length&&xs.every(isFinite)&&ys.every(isFinite)){const o=xs.map((v,i)=>[v,ys[i]]).sort((p,q)=>p[0]-q[0]);D.x=o.map(p=>p[0]);D.y=o.map(p=>p[1]);sel=null;draw();A.toast('Your data is loaded')}
+    else A.toast('Need at least three numeric pairs')});
+  mount(sv,draw)};
+
+/* 7. netrate: net change vs. the path taken */
+A.netrate=(el,c)=>{const s={w:0.6,n:2};const f=t=>30+4*t+s.w*9*Math.sin(Math.PI*s.n*t/5);
+  const P=panel(el,{title:'Net change only sees the endpoints',tag:'Net change',ctl:slider('w','shape of the path',-1,1,0.01,s.w)+`<div class="seg">${[1,2,3].map(n=>`<button type="button" aria-pressed="${n===2}" data-n="${n}">${n} bump${n>1?'s':''}</button>`).join('')}</div>`});
+  const sv=P.svgs[0];
+  const draw=()=>{const F=frame(sv,[0,5],[10,70]);let tv=0;for(let i=0;i<500;i++){tv+=Math.abs(f((i+1)/100)-f(i/100))}
+    sv.innerHTML=axes(F,1,10,{xl:'t (months)',yl:'R ($K)'})+clip(F,line(F,0,30,4,'var(--summit)',2.4)+path(F,f,0,5,'var(--navy)',3))+tri(F,0,30,5,50,'var(--mid)')+dot(F,0,30,'var(--red)',8)+dot(F,5,50,'var(--red)',8);
+    out(P,'w',fmt(s.w,2));P.read.innerHTML=`<div class="k-mid">net change = <b>$20K</b></div><div class="k-summit">average rate = <b>$4K/month</b></div><div>total distance moved up and down = <b>$${fmt(tv,1)}K</b></div>`};
+  wire(P,s,draw);segc(P.q('.seg'),b=>{s.n=+b.dataset.n;draw()});mount(sv,draw)};
+
+/* 8. nondiff: where the derivative does not exist */
+A.nondiff=(el)=>{const C={smooth:{f:x=>x*x,l:'smooth: x²',y0:0},corner:{f:Math.abs,l:'corner: |x|',y0:0},cusp:{f:x=>Math.cbrt(x*x),l:'cusp: |x|^(2/3)',y0:0},jump:{f:x=>x<0?x+1:x+2,l:'jump',y0:1.5}};
+  const s={k:'corner',z:0};
+  const P=panel(el,{title:'Zoom in at x = 0',tag:'Differentiability',ctl:`<div class="seg">${Object.entries(C).map(([k,v])=>`<button type="button" aria-pressed="${k===s.k}" data-c="${k}">${v.l.split(':')[0]}</button>`).join('')}</div>`+slider('z','zoom',0,2.5,0.01,0)});
+  const sv=P.svgs[0];
+  const draw=()=>{const c=C[s.k],Z=10**s.z,h=2/Z,F=frame(sv,[-h,h],[c.y0-h*0.85,c.y0+h*0.85]);
+    let g=s.k==='jump'?path(F,c.f,-h,-1e-9,'var(--navy)',3)+path(F,c.f,1e-9,h,'var(--navy)',3)+ring(F,0,1,'var(--navy)')+ring(F,0,2,'var(--navy)'):path(F,c.f,-h,h,'var(--navy)',3)+dot(F,0,c.f(0),'var(--red)',7);
+    sv.innerHTML=axes(F,h/2,h/2,{xt:k=>fmtS(k,2),yt:k=>fmtS(k,2)})+clip(F,g);out(P,'z','×'+fmtS(Z,3));
+    const e=1e-9;let L,Rr,v;if(s.k==='jump'){P.read.innerHTML=`<div>f jumps from 1 to 2: there is no single point to put a tangent on.</div><div class="k-red"><b>f′(0) does not exist</b></div>`;return}
+    L=(c.f(0)-c.f(-e))/e;Rr=(c.f(e)-c.f(0))/e;const big=v=>Math.abs(v)>1e3?(v>0?'→ +∞':'→ −∞'):fmt(v,3);
+    P.read.innerHTML=`<div>slope from the left: <b>${big(L)}</b></div><div>slope from the right: <b>${big(Rr)}</b></div><div class="${s.k==='smooth'?'k-base':'k-red'}"><b>${s.k==='smooth'?'they agree: f′(0) = 0':'f′(0) does not exist'}</b></div>`};
+  segc(P.q('.seg'),b=>{s.k=b.dataset.c;draw()});wire(P,s,draw);mount(sv,draw)};
+
+/* 9. marginal: tangent slope as marginal cost; MC and AC */
+A.marginal=(el,c={})=>{const C=c.C||(q=>0.5*q*q+20*q+500),MC=c.MC||(q=>q+20),AC=c.AC||(q=>0.5*q+20+500/q),s={q:c.q0||10},qr=c.qr||[0,62],qmax=c.qmax||60,qs=c.qs||Math.sqrt(1000);
+  const P=panel(el,{title:c.title||'Marginal cost is the slope of total cost',tag:'Marginal analysis',plots:['plot','plot sm'],ctl:slider('q','q (units)',1,qmax,1,s.q)});
+  const[s1,s2]=P.svgs;
+  const draw=()=>{const q=s.q,F=frame(s1,qr,c.cr||[0,3000]),G=frame(s2,qr,c.mr||[0,90]);
+    s1.innerHTML=axes(F,c.xs||10,c.cys||500,{xl:'q (units)',yl:'C(q) ($)'})+clip(F,path(F,C,0,qr[1],'var(--navy)',3)+line(F,q,C(q),MC(q),'var(--base)',2,'8 6'))+dot(F,q,C(q),'var(--red)',7);
+    s2.innerHTML=axes(G,c.xs||10,c.mys||20,{xl:'q',yl:'$/unit'})+clip(G,path(G,MC,0,qr[1],'var(--mid)',3)+path(G,AC,qr[1]/60,qr[1],'var(--summit)',3))+ring(G,qs,MC(qs),'var(--ink)',7)
+      +(G.small?'':T(G.X(qs)+10,G.Y(MC(qs))+22,'MC = AC: average cost is lowest',{size:12,weight:600,paint:1,fill:'var(--ink)'})+T(G.X(qr[1]*0.92),G.Y(Math.min(G.yr[1]*0.97,MC(qr[1]*0.92)))-8,'MC',{fill:'var(--mid)',weight:700,anchor:'end'})+T(G.X(qr[1]*0.92),G.Y(Math.min(G.yr[1]*0.97,AC(qr[1]*0.92)))+18,'AC',{fill:'var(--summit)',weight:700,anchor:'end'}))
+      +dot(G,q,MC(q),'var(--mid)',6)+dot(G,q,AC(q),'var(--summit)',6);
+    out(P,'q',q);P.read.innerHTML=`<div class="k-mid">C′(${q}) = MC = <b>$${fmt(MC(q),2)}/unit</b></div><div>next unit actually costs C(${q+1}) − C(${q}) = <b>$${fmt(C(q+1)-C(q),2)}</b></div><div class="k-summit">AC(${q}) = <b>$${fmt(AC(q),2)}/unit</b></div><div>${MC(q)<AC(q)?'MC < AC: average cost is falling':'MC > AC: average cost is rising'}</div>`};
+  wire(P,s,draw);mount(s1,draw);mount(s2,draw)};
+
+/* hero: the chapter's function as a ridge */
+A.hero=(svg,c)=>{const s={a:c.a,b:c.b};let F;
+  const draw=()=>{F=frame(svg,c.xr,c.yr,{l:10,r:10,t:30,b:0});const{W,H}=F;const ridge=(f,dy,col,op)=>{let d=`M0,${H}`;for(let i=0;i<=120;i++){const x=c.xr[0]+(c.xr[1]-c.xr[0])*i/120;d+=`L${F.X(x).toFixed(1)},${(F.Y(f(x))+dy).toFixed(1)}`}return`<path d="${d}L${W},${H}Z" fill="${col}" opacity="${op}"/>`};
+    let g=`<defs><linearGradient id="hg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3a6a98"/><stop offset="1" stop-color="#16314f"/></linearGradient></defs>`;
+    g+=ridge(x=>c.f(c.xr[1]+c.xr[0]-x)*0.75+c.yr[1]*0.28,0,'#2a4f78',0.55)+ridge(x=>c.f(x*0.9+1)*0.9+c.yr[1]*0.1,12,'#24476d',0.7);
+    for(let k=1;k<=5;k++)g+=path(F,x=>c.f(x)-k*(c.yr[1]-c.yr[0])*0.09,c.xr[0],c.xr[1],'#ffffff',1,'',`opacity="${0.09}"`);
+    g+=ridge(c.f,0,'url(#hg)',1)+path(F,c.f,c.xr[0],c.xr[1],'#e9f0f7',2.2,'','opacity=".85"');
+    const fa=c.f(s.a),fb=c.f(s.b);
+    if(c.mode==='value'){g+=`<text x="${F.X(s.a)}" y="${F.Y(fa)-46}" text-anchor="middle" fill="#fff" font-size="14" font-weight="700" paint-order="stroke" stroke="#1B3A5C" stroke-width="5">${c.lab(s.a,fa)}</text>`}
+    else if(c.mode==='tangent'){const m=c.df(s.a),w=(c.xr[1]-c.xr[0])*0.16;g+=`<line x1="${F.X(s.a-w)}" y1="${F.Y(fa-m*w)}" x2="${F.X(s.a+w)}" y2="${F.Y(fa+m*w)}" stroke="#e0b93a" stroke-width="3" stroke-linecap="round"/>`
+      +`<text x="${F.X(s.a)}" y="${F.Y(fa)-46}" text-anchor="middle" fill="#fff" font-size="14" font-weight="700" paint-order="stroke" stroke="#1B3A5C" stroke-width="5">slope right here: ${fmt(m,1)} ${c.u||''}</text>`}
+    else if(c.mode==='area'){const lo=Math.min(s.a,s.b),hi=Math.max(s.a,s.b);let d=`M${F.X(lo)},${F.Y(c.base??0)}`;for(let i=0;i<=80;i++){const x=lo+(hi-lo)*i/80;d+=`L${F.X(x).toFixed(1)},${F.Y(c.f(x)).toFixed(1)}`}d+=`L${F.X(hi)},${F.Y(c.base??0)}Z`;
+      let I=0;const n=200,h=(hi-lo)/n;for(let i=0;i<n;i++)I+=c.f(lo+(i+0.5)*h)*h;
+      const tx=Math.max(Math.min(W/2,150),Math.min(W-Math.min(W/2,150),(F.X(s.a)+F.X(s.b))/2));g+=`<path d="${d}" fill="#e0b93a" opacity=".42"/>`+`<text x="${tx}" y="${Math.min(F.Y(fa),F.Y(fb))-46}" text-anchor="middle" fill="#fff" font-size="14" font-weight="700" paint-order="stroke" stroke="#1B3A5C" stroke-width="5">${c.lab?c.lab(I,lo,hi):'accumulated: '+fmt(I,1)}</text>`}
+    else{const m=(fb-fa)/(s.b-s.a);g+=`<line x1="${F.X(s.a)}" y1="${F.Y(fa)}" x2="${F.X(s.b)}" y2="${F.Y(fb)}" stroke="#e0b93a" stroke-width="2.6" stroke-dasharray="1 6" stroke-linecap="round"/>`
+      +`<text x="${(F.X(s.a)+F.X(s.b))/2}" y="${Math.min(F.Y(fa),F.Y(fb))-46}" text-anchor="middle" fill="#fff" font-size="14" font-weight="700" paint-order="stroke" stroke="#1B3A5C" stroke-width="5">average slope: ${fmt(m,1)} ${c.u||''}</text>`}
+    const climber=(x,y,col)=>`<g transform="translate(${F.X(x)},${F.Y(y)})"><circle r="11" fill="${col}" stroke="#fff" stroke-width="2.5"/><path d="M0,-11 V-30 L13,-25 L0,-20" fill="${col}" stroke="#fff" stroke-width="1.5"/></g>`;
+    g+=climber(s.a,fa,'#c0392b');if(c.mode!=='tangent'&&c.mode!=='value')g+=climber(s.b,fb,'#1E6B3C');svg.innerHTML=g};
+  mount(svg,draw);drag(svg,()=>F,()=>F?(c.mode==='tangent'||c.mode==='value'?[{id:'a',px:F.X(s.a),py:F.Y(c.f(s.a)),any:1}]:[{id:'a',px:F.X(s.a),py:F.Y(c.f(s.a))},{id:'b',px:F.X(s.b),py:F.Y(c.f(s.b))}]):[],
+    (id,x)=>{{const e=(c.xr[1]-c.xr[0])*0.03;s[id]=Math.max(c.xr[0]+e,Math.min(c.xr[1]-e,x))};if(c.mode==='secant'||!c.mode){if(Math.abs(s.a-s.b)<0.3)return}draw()})};
+})();
+</script><script>/* Altitude interactive edition — Foundations instruments (Chapters 1–3). (c) Solan Books */
+(()=>{const A=ALT,{fmt,fmtS,frame,axes,path,dot,ring,seg,clip,line,mount,drag,segc,on,panel,slider,T,esc}=A;
+const wire=(P,s,draw)=>{P.q('.ctl')?.addEventListener('input',e=>{const k=e.target.dataset.k;if(!k)return;s[k]=+e.target.value;draw()})};
+const out=(P,k,t)=>{const o=P.q(`[data-o="${k}"]`);if(o)o.textContent=t};
+const setv=(P,k,v)=>{const i=P.q(`input[data-k="${k}"]`);if(i)i.value=v};
+const money=(v,d=2)=>(v<0?'−$':'$')+fmt(Math.abs(v),d);
+const segbtns=(items,cur,key='v')=>`<div class="seg">${items.map(([v,l])=>`<button type="button" aria-pressed="${v===cur}" data-${key}="${v}">${l}</button>`).join('')}</div>`;
+
+/* generic: a function with a movable point */
+A.explore=(el,c)=>{const s={x:c.x0};
+  const P=panel(el,{title:c.title,tag:c.tag||'Explore',ctl:slider('x',c.sl||'x',c.lo??c.xr[0],c.hi??c.xr[1],c.step||0.01,s.x)});
+  const sv=P.svgs[0];let F;
+  const draw=()=>{F=frame(sv,c.xr,c.yr);let g='';
+    if(c.shade)g+=c.shade(F);
+    for(const f of c.fs)g+=path(F,f.f,f.lo??c.xr[0],f.hi??c.xr[1],f.c||'var(--navy)',f.w||3,f.d||'');
+    for(const m of (c.marks||[]))g+=(m.ring?ring:dot)(F,m.x,m.y,m.c||'var(--ink)',5)+(F.small||!m.l?'':T(F.X(m.x)+8,F.Y(m.y)-8,m.l,{size:12,weight:600,paint:1,fill:m.c||'var(--ink)'}));
+    const x=s.x;g+=seg(F,x,c.yr[0],x,c.fs[0].f(x),'var(--soft)',1,'3 4');for(const f of c.fs)if(!f.nodot)g+=dot(F,x,f.f(x),f.c||'var(--navy)',6.5);
+    sv.innerHTML=axes(F,c.xs,c.ys,{xl:c.xl,yl:c.yl})+clip(F,g);out(P,'x',fmt(x,c.dx??2));P.read.innerHTML=c.read(x)};
+  wire(P,s,draw);mount(sv,draw);
+  drag(sv,()=>F,()=>F?[{id:'x',px:F.X(s.x),py:F.Y(c.fs[0].f(s.x)),any:1}]:[],(id,x)=>{const st=c.step||0.01;s.x=Math.round(Math.max(c.lo??c.xr[0],Math.min(c.hi??c.xr[1],x))/st)*st;setv(P,'x',s.x);draw()})};
+
+/* four representations of one function */
+A.fourways=(el)=>{const R=q=>50*q-0.5*q*q,qs=[0,10,20,30,40,50,60,70,80,90,100],s={q:30};
+  const P=panel(el,{title:'One function, four views: R(q) = 50q − 0.5q²',tag:'Representations',ctl:slider('q','q (units)',0,100,10,s.q),
+    after:'<div class="grid lab"><table><tbody></tbody></table></div>'});
+  const sv=P.svgs[0];
+  const draw=()=>{const F=frame(sv,[0,100],[0,1400]),q=s.q;
+    sv.innerHTML=axes(F,10,200,{xl:'q (units)',yl:'R ($)'})+clip(F,path(F,R,0,100,'var(--navy)',3))+qs.map(v=>dot(F,v,R(v),v===q?'var(--red)':'var(--rule)',v===q?8:4)).join('');
+    P.q('tbody').innerHTML=`<tr><th>q</th>${qs.map(v=>`<td class="${v===q?'sel':''}">${v}</td>`).join('')}</tr><tr><th>R(q)</th>${qs.map(v=>`<td class="${v===q?'sel':''}">${fmt(R(v),0)}</td>`).join('')}</tr>`;
+    out(P,'q',q);P.read.innerHTML=`<div><b>Verbal:</b> selling ${q} units brings in ${money(R(q),0)} of revenue.</div><div><b>Algebraic:</b> R(${q}) = 50(${q}) − 0.5(${q})² = <b>${fmt(R(q),0)}</b></div>`};
+  wire(P,s,draw);mount(sv,draw)};
+
+/* vertical line test */
+A.vlt=(el)=>{const G={par:{l:'parabola',up:x=>x*x+0.5,lo:-2.4,hi:2.4},cir:{l:'circle',up:x=>Math.abs(x)<=1.8?Math.sqrt(3.24-x*x):NaN,dn:x=>Math.abs(x)<=1.8?-Math.sqrt(3.24-x*x):NaN,lo:-1.8,hi:1.8},
+  cub:{l:'cubic',up:x=>x**3-2*x,lo:-2.4,hi:2.4},side:{l:'sideways parabola',up:x=>x>=-1.5?Math.sqrt(x+1.5):NaN,dn:x=>x>=-1.5?-Math.sqrt(x+1.5):NaN,lo:-1.5,hi:2.5}},s={k:'par',x:1};
+  const P=panel(el,{title:'The vertical line test',tag:'Function?',ctl:segbtns(Object.entries(G).map(([k,v])=>[k,v.l]),'par')+slider('x','line at x =',-2.4,2.4,0.01,s.x)});
+  const sv=P.svgs[0];let F;
+  const draw=()=>{const g=G[s.k],x=s.x;F=frame(sv,[-2.5,2.5],[-3,5]);let p=path(F,g.up,g.lo,g.hi,'var(--navy)',3)+(g.dn?path(F,g.dn,g.lo,g.hi,'var(--navy)',3):'');
+    const hits=[g.up(x),g.dn?g.dn(x):NaN].filter(v=>isFinite(v));const uniq=[...new Set(hits.map(v=>v.toFixed(6)))].map(Number);const bad=uniq.length>1;
+    p+=seg(F,x,-3,x,5,bad?'var(--red)':'var(--base)',2.4,'7 6')+uniq.map(v=>dot(F,x,v,bad?'var(--red)':'var(--base)',7)).join('');
+    sv.innerHTML=axes(F,1,1,{xl:'x',yl:'y'})+clip(F,p);out(P,'x',fmt(x,2));
+    P.read.innerHTML=`<div>vertical line at x = <b>${fmt(x,2)}</b> meets the graph <b>${uniq.length}</b> time${uniq.length===1?'':'s'}</div><div class="${bad?'k-red':'k-base'}"><b>${bad?'two outputs for one input: NOT a function':uniq.length?'one output for this input':'no output: x is not in the domain'}</b></div>`};
+  segc(P.q('.seg'),b=>{s.k=b.dataset.v;draw()});wire(P,s,draw);mount(sv,draw);
+  drag(sv,()=>F,()=>F?[{id:'x',px:F.X(s.x),py:F.Y(0),any:1}]:[],(id,x)=>{s.x=Math.max(-2.4,Math.min(2.4,x));setv(P,'x',s.x);draw()})};
+
+/* slope explorer */
+A.lines=(el)=>{const s={m:1.5,b:0.5};
+  const P=panel(el,{title:'Slope is the constant rate of change',tag:'Linear',ctl:slider('m','slope m',-3,3,0.1,s.m)+slider('b','intercept b',-2,8,0.1,s.b)+segbtns([['0','m > 0'],['1','m < 0'],['2','m = 0']],'0','p')});
+  const sv=P.svgs[0],pre=[[1.5,0.5],[-1,7],[0,3]];
+  const draw=()=>{const F=frame(sv,[0,5],[-2,8]),{m,b}=s,f=x=>m*x+b;
+    sv.innerHTML=axes(F,1,1,{xl:'x',yl:'y'})+clip(F,pre.map(([pm,pb])=>line(F,0,pb,pm,'var(--rule)',1.6,'4 5')).join('')+line(F,0,b,m,'var(--navy)',3)+seg(F,2,f(2),3,f(2),'var(--mid)',2.4,'')+seg(F,3,f(2),3,f(3),'var(--summit)',2.4,''))
+      +dot(F,0,b,'var(--red)',6)+(F.small?'':T(F.X(2.5),F.Y(f(2))+(m>=0?18:-8),'Δx = 1',{anchor:'middle',fill:'var(--mid)',weight:600,paint:1})+T(F.X(3)+8,F.Y((f(2)+f(3))/2)+4,`Δy = m = ${fmt(m,1)}`,{fill:'var(--summit)',weight:600,paint:1}));
+    out(P,'m',fmt(m,1));out(P,'b',fmt(b,1));
+    P.read.innerHTML=`<div>f(x) = <b>${fmt(m,1)}x ${b<0?'−':'+'} ${fmt(Math.abs(b),1)}</b></div><div class="${m>0?'k-base':m<0?'k-red':'k-navy'}"><b>${m>0?'increasing':m<0?'decreasing':'constant'}</b>: each 1-unit step in x changes f by ${fmt(m,1)}</div>`};
+  wire(P,s,draw);segc(P.q('.seg'),b=>{[s.m,s.b]=pre[+b.dataset.p];setv(P,'m',s.m);setv(P,'b',s.b);draw()});mount(sv,draw)};
+
+/* increasing / decreasing by the definition */
+A.incdec=(el)=>{const f=x=>x**3/6-1.25*x*x+2*x-0.5,iv=[[0.2,1,1],[1,4,-1],[4,6.6,1]],s={a:2,b:3};
+  const P=panel(el,{title:'Test the definition: pick x₁ < x₂',tag:'Increasing or decreasing',ctl:slider('a','x₁',0.2,6.6,0.05,s.a)+slider('b','x₂',0.2,6.6,0.05,s.b)});
+  const sv=P.svgs[0];let F;
+  const draw=()=>{F=frame(sv,[0,7],[-2.5,4]);let g='';for(const[l,h,d]of iv)g+=path(F,f,l,h,d>0?'var(--base)':'var(--red)',3.4);
+    const x1=Math.min(s.a,s.b),x2=Math.max(s.a,s.b),y1=f(x1),y2=f(x2);
+    g+=seg(F,x1,-2.5,x1,y1,'var(--soft)',1,'3 4')+seg(F,x2,-2.5,x2,y2,'var(--soft)',1,'3 4')+seg(F,x1,y1,x2,y1,'var(--mid)',1.6,'4 4')+dot(F,x1,y1,'var(--navy)',7)+dot(F,x2,y2,'var(--summit)',7);
+    for(const x of [1,4])g+=ring(F,x,f(x),'var(--ink)',5);
+    sv.innerHTML=axes(F,1,1,{xl:'x',yl:'f(x)'})+clip(F,g);out(P,'a',fmt(s.a,2));out(P,'b',fmt(s.b,2));
+    const inside=iv.find(([l,h])=>x1>=l&&x2<=h&&x1<x2);
+    P.read.innerHTML=x1===x2?'<div>Pick two different inputs.</div>':`<div>f(x₁) = <b>${fmt(y1,2)}</b>, f(x₂) = <b>${fmt(y2,2)}</b> → <b>f(x₁) ${y1<y2?'<':'>'} f(x₂)</b></div><div>${inside?`both points lie in (${A.num(inside[0]===0.2?0:inside[0])}, ${A.num(inside[1]>6?6:inside[1])}), where f is <b class="${inside[2]>0?'k-base':'k-red'}">${inside[2]>0?'increasing':'decreasing'}</b>: every such pair agrees`:'the points straddle a turning point, so one pair says nothing about the whole interval'}</div>`};
+  wire(P,s,draw);mount(sv,draw);
+  drag(sv,()=>F,()=>F?[{id:'a',px:F.X(s.a),py:F.Y(f(s.a))},{id:'b',px:F.X(s.b),py:F.Y(f(s.b))}]:[],(id,x)=>{s[id]=Math.round(Math.max(0.2,Math.min(6.6,x))*20)/20;setv(P,id,s[id]);draw()})};
+
+/* business functions builder */
+A.biz=(el)=>{const s={a:100,b:2,fc:300,v:10};
+  const P=panel(el,{title:'Build demand, cost, revenue and profit',tag:'Business functions',ctl:slider('a','demand intercept',60,140,1,s.a)+slider('b','demand slope',1,4,0.1,s.b)+slider('fc','fixed cost',0,800,10,s.fc)+slider('v','variable cost/unit',0,40,1,s.v)});
+  const sv=P.svgs[0];
+  const draw=()=>{const{a,b,fc,v}=s,R=q=>(a-b*q)*q,C=q=>fc+v*q,Pi=q=>R(q)-C(q),qm=a/b,qs=(a-v)/(2*b),top=Math.max(R(a/(2*b)),C(qm))*1.08,disc=(a-v)**2-4*b*fc;
+    const F=frame(sv,[0,qm*1.04],[Math.min(-fc*1.1,Pi(qm)),top]);const be=disc>=0?[((a-v)-Math.sqrt(disc))/(2*b),((a-v)+Math.sqrt(disc))/(2*b)]:[];
+    let g=path(F,R,0,qm,'var(--mid)',2.6)+path(F,C,0,qm,'var(--red)',2.6)+path(F,Pi,0,qm,'var(--base)',3.4);
+    g+=be.map(q=>ring(F,q,0,'var(--navy)',6)).join('')+(Pi(qs)>-Infinity?dot(F,qs,Pi(qs),'var(--base)',7):'');
+    if(!F.small)g+=T(F.X(qm*0.98),F.Y(R(qm*0.98))-8,'R(q)',{anchor:'end',fill:'var(--mid)',weight:700,paint:1})+T(F.X(qm*0.98),F.Y(C(qm*0.98))-8,'C(q)',{anchor:'end',fill:'var(--red)',weight:700,paint:1})+T(F.X(qs),F.Y(Pi(qs))-12,'max π',{anchor:'middle',fill:'var(--base)',weight:700,paint:1});
+    sv.innerHTML=axes(F,10,200,{xl:'q (units)',yl:'$'})+clip(F,g);for(const k of['a','b','fc','v'])out(P,k,fmt(s[k],k==='b'?1:0));
+    P.read.innerHTML=`<div>D(q) = <b>${a} − ${fmt(b,1)}q</b></div><div class="k-red">C(q) = <b>${fc} + ${v}q</b></div><div class="k-mid">R(q) = <b>${a}q − ${fmt(b,1)}q²</b></div><div>${be.length?`break-even at q ≈ <b>${fmt(be[0],1)}</b> and <b>${fmt(be[1],1)}</b>`:'<span class="k-red">never breaks even</span>'}</div><div class="k-base">max profit <b>${money(Pi(qs))}</b> at q = <b>${fmt(qs,2)}</b></div>`};
+  wire(P,s,draw);mount(sv,draw)};
+
+/* linear vs exponential race */
+A.race=(el,c)=>{const s={T:c.T0,m:c.m,g:c.g};
+  const P=panel(el,{title:c.title||'Adding vs multiplying',tag:'Growth race',ctl:slider('T','show up to t =',2,c.Tmax,0.5,s.T)+slider('m',`linear: add per ${c.unit||'year'}`,c.mr[0],c.mr[1],c.mr[2],s.m)+slider('g',c.cont?'exponential: rate k':'exponential: multiply by',c.gr[0],c.gr[1],c.gr[2],s.g)});
+  const sv=P.svgs[0];
+  const draw=()=>{const L=t=>c.y0+s.m*t,E=t=>c.cont?c.y0*Math.exp(s.g*t):c.y0*s.g**t;let cross=NaN;for(let t=0.01;t<=s.T;t+=0.01)if(E(t)>=L(t)&&E(t-0.01)<L(t-0.01)){cross=t;break}
+    const top=Math.max(L(s.T),E(s.T))*1.1,F=frame(sv,[0,s.T],[0,top]);
+    let g=path(F,L,0,s.T,'var(--mid)',3)+path(F,E,0,s.T,'var(--base)',3.4)+dot(F,0,c.y0,'var(--ink)',5);if(isFinite(cross))g+=ring(F,cross,E(cross),'var(--red)',7);
+    sv.innerHTML=axes(F,s.T>12?2:1,top>400?100:top>150?50:20,{xl:`t (${c.unit||'years'}s)`.replace('ss)','s)'),yl:'Value'})+clip(F,g);
+    out(P,'T',fmt(s.T,1));out(P,'m',fmt(s.m,0));out(P,'g',c.cont?fmt(s.g,2):'×'+fmt(s.g,2));
+    P.read.innerHTML=`<div class="k-mid">linear at t = ${fmt(s.T,1)}: <b>${fmt(L(s.T),1)}</b></div><div class="k-base">exponential: <b>${fmt(E(s.T),1)}</b></div><div class="k-red">${isFinite(cross)?`exponential overtakes at t ≈ <b>${fmt(cross,1)}</b>`:'no crossover yet: extend t'}</div>`};
+  wire(P,s,draw);mount(sv,draw)};
+
+/* e^x and ln x as mirror images */
+A.mirror=(el)=>{const s={x:0.6};
+  const P=panel(el,{title:'eˣ and ln x are mirror images across y = x',tag:'Inverse functions',ctl:slider('x','x',-2,1.4,0.01,s.x)});
+  const sv=P.svgs[0];
+  const draw=()=>{const W=sv.clientWidth,H=sv.clientHeight,sm=W<520,iw=W-(sm?44:58),ih=H-(sm?38:44),u=Math.max(7/iw,7.2/ih),xr=[1-iw*u/2,1+iw*u/2],yr=[1-ih*u/2,1+ih*u/2];const F=frame(sv,xr,yr);const x=s.x,y=Math.exp(x);
+    let g=path(F,t=>t,xr[0],xr[1],'var(--soft)',1.6,'6 5')+path(F,Math.exp,xr[0],2,'var(--navy)',3)+path(F,Math.log,0.005,xr[1],'var(--base)',3)+seg(F,x,y,y,x,'var(--summit)',2,'3 4')+dot(F,x,y,'var(--navy)',7)+dot(F,y,x,'var(--base)',7)+dot(F,0,1,'var(--ink)',4)+dot(F,1,0,'var(--ink)',4);
+    if(!F.small)g+=T(F.X(1.3),F.Y(Math.exp(1.3))-6,'y = eˣ',{fill:'var(--navy)',weight:700,paint:1})+T(F.X(4.2),F.Y(Math.log(4.2))-10,'y = ln x',{anchor:'end',fill:'var(--base)',weight:700,paint:1})+T(F.X(4.2),F.Y(4.2)+16,'y = x',{anchor:'end',size:12,paint:1});
+    sv.innerHTML=axes(F,1,1,{xl:'x',yl:'y'})+clip(F,g);out(P,'x',fmt(x,2));
+    P.read.innerHTML=`<div class="k-navy">e^${fmt(x,2)} = <b>${fmt(y,3)}</b></div><div class="k-base">ln ${fmt(y,3)} = <b>${fmt(x,2)}</b></div><div>(${fmt(x,2)}, ${fmt(y,3)}) and (${fmt(y,3)}, ${fmt(x,2)}): the coordinates swap</div>`};
+  wire(P,s,draw);mount(sv,draw)};
+
+/* compounding frequency */
+A.compound=(el,c)=>{const s={P:c.P,r:c.r,t:c.t,ln:1};
+  const P=panel(el,{title:'More frequent compounding approaches Pe^(rt)',tag:'Compounding',ctl:slider('P','principal $',500,20000,100,s.P)+slider('r','rate %',1,15,0.5,s.r*100)+slider('t','years',1,40,1,s.t)+slider('ln','compoundings per year n',0,3,0.01,s.ln),
+    after:'<div class="grid lab"><table><thead><tr><th>compounding</th><th>n</th><th>balance</th><th>gain over previous</th></tr></thead><tbody></tbody></table></div>'});
+  P.q('input[data-k=r]').addEventListener('input',e=>{s.r=+e.target.value/100;draw()});
+  const sv=P.svgs[0];
+  const draw=()=>{const{P:p,r,t}=s,B=n=>p*(1+r/n)**(n*t),inf=p*Math.exp(r*t),n=Math.round(10**s.ln),F=frame(sv,[0,3],[B(1)*0.98,inf*1.01]);
+    let g=path(F,L=>B(10**L),0,3,'var(--navy)',3)+seg(F,0,inf,3,inf,'var(--summit)',2.2,'8 6')+dot(F,Math.log10(n),B(n),'var(--red)',7);
+    if(!F.small)g+=T(F.X(0.05),F.Y(inf)-8,`continuous: ${money(inf)}`,{fill:'var(--summit)',weight:700,paint:1});
+    sv.innerHTML=axes(F,1,(inf-B(1))/4>1?Math.pow(10,Math.floor(Math.log10((inf-B(1))/2))):1,{xl:'compoundings per year',yl:'balance ($)',xt:k=>A.num(10**k)})+clip(F,g);
+    out(P,'P','$'+fmt(p,0));out(P,'r',fmt(r*100,1)+'%');out(P,'t',t);out(P,'ln',n);
+    const rows=[['annual',1],['quarterly',4],['monthly',12],['daily',365],['continuous',Infinity]];let prev=null;
+    P.q('tbody').innerHTML=rows.map(([l,k])=>{const v=k===Infinity?inf:B(k);const r=`<tr><td style="text-align:left">${l}</td><td>${k===Infinity?'∞':k}</td><td>${money(v)}</td><td>${prev===null?'':money(v-prev)}</td></tr>`;prev=v;return r}).join('');
+    P.read.innerHTML=`<div>n = <b>${n}</b>: balance <b>${money(B(n))}</b></div><div class="k-summit">limit as n → ∞: <b>${money(inf)}</b></div><div>effective annual rate e^r − 1 = <b>${fmt((Math.exp(r)-1)*100,2)}%</b></div>`};
+  wire(P,s,draw);mount(sv,draw)};
+
+/* dosing: half-life, threshold, repeated doses */
+A.dosing=(el,c)=>{const s={h:c.h,tau:c.tau,rep:false};
+  const P=panel(el,{title:`${c.D} mg dose: decay, threshold and repeated dosing`,tag:'Half-life',ctl:slider('h','half-life (hr)',1,24,0.5,s.h)+slider('tau','dosing interval (hr)',2,48,1,s.tau)+`<div class="seg" data-multi="1"><button type="button" aria-pressed="false" data-r="1">repeat the dose</button></div>`});
+  const sv=P.svgs[0];
+  const draw=()=>{const k=Math.LN2/s.h,D=c.D,th=c.th,Tm=c.Tmax,tau=s.tau;const Q=t=>{if(!s.rep)return D*Math.exp(-k*t);let v=0;for(let j=0;j*tau<=t+1e-9;j++)v+=D*Math.exp(-k*(t-j*tau));return v};
+    const peak=s.rep?D/(1-Math.exp(-k*tau)):D,F=frame(sv,[0,Tm],[0,peak*1.08]);
+    let g=seg(F,0,th,Tm,th,'var(--red)',2,'7 6');for(let j=1;j*s.h<=Tm;j++)g+=seg(F,j*s.h,0,j*s.h,D*0.5**j,'var(--rule)',1,'3 4');
+    if(s.rep){const tr=D/(Math.exp(k*tau)-1);g+=seg(F,0,tr,Tm,tr,'var(--summit)',1.8,'3 5')}
+    let d='';for(let i=0;i<=900;i++){const t=Tm*i/900;const v=Q(t);d+=(i?'L':'M')+F.X(t).toFixed(1)+','+F.Y(v).toFixed(1);if(s.rep){const nt=Math.ceil(t/tau)*tau;if(nt>t&&nt<=Tm*(i+1)/900){d+='L'+F.X(nt)+','+F.Y(Q(nt-1e-9))+'L'+F.X(nt)+','+F.Y(Q(nt))}}}
+    g+=`<path d="${d}" fill="none" stroke="var(--navy)" stroke-width="3" stroke-linejoin="round"/>`;
+    const tb=Math.log(th/D)/-k;if(!s.rep&&tb<=Tm)g+=dot(F,tb,th,'var(--red)',7);
+    if(!F.small)g+=T(F.X(Tm)-6,F.Y(th)-8,`${th} mg threshold`,{anchor:'end',fill:'var(--red)',weight:600,paint:1});
+    sv.innerHTML=axes(F,Tm>60?12:6,peak>300?100:50,{xl:'t (hours)',yl:'Q (mg)'})+clip(F,g);out(P,'h',fmt(s.h,1));out(P,'tau',s.tau);
+    const tr=D/(Math.exp(k*tau)-1);
+    P.read.innerHTML=`<div>k = −ln 2 / ${fmt(s.h,1)} = <b>−${fmt(k,4)}</b> per hour</div>`+(s.rep?`<div class="k-summit">steady-state trough Q* = ${D}/(e^{${fmt(k*tau,3)}} − 1) = <b>${fmt(tr,1)} mg</b></div><div>peak ≈ <b>${fmt(tr+D,1)} mg</b> ${tr>th?'<span class="k-base">trough stays above threshold</span>':'<span class="k-red">trough falls below threshold</span>'}</div>`
+      :`<div class="k-red">single dose falls below ${th} mg at t = <b>${fmt(tb,1)} hr</b></div>`)};
+  wire(P,s,draw);segc(P.q('.seg'),b=>{s.rep=on(b);draw()});mount(sv,draw)};
+
+/* composition machine */
+A.compose=(el)=>{const L=[
+  {g:x=>3*x+1,gs:'3x + 1',f:u=>u**4,fs:'u⁴',name:'(3x + 1)⁴'},{g:x=>5*x*x-2,gs:'5x² − 2',f:Math.exp,fs:'eᵘ',name:'e^(5x² − 2)'},
+  {g:x=>x**3+7,gs:'x³ + 7',f:Math.log,fs:'ln u',name:'ln(x³ + 7)'},{g:x=>4*x-1,gs:'4x − 1',f:Math.sqrt,fs:'√u',name:'√(4x − 1)'}],s={i:0,x:1,sw:false};
+  const P=panel(el,{title:'The composition machine',tag:'Composition',plots:[],ctl:segbtns(L.map((p,i)=>[String(i),p.name]),'0','i')+slider('x','input x',-2,3,0.25,s.x)+`<div class="seg" data-multi="1" data-g="sw"><button type="button" aria-pressed="false" data-sw="1">swap the order</button></div>`,
+    after:''});
+  const box=document.createElement('div');box.className='mach';P.q('.panel .ph').after(box);
+  const v=n=>isFinite(n)?fmtS(n,5):'undefined';
+  const draw=()=>{const p=L[s.i],x=s.x,first=s.sw?{fn:p.f,s:p.fs.replace('u','x')}:{fn:p.g,s:p.gs},second=s.sw?{fn:p.g,s:p.gs.replace(/x/g,'u')}:{fn:p.f,s:p.fs};
+    const m=first.fn(x),o=isFinite(m)?second.fn(m):NaN,other=s.sw?p.f(p.g(x)):p.g(p.f(x));
+    box.innerHTML=`<div class="flow"><div class="nd">${fmt(x,2)}</div><span>→</span><div class="mb in">${s.sw?'f':'g'}: ${esc(first.s)}<small>applied first</small></div><span>→</span><div class="nd">${v(m)}</div><span>→</span><div class="mb out">${s.sw?'g':'f'}: ${esc(second.s)}<small>applied second</small></div><span>→</span><div class="nd big">${v(o)}</div></div>`;
+    out(P,'x',fmt(x,2));P.read.innerHTML=`<div>${s.sw?'g(f(x))':'f(g(x))'} at x = ${fmt(x,2)}: <b>${v(o)}</b></div><div class="k-red">the other order, ${s.sw?'f(g(x))':'g(f(x))'}: <b>${v(other)}</b></div>`};
+  P.q('.ctl').addEventListener('click',e=>{const b=e.target.closest('button[data-i]');if(b){for(const c of b.parentNode.children)c.setAttribute('aria-pressed',c===b);s.i=+b.dataset.i;draw()}});
+  segc(P.q('[data-g=sw]'),b=>{s.sw=on(b);draw()});wire(P,s,draw);draw()};
+
+/* transformations */
+A.transform=(el,c)=>{const s={k:0,h:0,a:1,r:false};const base=c.base,bs=c.bs;
+  const P=panel(el,{title:c.title||'Transform a known function',tag:'Transformations',ctl:slider('k','shift up/down',c.kr[0],c.kr[1],c.kr[2],0)+slider('h','shift right/left',c.hr[0],c.hr[1],c.hr[2],0)+slider('a','stretch factor',0,3,0.1,1)+`<div class="seg" data-multi="1"><button type="button" aria-pressed="false" data-rf="1">reflect</button></div>`+(c.pre?segbtns(c.pre.map((p,i)=>[String(i),p.l]),'-1','p'):'')});
+  const sv=P.svgs[0];
+  const draw=()=>{const{k,h,a,r}=s,sg=r?-1:1,g=x=>sg*a*base(x-h)+k,F=frame(sv,c.xr,c.yr);const vx=c.vx+h,vy=g(vx);
+    sv.innerHTML=axes(F,c.xs,c.ys,{xl:c.xl,yl:c.yl})+clip(F,path(F,base,c.xr[0],c.xr[1],'var(--rule)',2.4,'6 5')+path(F,g,c.xr[0],c.xr[1],'var(--navy)',3.2)+ring(F,c.vx,base(c.vx),'var(--soft)',5)+dot(F,vx,vy,'var(--summit)',7));
+    out(P,'k',fmt(k,c.kr[2]<1?1:0));out(P,'h',fmt(h,c.hr[2]<1?1:0));out(P,'a',fmt(a,1));
+    const parts=`${r?'−':''}${a!==1?fmt(a,1)+'·':''}${c.fn}(${c.v}${h?(h>0?' − ':' + ')+fmt(Math.abs(h),c.hr[2]<1?1:0):''})${k?(k>0?' + ':' − ')+fmt(Math.abs(k),c.kr[2]<1?1:0):''}`;
+    P.read.innerHTML=`<div>new function: <b>${parts}</b></div><div class="k-summit">${c.vl||'vertex'} moves from (${fmt(c.vx,0)}, ${fmt(base(c.vx),0)}) to <b>(${fmt(vx,1)}, ${fmt(vy,1)})</b></div>`};
+  wire(P,s,draw);P.q('.ctl').addEventListener('click',e=>{const b=e.target.closest('button[data-rf]');if(b){b.setAttribute('aria-pressed',!on(b));s.r=on(b);draw()}
+    const p=e.target.closest('button[data-p]');if(p&&c.pre){for(const q of p.parentNode.children)q.setAttribute('aria-pressed',q===p);Object.assign(s,{k:0,h:0,a:1,r:false},c.pre[+p.dataset.p].s);setv(P,'k',s.k);setv(P,'h',s.h);setv(P,'a',s.a);P.q('button[data-rf]').setAttribute('aria-pressed',s.r);draw()}});
+  mount(sv,draw)};
+
+/* piecewise labor cost */
+A.piecewise=(el)=>{const L=h=>h<=40?18*h:27*h-360,s={h:30};
+  const P=panel(el,{title:'Overtime: the rule changes at 40 hours',tag:'Piecewise',ctl:slider('h','hours h',0,65,0.5,s.h)});
+  const sv=P.svgs[0];
+  const draw=()=>{const F=frame(sv,[0,65],[0,1400]),h=s.h,q=3*h;
+    sv.innerHTML=axes(F,10,200,{xl:'h (hours)',yl:'L(h) ($)'})+clip(F,path(F,L,0,40,'var(--mid)',3.2)+path(F,L,40,65,'var(--red)',3.2)+seg(F,40,0,40,720,'var(--soft)',1,'4 4'))+dot(F,40,720,'var(--ink)',5)+dot(F,h,L(h),h<=40?'var(--mid)':'var(--red)',8);
+    out(P,'h',fmt(h,1));P.read.innerHTML=`<div>L(${fmt(h,1)}) = <b>$${fmt(L(h),2)}</b></div><div class="${h<40?'k-mid':'k-red'}">slope here: <b>$${h<40?18:h>40?27:'18 → 27'}/hour</b>${h===40?' (a corner)':''}</div><div>labor cost per unit (3 units/hour): <b>$${q?fmt(L(h)/q,2):'—'}</b></div>`};
+  wire(P,s,draw);mount(sv,draw)};
+
+/* average cost decomposition */
+A.acparts=(el)=>{const C=q=>2*q*q+10*q+200,AC=q=>2*q+10+200/q,s={q:5};
+  const P=panel(el,{title:'AC(q) = 2q + 10 + 200/q, piece by piece',tag:'Average cost',ctl:slider('q','q (units)',1,50,1,s.q)});
+  const sv=P.svgs[0];
+  const draw=()=>{const F=frame(sv,[0,50],[0,160]),q=s.q,mc=C(q)-C(q-1);
+    let g=path(F,x=>2*x+10,0,50,'var(--mid)',2.2,'7 5')+path(F,x=>200/x,1.3,50,'var(--summit)',2.2,'7 5')+path(F,AC,1.3,50,'var(--navy)',3.4)+ring(F,10,50,'var(--ink)',6);
+    g+=dot(F,q,AC(q),'var(--navy)',8);
+    if(!F.small)g+=T(F.X(48),F.Y(2*48+10)+16,'2q + 10',{anchor:'end',fill:'var(--mid)',weight:700,paint:1})+T(F.X(48),F.Y(200/48)-8,'200/q',{anchor:'end',fill:'var(--summit)',weight:700,paint:1})+T(F.X(10),F.Y(50)+22,'minimum near q = 10',{anchor:'middle',size:12,paint:1});
+    sv.innerHTML=axes(F,10,20,{xl:'q (units)',yl:'$/unit'})+clip(F,g);out(P,'q',q);
+    P.read.innerHTML=`<div>AC(${q}) = ${fmt(2*q,0)} + 10 + ${fmt(200/q,1)} = <b>$${fmt(AC(q),2)}/unit</b></div><div class="${mc<AC(q)?'k-base':'k-red'}">the ${q}th unit costs C(${q}) − C(${q-1}) = <b>$${fmt(mc,0)}</b>: ${mc<AC(q)?'cheaper than average, pulling AC down':'more than average, pulling AC up'}</div>`};
+  wire(P,s,draw);mount(sv,draw)};
+
+/* doubling time & half-life: independent of Q0 */
+A.halflife=(el)=>{const s={k:0.25,q0:50};
+  const P=panel(el,{title:'Doubling time and half-life depend only on k',tag:'Doubling & halving',ctl:slider('k','continuous rate k',-0.5,0.5,0.01,s.k)+slider('q0','initial value Q₀',10,100,1,s.q0)});
+  const sv=P.svgs[0];
+  const draw=()=>{const{k,q0}=s,Q=t=>q0*Math.exp(k*t),Tm=12,top=Math.max(q0,Q(Tm))*1.1,F=frame(sv,[0,Tm],[0,top]);let g=path(F,Q,0,Tm,k>=0?'var(--base)':'var(--red)',3.4);
+    if(Math.abs(k)>0.005){const td=Math.LN2/Math.abs(k);for(let j=1;j*td<=Tm;j++){const v=q0*(k>0?2**j:0.5**j);g+=seg(F,0,v,j*td,v,'var(--rule)',1,'3 4')+seg(F,j*td,0,j*td,v,'var(--summit)',1.6,'4 4')+dot(F,j*td,v,'var(--summit)',6)}}
+    sv.innerHTML=axes(F,2,top>200?100:top>80?20:10,{xl:'t',yl:'Q(t)'})+clip(F,g)+dot(F,0,q0,'var(--ink)',6);out(P,'k',fmt(k,2));out(P,'q0',q0);
+    P.read.innerHTML=Math.abs(k)<0.005?'<div>k ≈ 0: the quantity is (nearly) constant.</div>':`<div class="${k>0?'k-base':'k-red'}">${k>0?'growth':'decay'}: Q(t) = ${q0}e^{${fmt(k,2)}t}</div><div class="k-summit">${k>0?'doubling time':'half-life'} = ln 2 / ${fmt(Math.abs(k),2)} = <b>${fmt(Math.LN2/Math.abs(k),2)}</b></div><div>change Q₀: the gold markers do not move</div>`};
+  wire(P,s,draw);mount(sv,draw)};
+
+/* fit k from two data points */
+A.twopoint=(el,c)=>{const s={t1:c.t1,q1:c.q1,t2:c.t2,q2:c.q2,tp:c.tp};
+  const P=panel(el,{title:c.title||'Two points determine the exponential model',tag:'Fit k',ctl:slider('q1',`value at t = ${c.t1}`,c.qr[0],c.qr[1],1,s.q1)+slider('q2',`value at t = ${c.t2}`,c.qr[0],c.qr[1],1,s.q2)+slider('tp','predict at t =',0,c.Tm,0.5,s.tp)});
+  const sv=P.svgs[0];let F;
+  const draw=()=>{const{t1,q1,t2,q2,tp}=s,k=Math.log(q2/q1)/(t2-t1),q0=q1*Math.exp(-k*t1),Q=t=>q0*Math.exp(k*t),top=Math.max(q1,q2,Q(c.Tm))*1.12;F=frame(sv,[0,c.Tm],[0,top]);
+    sv.innerHTML=axes(F,c.xs||2,c.ys||50,{xl:c.xl,yl:c.yl})+clip(F,path(F,Q,0,c.Tm,'var(--base)',3.2)+seg(F,tp,0,tp,Q(tp),'var(--soft)',1,'3 4'))+dot(F,t1,q1,'var(--navy)',8)+dot(F,t2,q2,'var(--navy)',8)+dot(F,tp,Q(tp),'var(--summit)',7);
+    out(P,'q1',q1);out(P,'q2',q2);out(P,'tp',fmt(tp,1));
+    P.read.innerHTML=`<div>k = ln(${q2}/${q1}) / ${t2-t1} = <b>${fmt(k,4)}</b> per ${c.unit}</div><div>growth factor e^k = <b>${fmt(Math.exp(k),4)}</b></div><div>${k>0?'doubling time':'half-life'} ln 2/|k| = <b>${fmt(Math.LN2/Math.abs(k),1)}</b> ${c.unit}s</div><div class="k-summit">model predicts <b>${fmt(Q(tp),1)}</b> at t = ${fmt(tp,1)}</div>`};
+  wire(P,s,draw);mount(sv,draw);
+  drag(sv,()=>F,()=>F?[{id:'q1',px:F.X(s.t1),py:F.Y(s.q1)},{id:'q2',px:F.X(s.t2),py:F.Y(s.q2)}]:[],(id,x,y)=>{s[id]=Math.round(Math.max(c.qr[0],Math.min(c.qr[1],y)));setv(P,id,s[id]);draw()})};
+})();
+</script><script>/* Altitude interactive edition — Part II instruments (Chapters 6–10). (c) Solan Books */
+(()=>{const A=ALT,{fmt,fmtS,frame,axes,path,dot,ring,seg,clip,line,mount,drag,segc,on,panel,slider,T,esc}=A;
+const wire=(P,s,draw)=>{P.q('.ctl')?.addEventListener('input',e=>{const k=e.target.dataset.k;if(!k)return;s[k]=+e.target.value;draw()})};
+const out=(P,k,t)=>{const o=P.q(`[data-o="${k}"]`);if(o)o.textContent=t};
+const setv=(P,k,v)=>{const i=P.q(`input[data-k="${k}"]`);if(i)i.value=v};
+const money=(v,d=2)=>(v<0?'−$':'$')+fmt(Math.abs(v),d);
+const segbtns=(items,cur,key='v')=>`<div class="seg">${items.map(([v,l])=>`<button type="button" aria-pressed="${String(v)===String(cur)}" data-${key}="${v}">${l}</button>`).join('')}</div>`;
+
+/* rule check: the rule's answer equals the slope of the tangent, everywhere */
+A.rulecheck=(el,c)=>{const s={i:0,x:c.fs[0].x0};
+  const P=panel(el,{title:c.title||'Check the rule against the slope',tag:'Rule check',plots:['plot','plot sm'],ctl:segbtns(c.fs.map((f,i)=>[i,f.n]),0,'i')+slider('x','x',0,1,0.001,0.5)});
+  const[s1,s2]=P.svgs;let F;const inp=P.q('input[data-k=x]');
+  const sync=()=>{const f=c.fs[s.i];inp.min=f.xr[0];inp.max=f.xr[1];inp.step=(f.xr[1]-f.xr[0])/400;inp.value=s.x};
+  const draw=()=>{const f=c.fs[s.i],x=s.x,y=f.f(x),m=f.df(x),h=1e-4,num=(f.f(x+h)-f.f(x-h))/(2*h);F=frame(s1,f.xr,f.yr);const G=frame(s2,f.xr,f.dyr);const w=(f.xr[1]-f.xr[0])*0.14;
+    s1.innerHTML=axes(F,f.xs,f.ys,{xl:f.xl||'x',yl:f.yl||'f(x)'})+clip(F,path(F,f.f,f.xr[0],f.xr[1],'var(--navy)',3)+seg(F,x-w,y-m*w,x+w,y+m*w,'var(--summit)',3,''))+dot(F,x,y,'var(--red)',7);
+    s2.innerHTML=axes(G,f.xs,f.dys,{xl:f.xl||'x',yl:"rule's f′(x)"})+clip(G,path(G,f.df,f.xr[0],f.xr[1],'var(--mid)',3))+dot(G,x,m,'var(--summit)',7);
+    out(P,'x',fmt(x,2));
+    let ch='';if(f.chain){const g=f.chain.g(x),dg=f.chain.dg(x),dfo=f.chain.dfo(g);ch=`<div>chain: outer rate ${fmtS(dfo,4)} × inner rate ${fmtS(dg,4)} = <b>${fmtS(dfo*dg,4)}</b></div>`}
+    P.read.innerHTML=`<div>rule: <b>${esc(f.rule)}</b></div><div class="k-mid">rule gives f′(${fmt(x,2)}) = <b>${fmtS(m,5)}</b></div><div class="k-summit">tangent slope (measured) = <b>${fmtS(num,5)}</b></div>${ch}`};
+  P.q('.ctl').addEventListener('click',e=>{const b=e.target.closest('button[data-i]');if(!b)return;for(const q of b.parentNode.children)q.setAttribute('aria-pressed',q===b);s.i=+b.dataset.i;s.x=c.fs[s.i].x0;sync();draw()});
+  inp.addEventListener('input',()=>{s.x=+inp.value;draw()});sync();mount(s1,draw);mount(s2,draw);
+  drag(s1,()=>F,()=>F?[{id:'x',px:F.X(s.x),py:F.Y(c.fs[s.i].f(s.x)),any:1}]:[],(id,x)=>{const f=c.fs[s.i];s.x=Math.max(f.xr[0],Math.min(f.xr[1],x));inp.value=s.x;draw()})};
+
+/* product rule as a rectangle: R = q · p(q) */
+A.prodrect=(el)=>{const p=q=>200*Math.exp(-0.02*q),dp=q=>-4*Math.exp(-0.02*q),s={q:30,dq:8};
+  const P=panel(el,{title:'Revenue is a rectangle: width q, height p(q)',tag:'Product rule',ctl:slider('q','q (units)',5,110,1,s.q)+slider('dq','extra units Δq',1,20,1,s.dq)});
+  const sv=P.svgs[0];
+  const draw=()=>{const{q,dq}=s,F=frame(sv,[0,140],[0,220]),p0=p(q),p1=p(q+dq);
+    const R=(x0,y0,x1,y1,f,o=1)=>`<rect x="${F.X(x0)}" y="${F.Y(y1)}" width="${F.X(x1)-F.X(x0)}" height="${F.Y(y0)-F.Y(y1)}" fill="${f}" opacity="${o}"/>`;
+    let g=R(0,0,q,p1,'var(--midt)')+R(q,0,q+dq,p1,'var(--baset)')+R(0,p1,q,p0,'var(--redt)')+path(F,p,0,140,'var(--navy)',3)+seg(F,0,p0,q,p0,'var(--red)',1.5,'4 4')+seg(F,q,0,q,p0,'var(--soft)',1.2,'4 4')+dot(F,q,p0,'var(--navy)',6)+dot(F,q+dq,p1,'var(--navy)',6);
+    if(!F.small)g+=T(F.X(q/2),F.Y(p1/2),'kept',{anchor:'middle',fill:'var(--mid)',weight:700})+T(F.X(q+dq/2),F.Y(p1/2),'+ new',{anchor:'middle',fill:'var(--base)',weight:700,size:12})+T(F.X(q/2),F.Y((p0+p1)/2)+4,'− lost',{anchor:'middle',fill:'var(--red)',weight:700,size:12});
+    sv.innerHTML=axes(F,20,40,{xl:'q (units)',yl:'price p ($)'})+clip(F,g);out(P,'q',q);out(P,'dq',dq);
+    const gain=p1*dq,loss=q*(p0-p1);
+    P.read.innerHTML=`<div class="k-base">new strip p·Δq ≈ <b>${money(gain,0)}</b></div><div class="k-red">lost strip q·Δp ≈ <b>${money(loss,0)}</b></div><div>ΔR = <b>${money(gain-loss,0)}</b></div><div class="k-summit">R′(q) = p + q·p′ = ${fmt(p(q),2)} + ${q}(${fmt(dp(q),3)}) = <b>${fmt(p(q)+q*dp(q),2)}</b> $/unit</div>`};
+  wire(P,s,draw);mount(sv,draw)};
+
+/* concavity: where the tangent sits */
+A.concav=(el)=>{const C={up:{f:x=>x*x+0.5,df:x=>2*x,l:'concave up'},dn:{f:x=>-x*x+4,df:x=>-2*x,l:'concave down'},s:{f:x=>x**3/2-1.5*x+2,df:x=>1.5*x*x-1.5,l:'both'}},s={k:'up',x:-0.8};
+  const P=panel(el,{title:'Concavity: where do the tangent lines sit?',tag:'Concavity',ctl:segbtns(Object.entries(C).map(([k,v])=>[k,v.l]),'up','c')+slider('x','x',-1.8,1.8,0.01,s.x)});
+  const sv=P.svgs[0];
+  const draw=()=>{const c=C[s.k],x=s.x,F=frame(sv,[-2,2],[-0.5,4.5]),y=c.f(x),m=c.df(x),cur=c.f,gap=(c.f(x+0.5)-(y+m*0.5)+c.f(x-0.5)-(y-m*0.5))/2;
+    let g=path(F,cur,-2,2,'var(--navy)',3.2)+line(F,x,y,m,'var(--summit)',2.4)+dot(F,x,y,'var(--red)',7);for(const t of[-1.5,0,1.5])g+=line(F,t,c.f(t),c.df(t),'var(--rule)',1.2,'4 5');
+    sv.innerHTML=axes(F,1,1,{xl:'x',yl:'y'})+clip(F,g);out(P,'x',fmt(x,2));
+    const d2=s.k==='up'?2:s.k==='dn'?-2:3*x;
+    P.read.innerHTML=`<div>tangent slope = <b>${fmt(m,2)}</b></div><div class="${d2>0?'k-mid':d2<0?'k-summit':''}">f″(x) = <b>${fmt(d2,2)}</b>: ${Math.abs(d2)<0.03?'inflection':d2>0?'concave up, tangent below the curve, slopes increasing':'concave down, tangent above the curve, slopes decreasing'}</div>`};
+  segc(P.q('.seg'),b=>{s.k=b.dataset.c;draw()});wire(P,s,draw);mount(sv,draw)};
+
+/* MR vs MC: produce more or less */
+A.mrmc=(el,c)=>{const s={q:c.q0};
+  const P=panel(el,{title:c.title||'Marginal revenue vs marginal cost',tag:'MR = MC',plots:['plot','plot sm'],ctl:slider('q','q (units)',c.qr[0],c.qr[1],c.step||0.1,s.q)});
+  const[s1,s2]=P.svgs;const Pi=q=>c.R(q)-c.C(q);let qs=NaN;for(let q=c.qr[0];q<c.qr[1];q+=0.001)if((c.MR(q)-c.MC(q))*(c.MR(q+0.001)-c.MC(q+0.001))<=0){qs=q;break}
+  const draw=()=>{const q=s.q,F=frame(s1,c.qr,c.pr),G=frame(s2,c.qr,c.mr);
+    s1.innerHTML=axes(F,c.xs,c.pys,{xl:c.xl||'q (units)',yl:'π(q)'+(c.u?` (${c.u})`:'')})+clip(F,path(F,Pi,c.qr[0],c.qr[1],'var(--base)',3.2)+line(F,q,Pi(q),c.MR(q)-c.MC(q),'var(--summit)',2,'7 5'))+dot(F,q,Pi(q),'var(--red)',7)+(isFinite(qs)?ring(F,qs,Pi(qs),'var(--ink)',6):'');
+    s2.innerHTML=axes(G,c.xs,c.mys,{xl:c.xl||'q',yl:'per unit'})+clip(G,path(G,c.MR,c.qr[0],c.qr[1],'var(--mid)',3)+path(G,c.MC,c.qr[0],c.qr[1],'var(--red)',3)+seg(G,q,G.yr[0],q,G.yr[1],'var(--soft)',1,'3 4'))+dot(G,q,c.MR(q),'var(--mid)',6)+dot(G,q,c.MC(q),'var(--red)',6)
+      +(G.small?'':T(G.X(c.qr[1])-6,G.Y(c.MR(c.qr[1]))-8,'MR',{anchor:'end',fill:'var(--mid)',weight:700,paint:1})+T(G.X(c.qr[1])-6,G.Y(Math.min(G.yr[1],c.MC(c.qr[1])))+16,'MC',{anchor:'end',fill:'var(--red)',weight:700,paint:1}));
+    out(P,'q',fmt(q,c.step<1?1:0));const d=c.MR(q)-c.MC(q);
+    P.read.innerHTML=`<div class="k-mid">MR = <b>${fmt(c.MR(q),2)}</b></div><div class="k-red">MC = <b>${fmt(c.MC(q),2)}</b></div><div class="${Math.abs(d)<0.5?'k-summit':d>0?'k-base':'k-red'}"><b>${Math.abs(d)<0.5?'MR ≈ MC: profit is at its peak':d>0?'MR > MC: produce more':'MR < MC: produce less'}</b></div><div>π = <b>${fmt(Pi(q),1)}</b>${isFinite(qs)?` · best q ≈ <b>${fmt(qs,2)}</b>`:''}</div>`};
+  wire(P,s,draw);mount(s1,draw);mount(s2,draw)};
+
+/* closed interval method with draggable endpoints */
+A.closedint=(el,c)=>{const s={a:c.a,b:c.b};
+  const P=panel(el,{title:c.title||'The Closed Interval Method',tag:'Global extrema',ctl:slider('a','left end a',c.xr[0],c.xr[1],0.05,s.a)+slider('b','right end b',c.xr[0],c.xr[1],0.05,s.b),after:'<div class="grid lab"><table><thead><tr><th>candidate</th><th>q</th><th>π(q)</th><th></th></tr></thead><tbody></tbody></table></div>'});
+  const sv=P.svgs[0];let F;
+  const draw=()=>{let a=Math.min(s.a,s.b),b=Math.max(s.a,s.b);F=frame(sv,c.xr,c.yr);
+    const cand=[['endpoint',a],...c.crit.filter(x=>x>a&&x<b).map(x=>['critical number',x]),['endpoint',b]].map(([t,x])=>[t,x,c.f(x)]);
+    const mx=Math.max(...cand.map(r=>r[2])),mn=Math.min(...cand.map(r=>r[2]));
+    let g=`<rect x="${F.X(a)}" y="${F.pad.t}" width="${F.X(b)-F.X(a)}" height="${F.H-F.pad.t-F.pad.b}" fill="var(--midt)"/>`+path(F,c.f,c.xr[0],c.xr[1],'var(--rule)',2.4)+path(F,c.f,a,b,'var(--navy)',3.4);
+    for(const[t,x,v]of cand)g+=(v===mx?dot(F,x,v,'var(--base)',8):v===mn?dot(F,x,v,'var(--red)',8):ring(F,x,v,'var(--ink)',6));
+    sv.innerHTML=axes(F,c.xs,c.ys,{xl:c.xl||'q',yl:c.yl||'π(q)'})+clip(F,g);out(P,'a',fmt(s.a,2));out(P,'b',fmt(s.b,2));
+    P.q('tbody').innerHTML=cand.map(([t,x,v])=>`<tr><td style="text-align:left">${t}</td><td>${fmt(x,2)}</td><td>${fmt(v,2)}</td><td style="text-align:left">${v===mx?'<b class="k-base">global max</b>':v===mn?'<b class="k-red">global min</b>':''}</td></tr>`).join('');
+    P.read.innerHTML=`<div>on [${fmt(a,2)}, ${fmt(b,2)}]: max <b class="k-base">${fmt(mx,2)}</b>, min <b class="k-red">${fmt(mn,2)}</b></div>`};
+  wire(P,s,draw);mount(sv,draw);
+  drag(sv,()=>F,()=>F?[{id:'a',px:F.X(s.a),py:F.Y(c.f(s.a))},{id:'b',px:F.X(s.b),py:F.Y(c.f(s.b))}]:[],(id,x)=>{s[id]=Math.round(Math.max(c.xr[0],Math.min(c.xr[1],x))*20)/20;setv(P,id,s[id]);draw()})};
+
+/* hotel pricing: 200 rooms */
+A.hotel=(el)=>{const s={n:0};
+  const P=panel(el,{title:'200 rooms: raise the rate, lose some guests',tag:'Pricing',plots:['plot sm'],ctl:slider('n','number of $10 increases n',0,40,1,0),after:'<div class="rooms" aria-hidden="true"></div>'});
+  const sv=P.svgs[0],rooms=P.q('.rooms');rooms.innerHTML=Array.from({length:200},()=>'<i></i>').join('');
+  const draw=()=>{const n=s.n,p=120+10*n,q=200-5*n,R=n=>(120+10*n)*(200-5*n),F=frame(sv,[0,40],[0,36000]);
+    sv.innerHTML=axes(F,5,6000,{xl:'n',yl:'revenue ($/night)',yt:k=>k?(k/1000)+'K':'0'})+clip(F,path(F,R,0,40,'var(--navy)',3))+ring(F,14,R(14),'var(--ink)',6)+dot(F,n,R(n),'var(--summit)',7);
+    [...rooms.children].forEach((r,i)=>r.className=i<q?'on':'');out(P,'n',n);
+    P.read.innerHTML=`<div>rate <b>$${p}</b>/night</div><div>occupied <b>${q}</b> of 200 (${200-q} empty)</div><div class="k-summit">revenue <b>${money(R(n),0)}</b>/night</div><div>${n<14?'raise the rate: R′(n) > 0':n>14?'lower the rate: R′(n) < 0':'<b class="k-base">optimal: $260, 130 rooms, $33,800</b>'}</div>`};
+  wire(P,s,draw);mount(sv,draw)};
+
+/* EOQ */
+A.eoq=(el)=>{const s={D:5000,S:80,H:4,q:300};
+  const P=panel(el,{title:'Ordering cost vs holding cost',tag:'EOQ',ctl:slider('q','order size q',50,1500,1,s.q)+slider('D','annual demand D',1000,20000,100,s.D)+slider('S','cost per order S',10,300,5,s.S)+slider('H','holding cost H',1,20,0.5,s.H)});
+  const sv=P.svgs[0];
+  const draw=()=>{const{D,S,H,q}=s,O=x=>D*S/x,Hc=x=>H*x/2,TC=x=>O(x)+Hc(x),qs=Math.sqrt(2*D*S/H),F=frame(sv,[0,1500],[0,Math.max(TC(qs)*2.2,1000)]);
+    sv.innerHTML=axes(F,250,F.yr[1]>8000?2000:500,{xl:'order size q',yl:'$/year'})+clip(F,path(F,O,20,1500,'var(--mid)',2.4,'7 5')+path(F,Hc,0,1500,'var(--summit)',2.4,'7 5')+path(F,TC,20,1500,'var(--navy)',3.4)+seg(F,qs,0,qs,TC(qs),'var(--soft)',1,'3 4'))+ring(F,qs,TC(qs),'var(--ink)',6)+dot(F,q,TC(q),'var(--red)',7);
+    for(const k of['D','S','H','q'])out(P,k,fmt(s[k],k==='H'?1:0));
+    P.read.innerHTML=`<div>EOQ = √(2DS/H) = <b>${fmt(qs,0)}</b></div><div class="k-mid">ordering ${money(O(q),0)}</div><div class="k-summit">holding ${money(Hc(q),0)}</div><div>total <b>${money(TC(q),0)}</b> (${fmt(100*(TC(q)/TC(qs)-1),1)}% above the minimum ${money(TC(qs),0)})</div>`};
+  wire(P,s,draw);mount(sv,draw)};
+
+/* elasticity and revenue */
+A.elastic=(el,c)=>{const s={p:c.p0};const R=p=>p*c.D(p);
+  const P=panel(el,{title:c.title||'Elasticity tells you which way to move the price',tag:'Elasticity',plots:['plot sm','plot sm'],ctl:slider('p','price p ($)',c.pr[0],c.pr[1],0.01,s.p)});
+  const[s1,s2]=P.svgs;
+  const draw=()=>{const p=s.p,q=c.D(p),E=-c.dD(p)*p/q,F=frame(s1,c.pr,[0,c.qmax]),G=frame(s2,c.pr,[0,c.rmax]);
+    s1.innerHTML=axes(F,c.ps,c.qs,{xl:'price p',yl:'q = D(p)'})+clip(F,path(F,c.D,c.pr[0],c.pr[1],'var(--navy)',3))+dot(F,p,q,'var(--red)',7);
+    const dR=q*(1-E);
+    s2.innerHTML=axes(G,c.ps,c.rs,{xl:'price p',yl:'R(p) ($)'})+clip(G,path(G,R,c.pr[0],c.pr[1],'var(--base)',3.2)+line(G,p,R(p),dR,'var(--summit)',2,'7 5'))+ring(G,c.pstar,R(c.pstar),'var(--ink)',6)+dot(G,p,R(p),'var(--red)',7);
+    out(P,'p',fmt(p,2));
+    P.read.innerHTML=`<div>E(${fmt(p,2)}) = <b>${fmt(E,3)}</b></div><div class="${Math.abs(E-1)<0.02?'k-summit':E>1?'k-red':'k-base'}"><b>${Math.abs(E-1)<0.02?'unit elastic: revenue is at its maximum':E>1?'elastic: lower the price to raise revenue':'inelastic: raise the price to raise revenue'}</b></div><div>R′(p) = D(p)(1 − E) = <b>${fmt(dR,1)}</b></div><div>R = <b>${money(R(p),0)}</b></div>`};
+  wire(P,s,draw);mount(s1,draw);mount(s2,draw)};
+
+/* logistic */
+A.logistic=(el,c)=>{const s={L:c.L,A:c.A,k:c.k,t:c.t0};
+  const P=panel(el,{title:'Logistic growth: fastest at half the ceiling',tag:'Logistic',plots:['plot','plot sm'],ctl:slider('t','t',0,c.T,0.1,s.t)+slider('A','A',2,999,1,s.A)+slider('k','k',0.1,1.5,0.01,s.k)});
+  const[s1,s2]=P.svgs;
+  const draw=()=>{const{L,A:Aa,k,t}=s,Pf=x=>L/(1+Aa*Math.exp(-k*x)),dP=x=>k*Pf(x)*(1-Pf(x)/L),ts=Math.log(Aa)/k,F=frame(s1,[0,c.T],[0,L*1.08]),G=frame(s2,[0,c.T],[0,k*L/4*1.15]);
+    s1.innerHTML=axes(F,c.ts||2,L/4,{xl:'t',yl:'P(t)',yt:v=>A.num(v/c.div)+c.du})+clip(F,seg(F,0,L,c.T,L,'var(--soft)',1.4,'6 5')+seg(F,0,L/2,c.T,L/2,'var(--rule)',1,'3 4')+path(F,Pf,0,c.T,'var(--navy)',3.2))+ring(F,ts,L/2,'var(--summit)',7)+dot(F,t,Pf(t),'var(--red)',7);
+    s2.innerHTML=axes(G,c.ts||2,G.yr[1]/4,{xl:'t',yl:"P′(t)",yt:v=>A.num(+(v/c.div).toPrecision(2))})+clip(G,path(G,dP,0,c.T,'var(--mid)',3))+ring(G,ts,dP(ts),'var(--summit)',7)+dot(G,t,dP(t),'var(--red)',6);
+    out(P,'t',fmt(t,1));out(P,'A',Aa);out(P,'k',fmt(k,2));
+    P.read.innerHTML=`<div>P(0) = <b>${fmtS(L/(1+Aa)/c.div,4)}${c.du}</b></div><div class="k-summit">inflection t* = ln A / k = <b>${fmt(ts,2)}</b>, P = L/2</div><div>at t = ${fmt(t,1)}: P′ = <b>${fmtS(dP(t)/c.div,4)}${c.du}</b> per unit t, ${t<ts?'<span class="k-base">accelerating</span>':'<span class="k-red">decelerating</span>'}</div>`};
+  wire(P,s,draw);mount(s1,draw);mount(s2,draw)};
+
+/* surge: peak, inflection, threshold window */
+A.surge=(el,c)=>{const s={A:c.A,k:c.k,th:c.th};
+  const P=panel(el,{title:'The surge f(t) = A t e^(−kt)',tag:'Surge',ctl:slider('A','A',20,200,1,s.A)+slider('k','k',0.1,1.5,0.01,s.k)+slider('th','threshold',0,120,1,s.th)});
+  const sv=P.svgs[0];
+  const draw=()=>{const{A:Aa,k,th}=s,f=t=>Aa*t*Math.exp(-k*t),T=c.T,pk=Aa/(k*Math.E),F=frame(sv,[0,T],[0,Math.max(pk*1.15,th*1.1,10)]);
+    let w=[];if(th<pk){const bis=(lo,hi,up)=>{for(let i=0;i<60;i++){const m=(lo+hi)/2;((f(m)<th)===up)?lo=m:hi=m}return(lo+hi)/2};w=[bis(0,1/k,true),bis(1/k,60/k,false)]}
+    let g='';if(w.length){let d=`M${F.X(w[0])},${F.Y(0)}`;for(let i=0;i<=80;i++){const t=w[0]+(w[1]-w[0])*i/80;d+=`L${F.X(t)},${F.Y(f(t))}`}g+=`<path d="${d}L${F.X(w[1])},${F.Y(0)}Z" fill="var(--baset)"/>`}
+    g+=seg(F,0,th,T,th,'var(--red)',1.8,'7 5')+path(F,f,0,T,'var(--navy)',3.2)+dot(F,1/k,pk,'var(--base)',7)+ring(F,2/k,f(2/k),'var(--summit)',7);
+    sv.innerHTML=axes(F,c.ts||2,F.yr[1]>150?40:20,{xl:c.xl||'t (hours)',yl:c.yl||'f(t)'})+clip(F,g);out(P,'A',Aa);out(P,'k',fmt(k,2));out(P,'th',th);
+    P.read.innerHTML=`<div class="k-base">peak at t = 1/k = <b>${fmt(1/k,2)}</b>, value A/(ke) = <b>${fmt(pk,1)}</b></div><div class="k-summit">inflection at t = 2/k = <b>${fmt(2/k,2)}</b></div><div class="k-red">${w.length?`above ${th}: from t ≈ <b>${fmt(w[0],2)}</b> to <b>${fmt(w[1],2)}</b> (${fmt(w[1]-w[0],2)} long)`:`never reaches ${th}`}</div>`};
+  wire(P,s,draw);mount(sv,draw)};
+})();
+</script><script>/* Altitude interactive edition — Part III instruments (Chapters 11–15):
+   riemann (slicing and stacking), netarea, ftc (the bridge, both directions), avgval, usub, family,
+   pvstream, improper, surplus, lorenz, slopefield. (c) Solan Books */
+(()=>{const A=ALT,{fmt,fmtS,frame,axes,path,dot,ring,seg,clip,line,mount,drag,segc,on,panel,slider,T,esc}=A;
+const wire=(P,s,draw)=>{P.q('.ctl')?.addEventListener('input',e=>{const k=e.target.dataset.k;if(!k)return;s[k]=+e.target.value;draw()})};
+const out=(P,k,t)=>{const o=P.q(`[data-o="${k}"]`);if(o)o.textContent=t};
+const setv=(P,k,v)=>{const i=P.q(`input[data-k="${k}"]`);if(i)i.value=v};
+const segbtns=(items,cur,key='v')=>`<div class="seg">${items.map(([v,l])=>`<button type="button" aria-pressed="${String(v)===String(cur)}" data-${key}="${v}">${l}</button>`).join('')}</div>`;
+const integ=(f,a,b,n=400)=>{if(a===b)return 0;const h=(b-a)/n;let s=f(a)+f(b);for(let i=1;i<n;i++)s+=(i%2?4:2)*f(a+i*h);return s*h/3};
+const poly=(F,pts,fill,op=1,stroke='none')=>`<path d="M${pts.map(([x,y])=>F.X(x).toFixed(1)+','+F.Y(y).toFixed(1)).join('L')}Z" fill="${fill}" opacity="${op}" stroke="${stroke}" stroke-width="1"/>`;
+const area=(F,f,a,b,base=0,fill='var(--baset)',n=120)=>{if(b<=a)return'';const p=[[a,base]];for(let i=0;i<=n;i++){const x=a+(b-a)*i/n;p.push([x,f(x)])}p.push([b,base]);return poly(F,p,fill)};
+const signedArea=(F,f,a,b)=>{const pos=x=>Math.max(0,f(x)),neg=x=>Math.min(0,f(x));return area(F,pos,a,b,0,'var(--baset)')+area(F,neg,a,b,0,'var(--redt)')};
+
+/* 4. Riemann sums: slice, then stack the slices into an accumulated total */
+A.riemann=(el,c)=>{const s={n:c.n0||4,m:c.m||'left',x:c.b};
+  const P=panel(el,{title:c.title||'Slice the area, then stack the slices',tag:'Slicing & accumulation',plots:['plot','plot sm'],
+    ctl:`<div class="seg">${[['left','left'],['right','right'],['mid','midpoint'],['trap','trapezoid']].map(([k,l])=>`<button type="button" aria-pressed="${k===s.m}" data-m="${k}">${l}</button>`).join('')}</div>`+slider('n','slices n',1,c.nmax||50,1,s.n)+slider('x','stack up to',c.a,c.b,(c.b-c.a)/200,s.x)});
+  const[s1,s2]=P.svgs,ex=(c.F?c.F(c.b)-c.F(c.a):integ(c.f,c.a,c.b));
+  const draw=()=>{const{n,m}=s,a=c.a,b=c.b,dx=(b-a)/n,F=frame(s1,c.xr||[a,b],c.yr);let g='',acc=0,stack=[[a,0]];
+    for(let i=0;i<n;i++){const x0=a+i*dx,x1=x0+dx,h0=c.f(x0),h1=c.f(x1),hm=c.f(x0+dx/2);let piece,val;
+      if(m==='trap'){piece=[[x0,0],[x0,h0],[x1,h1],[x1,0]];val=(h0+h1)/2*dx}else{const h=m==='left'?h0:m==='right'?h1:hm;piece=[[x0,0],[x0,h],[x1,h],[x1,0]];val=h*dx}
+      const done=x1<=s.x+1e-9;g+=poly(F,piece,val>=0?'var(--midt)':'var(--redt)',done?1:0.35,done?'var(--mid)':'var(--rule)');if(done){acc+=val;stack.push([x1,acc])}}
+    const lab=c.xl||'x';
+    s1.innerHTML=axes(F,c.xs,c.ys,{xl:lab,yl:c.yl})+clip(F,g+path(F,c.f,(c.xr||[a,b])[0],(c.xr||[a,b])[1],'var(--navy)',3)+seg(F,s.x,F.yr[0],s.x,F.yr[1],'var(--summit)',1.6,'4 4'));
+    const Fx=x=>c.F?c.F(x)-c.F(a):integ(c.f,a,x,200),G=frame(s2,c.xr||[a,b],c.ayr);
+    let g2=path(G,Fx,a,b,'var(--base)',2.4,'6 5');g2+=`<polyline points="${stack.map(([x,y])=>G.X(x)+','+G.Y(y)).join(' ')}" fill="none" stroke="var(--mid)" stroke-width="2.6"/>`+stack.slice(1).map(([x,y])=>dot(G,x,y,'var(--mid)',4)).join('');
+    s2.innerHTML=axes(G,c.xs,c.ays,{xl:lab,yl:'accumulated'})+clip(G,g2);
+    out(P,'n',n);out(P,'x',fmt(s.x,2));let tot=0;for(let i=0;i<n;i++){const x0=a+i*dx,h=m==='left'?c.f(x0):m==='right'?c.f(x0+dx):m==='mid'?c.f(x0+dx/2):(c.f(x0)+c.f(x0+dx))/2;tot+=h*dx}
+    const name={left:'LRS',right:'RRS',mid:'midpoint sum',trap:'trapezoid'}[m];
+    P.read.innerHTML=`<div>Δx = <b>${fmtS(dx,4)}</b></div><div class="k-mid">${name} (n = ${n}) = <b>${fmt(tot,c.dg??2)}</b> ${esc(c.u||'')}</div><div class="k-base">exact = <b>${fmt(ex,c.dg??2)}</b></div><div>error = <b>${fmt(tot-ex,c.dg??2)}</b> (${Math.abs(tot-ex)<1e-6?'exact':tot>ex?'overestimate':'underestimate'})</div><div class="k-summit">stacked so far: <b>${fmt(acc,c.dg??2)}</b></div>`};
+  segc(P.q('.seg'),b=>{s.m=b.dataset.m;draw()});wire(P,s,draw);mount(s1,draw);mount(s2,draw)};
+
+/* signed area: net change vs total movement */
+A.netarea=(el,c)=>{const s={b:c.b0};
+  const P=panel(el,{title:c.title||'Net signed area',tag:'Net change',ctl:slider('b','upper limit b',c.a+0.05,c.bmax,0.01,s.b)});
+  const sv=P.svgs[0];
+  const draw=()=>{const F=frame(sv,c.xr,c.yr),b=s.b,pos=integ(x=>Math.max(0,c.f(x)),c.a,b,600),neg=integ(x=>Math.min(0,c.f(x)),c.a,b,600);
+    sv.innerHTML=axes(F,c.xs,c.ys,{xl:c.xl||'x',yl:c.yl||'f(x)'})+clip(F,signedArea(F,c.f,c.a,b)+path(F,c.f,c.xr[0],c.xr[1],'var(--navy)',3)+seg(F,b,F.yr[0],b,F.yr[1],'var(--summit)',1.6,'4 4'));
+    out(P,'b',fmt(b,2));P.read.innerHTML=`<div class="k-base">area above: <b>${fmt(pos,2)}</b></div><div class="k-red">area below: <b>${fmt(-neg,2)}</b></div><div class="k-summit">net integral = <b>${fmt(pos+neg,2)}</b></div><div>total area (unsigned) = <b>${fmt(pos-neg,2)}</b></div>`};
+  wire(P,s,draw);mount(sv,draw)};
+
+/* 5. the FTC bridge: area under the rate builds the accumulation; the slope of the accumulation is the rate */
+A.ftc=(el,c)=>{const L=c.fs;const s={i:0,x:L[0].x0,F0:L[0].F0||0};
+  const P=panel(el,{title:c.title||'The Fundamental Theorem, both directions',tag:'FTC bridge',plots:['plot sm','plot'],
+    ctl:(L.length>1?segbtns(L.map((f,i)=>[i,f.n]),0,'i'):'')+slider('x','x',0,1,0.001,0.5)+(c.init?slider('F0','starting value',c.init[0],c.init[1],c.init[2],s.F0):'')});
+  const[s1,s2]=P.svgs;const inp=P.q('input[data-k=x]');let F1;
+  const sync=()=>{const f=L[s.i];inp.min=f.a;inp.max=f.b;inp.step=(f.b-f.a)/400;inp.value=s.x};
+  const draw=()=>{const f=L[s.i],x=s.x,Acc=t=>s.F0+(f.F?f.F(t)-f.F(f.a):integ(f.f,f.a,t,200));F1=frame(s1,[f.a,f.b],f.yr);const G=frame(s2,[f.a,f.b],f.ayr);
+    s1.innerHTML=axes(F1,f.xs,f.ys,{xl:f.xl||'x',yl:f.yl||'rate f'})+clip(F1,signedArea(F1,f.f,f.a,x)+path(F1,f.f,f.a,f.b,'var(--navy)',3))+dot(F1,x,f.f(x),'var(--red)',7);
+    const Ax=Acc(x),m=f.f(x),w=(f.b-f.a)*0.12;
+    s2.innerHTML=axes(G,f.xs,f.ays,{xl:f.xl||'x',yl:f.al||'accumulated A(x)'})+clip(G,path(G,Acc,f.a,f.b,'var(--rule)',2.4)+path(G,Acc,f.a,x,'var(--base)',3.4)+seg(G,x-w,Ax-m*w,x+w,Ax+m*w,'var(--summit)',2.6,''))+dot(G,x,Ax,'var(--red)',7);
+    out(P,'x',fmt(x,2));out(P,'F0',fmt(s.F0,0));
+    P.read.innerHTML=`<div class="k-base">area under the rate from ${A.num(f.a)} to ${fmt(x,2)} = <b>${fmt(Ax-s.F0,2)}</b> ${esc(f.u||'')}</div>${f.F?`<div>F(${fmt(x,2)}) − F(${A.num(f.a)}) = <b>${fmt(f.F(x)-f.F(f.a),2)}</b></div>`:''}<div class="k-summit">slope of A at ${fmt(x,2)} = <b>${fmt(m,2)}</b> = f(${fmt(x,2)})</div>${c.init?`<div>A(x) = starting value + area = <b>${fmt(Ax,2)}</b></div>`:''}`};
+  P.q('.ctl').addEventListener('click',e=>{const b=e.target.closest('button[data-i]');if(!b)return;for(const q of b.parentNode.children)q.setAttribute('aria-pressed',q===b);s.i=+b.dataset.i;s.x=L[s.i].x0;s.F0=L[s.i].F0||0;setv(P,'F0',s.F0);sync();draw()});
+  inp.addEventListener('input',()=>{s.x=+inp.value;draw()});P.q('input[data-k=F0]')?.addEventListener('input',e=>{s.F0=+e.target.value;draw()});
+  sync();mount(s1,draw);mount(s2,draw);
+  drag(s1,()=>F1,()=>F1?[{id:'x',px:F1.X(s.x),py:F1.Y(L[s.i].f(s.x)),any:1}]:[],(id,x)=>{const f=L[s.i];s.x=Math.max(f.a,Math.min(f.b,x));inp.value=s.x;draw()})};
+
+/* average value: the rectangle with the same area */
+A.avgval=(el,c)=>{const s={a:c.a,b:c.b};
+  const P=panel(el,{title:c.title||'Average value: a rectangle with the same area',tag:'Average value',ctl:slider('a','a',c.xr[0],c.xr[1],0.1,s.a)+slider('b','b',c.xr[0],c.xr[1],0.1,s.b)});
+  const sv=P.svgs[0];
+  const draw=()=>{const a=Math.min(s.a,s.b),b=Math.max(s.a,s.b),F=frame(sv,c.xr,c.yr);if(b-a<1e-6){P.read.innerHTML='<div>Choose a < b.</div>';return}
+    const I=integ(c.f,a,b),av=I/(b-a);let pts=[];for(let i=0;i<800;i++){const x0=a+(b-a)*i/800,x1=x0+(b-a)/800;if((c.f(x0)-av)*(c.f(x1)-av)<=0)pts.push((x0+x1)/2)}
+    sv.innerHTML=axes(F,c.xs,c.ys,{xl:c.xl,yl:c.yl})+clip(F,area(F,c.f,a,b,0,'var(--baset)')+poly(F,[[a,0],[a,av],[b,av],[b,0]],'none',1,'var(--summit)')+seg(F,a,av,b,av,'var(--summit)',2.6,'')+path(F,c.f,c.xr[0],c.xr[1],'var(--navy)',3))+pts.map(x=>dot(F,x,av,'var(--red)',6)).join('');
+    out(P,'a',fmt(s.a,1));out(P,'b',fmt(s.b,1));
+    P.read.innerHTML=`<div class="k-base">∫ = <b>${fmt(I,2)}</b></div><div class="k-summit">average = ∫/(b − a) = <b>${fmt(av,2)}</b> ${esc(c.u||'')}</div><div class="k-red">f equals its average at ${pts.length?pts.map(x=>'<b>'+fmt(x,2)+'</b>').join(' and '):'—'}</div>`};
+  wire(P,s,draw);mount(sv,draw)};
+
+/* substitution: the same area in the x-world and the u-world */
+A.usub=(el,c)=>{const L=c.fs,s={i:0,b:L[0].b0};
+  const P=panel(el,{title:'Substitution moves the area to the u-axis without changing it',tag:'u-substitution',plots:['plot sm','plot sm'],ctl:segbtns(L.map((f,i)=>[i,f.n]),0,'i')+slider('b','upper limit',0,1,0.001,0.5)});
+  const[s1,s2]=P.svgs,inp=P.q('input[data-k=b]');
+  const sync=()=>{const f=L[s.i];inp.min=f.a+0.01;inp.max=f.bmax;inp.step=(f.bmax-f.a)/400;inp.value=s.b};
+  const draw=()=>{const f=L[s.i],b=s.b,ua=f.g(f.a),ub=f.g(b),u0=f.g(f.a),u1=f.g(f.bmax),F=frame(s1,[f.a,f.bmax],f.yr),G=frame(s2,[Math.min(u0,u1),Math.max(u0,u1)],f.uyr),rev=ub<ua;
+    const I1=integ(f.f,f.a,b),I2=integ(f.h,ua,ub);
+    s1.innerHTML=axes(F,f.xs,f.ys,{xl:'x',yl:f.fl})+clip(F,area(F,f.f,f.a,b,0,'var(--midt)')+path(F,f.f,f.a,f.bmax,'var(--navy)',3));
+    s2.innerHTML=axes(G,f.us,f.uys,{xl:'u',yl:f.hl})+clip(G,area(G,f.h,Math.min(ua,ub),Math.max(ua,ub),0,'var(--summitt)')+path(G,f.h,Math.min(u0,u1),Math.max(u0,u1),'var(--summit)',3));
+    out(P,'b',fmt(b,2));P.read.innerHTML=`<div>u = <b>${esc(f.us_)}</b>: limits ${fmt(f.a,2)}…${fmt(b,2)} become ${fmt(ua,2)}…${fmt(ub,2)}</div><div class="k-mid">x-area = <b>${fmt(I1,3)}</b></div><div class="k-summit">u-integral from ${fmt(ua,2)} to ${fmt(ub,2)} = <b>${fmt(I2,3)}</b></div>${rev?'<div>The u-limits run backwards over a negative integrand, so the two sign changes cancel.</div>':''}`};
+  P.q('.ctl').addEventListener('click',e=>{const b=e.target.closest('button[data-i]');if(!b)return;for(const q of b.parentNode.children)q.setAttribute('aria-pressed',q===b);s.i=+b.dataset.i;s.b=L[s.i].b0;sync();draw()});
+  inp.addEventListener('input',()=>{s.b=+inp.value;draw()});sync();mount(s1,draw);mount(s2,draw)};
+
+/* +C: a family of antiderivatives, one fixed by an initial condition */
+A.family=(el,c)=>{const s={C:c.C0};
+  const P=panel(el,{title:c.title||'One derivative, a whole family of antiderivatives',tag:'+C',ctl:slider('C','C',c.Cr[0],c.Cr[1],0.5,s.C)});
+  const sv=P.svgs[0];
+  const draw=()=>{const F=frame(sv,c.xr,c.yr);let g='';for(let k=c.Cr[0];k<=c.Cr[1];k+=c.Cstep)g+=path(F,x=>c.F(x)+k,c.xr[0],c.xr[1],'var(--rule)',1.4);
+    g+=path(F,x=>c.F(x)+s.C,c.xr[0],c.xr[1],'var(--navy)',3.2);const hit=Math.abs(c.F(c.x0)+s.C-c.y0)<0.26;
+    sv.innerHTML=axes(F,c.xs,c.ys,{xl:'x',yl:'f(x)'})+clip(F,g)+dot(F,c.x0,c.y0,hit?'var(--base)':'var(--red)',8);out(P,'C',fmt(s.C,1));
+    P.read.innerHTML=`<div>f(x) = <b>${esc(c.Fs)} ${s.C<0?'−':'+'} ${fmt(Math.abs(s.C),1)}</b></div><div>every curve has the same slope ${esc(c.fs)} at each x</div><div class="${hit?'k-base':'k-red'}">${hit?`<b>passes through (${c.x0}, ${c.y0}): C = ${fmt(s.C,1)}</b>`:`move C until the curve passes through (${c.x0}, ${c.y0})`}</div>`};
+  wire(P,s,draw);mount(sv,draw)};
+
+/* present value of an income stream */
+A.pvstream=(el,c)=>{const s={a:c.a,g:c.g,r:c.r,T:c.T,inf:false};
+  const P=panel(el,{title:'Income now vs its present value',tag:'Present value',ctl:slider('a','base income $/yr',0,10000,100,s.a)+slider('g','growth $/yr each year',0,2000,50,s.g)+slider('r','discount rate %',1,20,0.5,s.r*100)+slider('T','horizon (years)',1,40,1,s.T)});
+  P.q('input[data-k=r]').addEventListener('input',e=>{s.r=+e.target.value/100;draw()});
+  const sv=P.svgs[0];
+  const draw=()=>{const{a,g,r,T}=s,f=t=>a+g*t,d=t=>f(t)*Math.exp(-r*t),F=frame(sv,[0,T],[0,Math.max(f(T),a)*1.1||1]);const nom=a*T+g*T*T/2,pv=integ(d,0,T);
+    sv.innerHTML=axes(F,T>20?5:T>8?2:1,F.yr[1]>20000?5000:F.yr[1]>8000?2000:1000,{xl:'t (years)',yl:'$/year'})+clip(F,area(F,f,0,T,0,'var(--rule)')+area(F,d,0,T,0,'var(--baset)')+path(F,f,0,T,'var(--navy)',3)+path(F,d,0,T,'var(--base)',3));
+    out(P,'a','$'+fmt(a,0));out(P,'g','$'+fmt(g,0));out(P,'r',fmt(r*100,1)+'%');out(P,'T',T);
+    const per=g?'':`<div>perpetuity limit P/r = <b>$${fmt(a/r,0)}</b></div>`;
+    P.read.innerHTML=`<div>nominal income = <b>$${fmt(nom,0)}</b></div><div class="k-base">present value = <b>$${fmt(pv,0)}</b> (${fmt(100*pv/nom,1)}% retained)</div><div>year-${T} dollars are worth <b>${fmt(Math.exp(-r*T)*100,1)}¢</b> today</div>${per}`};
+  wire(P,s,draw);mount(sv,draw)};
+
+/* improper integrals: does the area settle down? */
+A.improper=(el)=>{const s={k:'pow',p:2,r:0.1,lt:1};
+  const P=panel(el,{title:'Let the upper limit run to infinity',tag:'Improper integrals',plots:['plot sm','plot sm'],ctl:segbtns([['pow','1/xᵖ from 1'],['exp','e^(−rt) from 0']],'pow','m')+slider('p','p',0.5,3,0.05,s.p)+slider('r','r',0.02,0.5,0.01,s.r)+slider('lt','upper limit T (log scale)',0.3,3,0.01,s.lt)});
+  const[s1,s2]=P.svgs;
+  const draw=()=>{const T=10**s.lt,pw=s.k==='pow',f=pw?(x=>x**-s.p):(t=>Math.exp(-s.r*t)),a=pw?1:0,Ar=t=>pw?(Math.abs(s.p-1)<1e-9?Math.log(t):(1-t**(1-s.p))/(s.p-1)):(1-Math.exp(-s.r*t))/s.r;
+    const xr=[a,Math.max(T*1.05,a+1)],F=frame(s1,xr,[0,1.05]),lim=pw?(s.p>1?1/(s.p-1):Infinity):1/s.r;
+    s1.innerHTML=axes(F,xr[1]>200?100:xr[1]>40?20:xr[1]>10?5:1,0.25,{xl:pw?'x':'t',yl:'f'})+clip(F,area(F,f,a,T,0,'var(--baset)',200)+path(F,f,a,xr[1],'var(--navy)',3));
+    const Tm=1000,G=frame(s2,[0.3,3],[0,isFinite(lim)?lim*1.2:Ar(Tm)*1.1]);
+    s2.innerHTML=axes(G,0.5,G.yr[1]>20?10:G.yr[1]>4?2:0.5,{xl:'log₁₀ T',yl:'area to T'})+clip(G,(isFinite(lim)?seg(G,0.3,lim,3,lim,'var(--summit)',2,'7 5'):'')+path(G,l=>Ar(10**l),0.3,3,'var(--mid)',3))+dot(G,s.lt,Ar(T),'var(--red)',7);
+    out(P,'p',fmt(s.p,2));out(P,'r',fmt(s.r,2));out(P,'lt','T = '+fmtS(T,3));
+    P.read.innerHTML=`<div>area from ${a} to ${fmtS(T,3)} = <b>${fmt(Ar(T),3)}</b></div><div class="${isFinite(lim)?'k-base':'k-red'}"><b>${isFinite(lim)?`converges to ${fmt(lim,3)}`:'diverges: the area grows without bound'}</b></div>`};
+  segc(P.q('.seg'),b=>{s.k=b.dataset.m;draw()});wire(P,s,draw);mount(s1,draw);mount(s2,draw)};
+
+/* consumer & producer surplus, price controls */
+A.surplus=(el,c)=>{const s={p:c.p0,ctl:!!c.ctl};
+  const P=panel(el,{title:c.title||'Consumer and producer surplus',tag:'Surplus',ctl:slider('p',c.S?'controlled price $':'market price $',c.pr[0],c.pr[1],0.5,s.p)+(c.S?`<div class="seg" data-multi="1"><button type="button" aria-pressed="${s.ctl}" data-c="1">impose this price</button></div>`:'')});
+  const sv=P.svgs[0];const D=q=>c.a-c.b*q,S=c.S?(q=>c.c+c.d*q):null;
+  const draw=()=>{const qmax=c.a/c.b,F=frame(sv,[0,qmax*1.05],[0,c.a*1.08]);let p,qt,qs=NaN;
+    if(S){qs=(c.a-c.c)/(c.b+c.d);const pe=D(qs);p=s.ctl?s.p:pe;qt=s.ctl?Math.min((c.a-p)/c.b,(p-c.c)/c.d):qs}else{p=s.p;qt=(c.a-p)/c.b}
+    qt=Math.max(0,qt);let g=area(F,D,0,qt,p,'var(--baset)');if(S){g+=poly(F,[[0,p],[qt,p],[qt,S(qt)],[0,S(0)]],'var(--midt)');if(s.ctl&&qt<qs)g+=poly(F,[[qt,D(qt)],[qs,D(qs)],[qt,S(qt)]],'var(--redt)')}
+    g+=path(F,D,0,qmax,'var(--navy)',3)+(S?path(F,S,0,qmax,'var(--red)',3):'')+seg(F,0,p,qmax,p,'var(--summit)',2,'7 5');
+    if(!F.small)g+=T(F.X(qmax*0.95),F.Y(D(qmax*0.95))-8,'demand',{anchor:'end',fill:'var(--navy)',weight:700,paint:1})+(S?T(F.X(qmax*0.92),F.Y(Math.min(c.a,S(qmax*0.92)))+18,'supply',{anchor:'end',fill:'var(--red)',weight:700,paint:1}):'');
+    sv.innerHTML=axes(F,c.qs,c.ps,{xl:'q (units)',yl:'price ($)'})+clip(F,g)+(S?ring(F,qs,D(qs),'var(--ink)',6):'');out(P,'p',fmt(s.p,1));
+    const CS=integ(q=>D(q)-p,0,qt),PS=S?integ(q=>p-S(q),0,qt):0,DWL=S&&s.ctl&&qt<qs?integ(q=>D(q)-S(q),qt,qs):0;
+    P.read.innerHTML=`<div>price <b>$${fmt(p,2)}</b>, traded <b>${fmt(qt,2)}</b> units</div><div class="k-base">CS = <b>$${fmt(CS,2)}</b></div>${S?`<div class="k-mid">PS = <b>$${fmt(PS,2)}</b></div><div>TS = <b>$${fmt(CS+PS,2)}</b></div><div class="k-red">deadweight loss = <b>$${fmt(DWL,2)}</b></div>`:''}`};
+  wire(P,s,draw);if(c.S)segc(P.q('.seg'),b=>{s.ctl=on(b);draw()});mount(sv,draw)};
+
+/* Lorenz curve and Gini coefficient */
+A.lorenz=(el,c)=>{const L=c.curves,s={i:0,n:L[0].n??1.8,x:0.4};
+  const P=panel(el,{title:'Lorenz curve and the Gini coefficient',tag:'Inequality',ctl:segbtns(L.map((l,i)=>[i,l.name]),0,'i')+slider('n','exponent n (for xⁿ)',1,6,0.05,s.n)+slider('x','bottom share of people',0.05,0.95,0.01,s.x)});
+  const sv=P.svgs[0];
+  const draw=()=>{const l=L[s.i],Lf=l.f||(x=>x**s.n),F=frame(sv,[0,1],[0,1]);
+    let g=poly(F,[[0,0],...Array.from({length:101},(_,i)=>[i/100,Lf(i/100)]).reverse(),[1,1]],'var(--summitt)')+seg(F,0,0,1,1,'var(--soft)',1.6,'6 5')+path(F,Lf,0,1,'var(--navy)',3.2)+seg(F,s.x,0,s.x,Lf(s.x),'var(--mid)',1.4,'3 4')+dot(F,s.x,Lf(s.x),'var(--mid)',7);
+    sv.innerHTML=axes(F,0.25,0.25,{xl:'share of people',yl:'share of income'})+clip(F,g);
+    const G=1-2*integ(Lf,0,1);out(P,'n',fmt(s.n,2));out(P,'x',fmt(s.x*100,0)+'%');
+    P.read.innerHTML=`<div>L(x) = <b>${l.f?esc(l.name):'x^'+fmt(s.n,2)}</b></div><div class="k-summit">Gini G = 1 − 2∫L = <b>${fmt(G,3)}</b></div><div class="k-mid">bottom ${fmt(s.x*100,0)}% earn <b>${fmt(Lf(s.x)*100,1)}%</b> of income</div>`};
+  P.q('.ctl').addEventListener('click',e=>{const b=e.target.closest('button[data-i]');if(!b)return;for(const q of b.parentNode.children)q.setAttribute('aria-pressed',q===b);s.i=+b.dataset.i;if(L[s.i].n){s.n=L[s.i].n;setv(P,'n',s.n)}draw()});
+  wire(P,s,draw);mount(sv,draw)};
+
+/* slope fields for the three growth equations */
+A.slopefield=(el)=>{const M={exp:{n:'dQ/dt = kQ',f:(Q,k,L)=>k*Q,sol:(t,k,L,Q0)=>Q0*Math.exp(k*t),txt:'Q(t) = Q₀e^(kt)'},bnd:{n:'dQ/dt = k(L − Q)',f:(Q,k,L)=>k*(L-Q),sol:(t,k,L,Q0)=>L-(L-Q0)*Math.exp(-k*t),txt:'Q(t) = L − (L − Q₀)e^(−kt)'},log:{n:'dQ/dt = kQ(1 − Q/L)',f:(Q,k,L)=>k*Q*(1-Q/L),sol:(t,k,L,Q0)=>L/(1+(L-Q0)/Q0*Math.exp(-k*t)),txt:'Q(t) = L / (1 + ((L − Q₀)/Q₀)e^(−kt))'}},s={m:'log',k:0.5,Q0:10};
+  const P=panel(el,{title:'Slope fields: the equation draws the solution',tag:'Differential equations',ctl:segbtns(Object.entries(M).map(([k,v])=>[k,v.n]),'log','m')+slider('k','k',0.05,1,0.01,s.k)+slider('Q0','Q₀',1,140,1,s.Q0)});
+  const sv=P.svgs[0];let F;
+  const draw=()=>{const m=M[s.m],Lc=100,Tm=20;F=frame(sv,[0,Tm],[0,150]);let g='';const cols=F.small?14:24,rows=F.small?10:14;
+    for(let i=0;i<cols;i++)for(let j=0;j<rows;j++){const t=(i+0.5)*Tm/cols,Q=(j+0.5)*150/rows,sl=m.f(Q,s.k,Lc),dx=1,dy=sl,px=F.X(t+dx)-F.X(t),py=F.Y(Q+dy)-F.Y(Q),len=Math.hypot(px,py)||1,r=9;
+      g+=`<line x1="${F.X(t)-px/len*r}" y1="${F.Y(Q)-py/len*r}" x2="${F.X(t)+px/len*r}" y2="${F.Y(Q)+py/len*r}" stroke="var(--soft)" stroke-width="1.2" opacity=".6"/>`}
+    g+=(s.m!=='exp'?seg(F,0,Lc,Tm,Lc,'var(--summit)',1.6,'6 5'):'')+path(F,t=>m.sol(t,s.k,Lc,s.Q0),0,Tm,'var(--navy)',3.4)+dot(F,0,s.Q0,'var(--red)',7);
+    sv.innerHTML=axes(F,2,25,{xl:'t',yl:'Q'})+clip(F,g);out(P,'k',fmt(s.k,2));out(P,'Q0',s.Q0);
+    P.read.innerHTML=`<div><b>${m.txt}</b>${s.m!=='exp'?', L = 100':''}</div><div>Q(10) = <b>${fmt(m.sol(10,s.k,Lc,s.Q0),1)}</b></div><div class="k-summit">every short line is a slope dQ/dt; the solution follows them</div>`};
+  segc(P.q('.seg'),b=>{s.m=b.dataset.v;draw()});wire(P,s,draw);mount(sv,draw);
+  drag(sv,()=>F,()=>F?[{id:'Q0',px:F.X(0),py:F.Y(s.Q0)}]:[],(id,x,y)=>{s.Q0=Math.round(Math.max(1,Math.min(140,y)));setv(P,'Q0',s.Q0);draw()})};
+/* Data Lab for accumulation: a table of rates becomes rectangles or trapezoids, then a running total */
+A.tablesum=(el,c)=>{const s={m:'trap',i:0,j:c.x.length-1,F0:c.F0||0};const X=c.x,Y=[...c.y],n=X.length;
+  const P=panel(el,{title:c.title||'Data Lab: accumulate a table of rates',tag:'Data Lab',plots:['plot','plot sm'],
+    ctl:`<div class="seg">${[['left','LRS'],['right','RRS'],['trap','trapezoid']].map(([k,l])=>`<button type="button" aria-pressed="${k===s.m}" data-m="${k}">${l}</button>`).join('')}</div>`+slider('i','from',0,n-1,1,0)+slider('j','to',0,n-1,1,n-1)+(c.F0!==undefined?slider('F0',c.F0l||'starting amount',c.F0r[0],c.F0r[1],c.F0r[2],s.F0):''),
+    after:`<div class="grid"><table><tbody></tbody></table></div>`});
+  P.q('.panel').classList.add('lab');const[s1,s2]=P.svgs;const dg=c.dg??1;
+  const piece=(k)=>{const dx=X[k+1]-X[k];return s.m==='left'?Y[k]*dx:s.m==='right'?Y[k+1]*dx:(Y[k]+Y[k+1])/2*dx};
+  const draw=()=>{const i=Math.min(s.i,s.j),j=Math.max(s.i,s.j);const ymax=Math.max(...Y,0),ymin=Math.min(...Y,0),pd=(ymax-ymin)*0.1||1;
+    const F=frame(s1,[X[0],X[n-1]],[ymin<0?ymin-pd:0,ymax+pd]);let g='',tot=0;
+    for(let k=0;k<n-1;k++){const on_=k>=i&&k<j,x0=X[k],x1=X[k+1];let pts;if(s.m==='trap')pts=[[x0,0],[x0,Y[k]],[x1,Y[k+1]],[x1,0]];else{const h=s.m==='left'?Y[k]:Y[k+1];pts=[[x0,0],[x0,h],[x1,h],[x1,0]]}
+      g+=poly(F,pts,on_?'var(--midt)':'var(--rule)',on_?1:0.45,on_?'var(--mid)':'none');if(on_)tot+=piece(k)}
+    g+=`<polyline points="${X.map((x,k)=>F.X(x)+','+F.Y(Y[k])).join(' ')}" fill="none" stroke="var(--navy)" stroke-width="2.2"/>`+X.map((x,k)=>dot(F,x,Y[k],'var(--navy)',5.5)).join('');
+    s1.innerHTML=axes(F,c.xs,c.ys,{xl:c.xn,yl:c.yn})+clip(F,g.replace(/<circle[^>]*>/g,''))+X.map((x,k)=>dot(F,x,Y[k],'var(--navy)',5.5)).join('');
+    const acc=[s.F0];for(let k=0;k<n-1;k++)acc.push(acc[k]+piece(k));const amax=Math.max(...acc),amin=Math.min(...acc,0),ap=(amax-amin)*0.1||1;
+    const G=frame(s2,[X[0],X[n-1]],[amin<0?amin-ap:(c.F0?Math.max(0,amin-ap):0),amax+ap]);
+    let g2=`<polyline points="${X.map((x,k)=>G.X(x)+','+G.Y(acc[k])).join(' ')}" fill="none" stroke="var(--base)" stroke-width="2.6"/>`+(c.th?seg(G,X[0],c.th,X[n-1],c.th,'var(--red)',1.6,'6 5'):'');
+    g2+=X.map((x,k)=>dot(G,x,acc[k],k>=i&&k<=j?'var(--base)':'var(--rule)',5)).join('');
+    s2.innerHTML=axes(G,c.xs,c.as||c.ys,{xl:c.xn,yl:c.al||'running total'})+g2;
+    let h=`<tr><th>${esc(c.xn)}</th>${X.map(v=>`<td>${A.num(v)}</td>`).join('')}</tr><tr><th>${esc(c.yn)}</th>${Y.map((v,k)=>`<td><input inputmode="decimal" data-y="${k}" value="${A.num(v)}" aria-label="${esc(c.yn)} at ${X[k]}"></td>`).join('')}</tr>`;
+    h+=`<tr class="r-av"><th>${{left:'rectangle (left)',right:'rectangle (right)',trap:'trapezoid'}[s.m]}</th>`+X.slice(0,-1).map((_,k)=>`<td class="d${k>=i&&k<j?' sel':''}">${fmt(piece(k),dg)}</td>`).join('')+'<td></td></tr>';
+    h+=`<tr class="r-dy"><th>${esc(c.al||'running total')}</th>${acc.map(v=>`<td class="d">${fmt(v,dg)}</td>`).join('')}</tr>`;P.q('tbody').innerHTML=h;
+    out(P,'i',A.num(X[s.i]));out(P,'j',A.num(X[s.j]));out(P,'F0',fmt(s.F0,0));
+    let cross='';if(c.th){for(let k=0;k<n-1;k++)if((acc[k]-c.th)*(acc[k+1]-c.th)<=0&&acc[k]!==acc[k+1]){const t=X[k]+(c.th-acc[k])/(acc[k+1]-acc[k])*(X[k+1]-X[k]);cross=`<div class="k-red">running total reaches ${A.num(c.th)} near ${esc(c.xn.split(' ')[0])} ≈ <b>${fmt(t,1)}</b></div>`;break}}
+    const L=Y.slice(i,j).reduce((a,v,k)=>a+v*(X[i+k+1]-X[i+k]),0),R=Y.slice(i+1,j+1).reduce((a,v,k)=>a+v*(X[i+k+1]-X[i+k]),0);
+    P.read.innerHTML=`<div>from ${A.num(X[i])} to ${A.num(X[j])}:</div><div class="k-mid">LRS = <b>${fmt(L,dg)}</b> · RRS = <b>${fmt(R,dg)}</b></div><div class="k-base">trapezoid = <b>${fmt((L+R)/2,dg)}</b> ${esc(c.u||'')}</div><div class="k-summit">${esc({left:'LRS',right:'RRS',trap:'trapezoid'}[s.m])} total shown: <b>${fmt(tot,dg)}</b></div>${cross}`};
+  segc(P.q('.seg'),b=>{s.m=b.dataset.m;draw()});
+  P.q('.ctl').addEventListener('input',e=>{const k=e.target.dataset.k;if(k){s[k]=+e.target.value;draw()}});
+  P.q('tbody').addEventListener('change',e=>{const k=e.target.dataset.y;if(k===undefined)return;const v=A.parseNum(e.target.value);if(isFinite(v)){Y[+k]=v;draw()}});
+  mount(s1,draw);mount(s2,draw)};
+})();
+</script><script>window.ALT_ANS={"ALT-01-P2e": [{"v": 5, "u": "$", "l": "C(1)"}, {"v": 9, "u": "$", "l": "C(3)"}, {"v": 15, "u": "$", "l": "C(6)"}, {"v": 15, "u": "$", "l": "C(10)"}], "ALT-01-P4a": [{"v": 4432.366331, "u": "$", "t": 0.02}], "ALT-01-P4b": [{"v": 4475.474093, "u": "$", "t": 0.02}], "ALT-01-P4c": [{"v": 43.107762, "u": "$ more (continuous)", "t": 0.03}], "ALT-01-P4d": [{"v": 14.4, "u": "years"}], "ALT-01-P5b": [{"v": 500, "u": "$", "l": "fixed cost"}], "ALT-01-P5c": [{"v": 500.0, "u": "$", "l": "C(0)"}, {"v": 750.0, "u": "$", "l": "C(10)"}, {"v": 1100.0, "u": "$", "l": "C(20)"}], "ALT-01-P5d": [{"v": 75.0, "u": "$/unit", "l": "AC(10)"}, {"v": 55.0, "u": "$/unit", "l": "AC(20)"}], "ALT-01-P6c": [{"v": 3.71333, "u": "units", "l": "smaller q", "t": 0.02}, {"v": 17.953336, "u": "units", "l": "larger q", "t": 0.02}], "ALT-01-P6e": [{"v": 50, "u": "$", "l": "π(5)"}, {"v": 150, "u": "$", "l": "π(10)"}, {"v": 100, "u": "$", "l": "π(15)"}], "ALT-01-P7a": [{"v": 0.026236, "u": "per year", "l": "k =", "t": 0.0002}], "ALT-01-P7c": [{"v": 101400.0, "u": "people", "t": 150}], "ALT-01-P7d": [{"v": 26.419268, "u": "years after 2005", "t": 0.1}], "ALT-01-P7e": [{"v": 26.419268, "u": "years", "t": 0.1}], "ALT-01-P8a": [{"v": -0.173287, "u": "per hour", "l": "k =", "t": 0.0005}], "ALT-01-P8b": [{"v": 300, "u": "mg", "l": "Q(4)", "t": 0.5}, {"v": 150, "u": "mg", "l": "Q(8)", "t": 0.5}, {"v": 75, "u": "mg", "l": "Q(12)", "t": 0.5}], "ALT-01-P8c": [{"v": 12, "u": "hours", "t": 0.05}], "ALT-01-P9b": [{"v": 0.2463, "u": "per week", "l": "k =", "t": 0.0005}], "ALT-01-P9c": [{"v": 96.066445, "u": "thousand users", "t": 0.6}], "ALT-01-P9d": [{"v": 12.162932, "u": "weeks", "t": 0.05}], "ALT-01-P9e": [{"v": 11.42269, "u": "weeks", "t": 0.05}], "ALT-01-P10b": [{"v": 0.0, "u": "$", "l": "R(0)", "t": 0.5}, {"v": 3704.091103, "u": "$", "l": "R(10)", "t": 1}, {"v": 6131.015402, "u": "$", "l": "R(33)", "t": 1}, {"v": 4285.974989, "u": "$", "l": "R(70)", "t": 1}], "ALT-01-P10d": [{"v": 3481.015402, "u": "$", "l": "π(33)", "t": 1}, {"v": -214.025011, "u": "$", "l": "π(70)", "t": 1}], "ALT-01-P10e": [{"v": 318742.155383, "u": "$", "t": 5}]};</script><script>{const A=ALT;
+const SNAV={
+'1.1':[{q:'Schema step 1 — what is the input?',o:['q, units produced and sold','R, revenue in dollars'],a:0,y:'The input is q; the output is R in dollars.',n:'Revenue is what comes out. What goes in is the quantity q.'},
+       {q:'Schema step 4 — can the input be negative?',o:['yes','no'],a:1,y:'No: a firm cannot produce a negative number of units.',n:'Think about the context: negative production is impossible.'}],
+'1.2':[{q:'Schema step 3 — what type of function is C(q) = 25q + 400?',o:['linear','exponential','logarithmic'],a:0,y:'Linear: it has the form mx + b.',n:'C changes by adding the same $25 for every unit: that is linear.'},
+       {q:'Schema step 1 — what are the units of the slope?',o:['$','$ per unit','units per $'],a:1,y:'Dollars per unit: output units over input units.',n:'Slope is units of output per unit of input.'}],
+'1.3':[{q:'Which quantity is the input for all four functions?',o:['q, quantity','p, price','C, cost'],a:0,y:'Everything is built as a function of q.',n:'Demand, cost, revenue and profit are all written in terms of q.'},
+       {q:'Is revenue a fixed price times any quantity?',o:['yes','no: R(q) = D(q)·q'],a:1,y:'Right: the price comes from the demand function.',n:'See Common Error 3: revenue uses the demand function, not a fixed price.'}],
+'1.4':[{q:'Schema step 3 — what type of function is the balance?',o:['linear','exponential'],a:1,y:'Exponential: it multiplies by a fixed factor each period.',n:'Interest multiplies the balance; it does not add a fixed amount.'},
+       {q:'Schema step 5 — solving for a time, or predicting a quantity?',o:['a time','a quantity'],a:1,y:'A quantity: the balance after 10 years.',n:'We know t = 10 and want the balance: a quantity.'}],
+'1.5':[{q:'Schema step 5 — predicting 2030 is…',o:['solving for a time','predicting a quantity'],a:1,y:'A quantity at a given time.',n:'2030 gives t; we want P(t).'},
+       {q:'What will the sign of k be?',o:['positive (growth)','negative (decay)'],a:0,y:'Positive: the population grew.',n:'The population went up from 85,000 to 102,000.'}],
+'1.6':[{q:'What will the sign of k be?',o:['positive (growth)','negative (decay)'],a:1,y:'Negative: the drug is eliminated.',n:'The amount halves every 6 hours: decay.'},
+       {q:'Schema step 5 — “when does it drop below 25 mg?” asks for…',o:['a time','a quantity'],a:0,y:'A time: set Q(t) = 25 and solve with ln.',n:'“When” asks for t.'}]};
+const LABS={
+'ALT-01-P3':{sets:[{n:'(a)',x:[0,1,2,3],y:[100,115,130,145]},{n:'(b)',x:[0,1,2,3],y:[100,115,132.25,152.09]},{n:'(c)',x:[0,2,4,6],y:[200,162,131.2,106.3]}],x:[0,1,2,3],y:[100,115,130,145],xn:'t',yn:'Q',ru:'per unit t',xs:1,ys:25,show:['dy','ra'],rows:['dy','ra','av']},
+'ALT-01-P9':{x:[0,2,4,6,8,10],y:[5,8.2,13.4,21.9,35.9,58.7],xn:'t (weeks)',yn:'U (thousands)',ru:'thousand/week',xs:2,ys:10,show:['ra'],rows:['dy','ra','av','sd'],fit:true}};
+const R=q=>80*q-2*q*q,PE=t=>85000*Math.exp(0.01823*t),PL=t=>85000+1700*t;
+const INS={
+ fourways:el=>A.fourways(el),
+ domain:el=>A.explore(el,{title:'Where does R(q) = 80q − 2q² make sense?',tag:'Domain',fs:[{f:R}],xr:[-10,50],yr:[-1000,900],xs:10,ys:200,x0:20,step:0.5,xl:'q (units)',yl:'R ($)',
+   shade:F=>`<rect x="${F.X(0)}" y="${F.pad.t}" width="${F.X(40)-F.X(0)}" height="${F.H-F.pad.t-F.pad.b}" fill="var(--baset)"/>`+ALT.T(F.X(20),F.pad.t+16,'practical domain [0, 40]',{anchor:'middle',fill:'var(--base)',weight:700,size:13}),
+   marks:[{x:20,y:800,c:'var(--base)',ring:1}],
+   read:q=>`<div>R(${ALT.fmt(q,1)}) = <b>${ALT.fmt(R(q),0)}</b></div><div class="${q<0||q>40?'k-red':'k-base'}"><b>${q<0?'negative production: outside the domain':q>40?'negative revenue: no economic meaning':'inside the practical domain'}</b></div><div>maximum revenue <b>$800</b> at q = 20</div>`}),
+ compound:el=>A.compound(el,{P:5000,r:0.08,t:10}),
+ pop:el=>A.explore(el,{title:'Exponential and linear projections of the same two data points',tag:'Model choice',fs:[{f:PE,c:'var(--base)'},{f:PL,c:'var(--mid)',d:'7 5'}],xr:[0,50],yr:[60000,240000],xs:10,ys:40000,x0:20,step:1,sl:'years after 2010',xl:'years after 2010',yl:'population',
+   marks:[{x:0,y:85000},{x:10,y:102000}],read:t=>`<div>year <b>${2010+t}</b></div><div class="k-base">exponential: <b>${Math.round(PE(t)).toLocaleString()}</b></div><div class="k-mid">linear: <b>${Math.round(PL(t)).toLocaleString()}</b></div><div class="k-red">gap: <b>${Math.round(PE(t)-PL(t)).toLocaleString()}</b> people</div>`}),
+ dose:el=>A.dosing(el,{D:400,h:6,tau:24,th:25,Tmax:96}),
+ f1:el=>A.vlt(el),f2:el=>A.lines(el),f3:el=>A.incdec(el),f4:el=>A.biz(el),
+ f5:el=>A.race(el,{y0:20,m:20,g:1.3,T0:6,Tmax:14,mr:[5,40,1],gr:[1.05,1.6,0.01]}),
+ f6:el=>A.mirror(el)};
+A.page('01',{SNAV,ANS:window.ALT_ANS||{},INS});
+A.labButtons(LABS);
+A.hero(document.querySelector('.hero svg'),{f:q=>-2*q*q+90*q-300,xr:[0,48],yr:[-500,900],a:22.5,mode:'value',lab:(q,v)=>`profit at q = ${ALT.fmt(q,1)}: ${v<0?'−':''}$${ALT.fmt(Math.abs(v),0)}`});}
+</script></body></html>
